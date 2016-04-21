@@ -1,7 +1,7 @@
 package environment;
 
 public class Tasks {
-	private static String TYPE_NUMBER = "number"; 
+	private final static String TYPE_NUMBER = "number"; 
 	private String message;
 
 	public Tasks(){
@@ -19,10 +19,8 @@ public class Tasks {
 	 */
 	public void doTask1(String[] param){
 		
-		CheckParameters cp = new CheckParameters();
-		
 		//checking parameters before processing them
-		if (cp.ifValidParameters(1,TYPE_NUMBER, param)) {
+		if (ifValidParameters(1,TYPE_NUMBER, param)) {
 		
 			//task condition - number length have to be bigger than 3
 			//before checking number length split it by "" and "."
@@ -53,10 +51,6 @@ public class Tasks {
 			}
 			
 		}
-		//checking arguments is failed
-		else {
-			message = cp.getMessage();
-		}
 	}
 	
 	/*
@@ -65,10 +59,9 @@ public class Tasks {
 	 * 
 	 */
 	public void doTask2(String[] param){
-		CheckParameters cp = new CheckParameters();
 		
 		//checking parameters before processing them
-		if (cp.ifValidParameters(3,TYPE_NUMBER, param)) {
+		if (ifValidParameters(3,TYPE_NUMBER, param)) {
 			
 			try {
 				
@@ -117,10 +110,6 @@ public class Tasks {
 			}
 			
 		}
-		//checking arguments is failed
-		else {
-			message = cp.getMessage();
-		}
 	}
 	
 	
@@ -128,10 +117,9 @@ public class Tasks {
 	 * Calculate the P and area of a right triangle of two of the legs (a and b).
 	 */
 	public void doTask3(String[] param){
-		CheckParameters cp = new CheckParameters();
 		
 		//checking parameters before processing them
-		if (cp.ifValidParameters(2,TYPE_NUMBER, param)) {
+		if (ifValidParameters(2,TYPE_NUMBER, param)) {
 			//parse parameters into number
 			double a = Double.parseDouble(param[1]);
 			
@@ -158,10 +146,6 @@ public class Tasks {
 			
 			message = "Perimeter = "+perimeter+"  ;  Area = " + area;
 		}
-		//checking arguments is failed
-		else {
-			message = cp.getMessage();
-		}
 	}
 	
 	/*
@@ -180,10 +164,8 @@ public class Tasks {
 		double x;
 		double y;
 		
-		CheckParameters cp = new CheckParameters();
-		
 		//checking parameters before processing them
-		if (cp.ifValidParameters(2,TYPE_NUMBER, param)) {
+		if (ifValidParameters(2,TYPE_NUMBER, param)) {
 		
 			try{
 				x = Double.parseDouble(param[1]);
@@ -216,10 +198,6 @@ public class Tasks {
 			message = "false";
 		
 		}
-		//checking arguments is failed
-		else {
-			message = cp.getMessage();
-		}
 	}
 	
 	/*
@@ -230,10 +208,8 @@ public class Tasks {
 		double degree_negative = 4;
 		String result = "";
 		
-		CheckParameters cp = new CheckParameters();
-		
 		//checking parameters before processing them
-		if (cp.ifValidParameters(3,TYPE_NUMBER, param)) {
+		if (ifValidParameters(3,TYPE_NUMBER, param)) {
 			
 			for (int i = 1; i<param.length; i++){
 				try {
@@ -256,10 +232,6 @@ public class Tasks {
 				}
 			}
 		}
-		//checking arguments is failed
-		else {
-			message = cp.getMessage();
-		}
 	}
 	
 	/*
@@ -269,10 +241,8 @@ public class Tasks {
 		double min;
 		double max;
 		
-		CheckParameters cp = new CheckParameters();
-		
 		//checking parameters before processing them
-		if (cp.ifValidParameters(3,TYPE_NUMBER, param)) {
+		if (ifValidParameters(3,TYPE_NUMBER, param)) {
 			try{
 				//setup min and max value
 				double number = Double.parseDouble(param[1]);
@@ -296,10 +266,6 @@ public class Tasks {
 				return;
 			}
 		}
-		//checking arguments is failed
-		else {
-			message = cp.getMessage();
-		}
 	}
 	
 	/*
@@ -310,10 +276,8 @@ public class Tasks {
 	 */
 	public void doTask7(String[] param){
 		
-		CheckParameters cp = new CheckParameters();
-		
 		//checking parameters before processing them
-		if (cp.ifValidParameters(3,TYPE_NUMBER, param)) {
+		if (ifValidParameters(3,TYPE_NUMBER, param)) {
 			try{
 				double start_pos = Double.parseDouble(param[1]);
 				double end_pos = Double.parseDouble(param[2]);
@@ -340,10 +304,6 @@ public class Tasks {
 				message = "One or more parameters can't be converted into double! ";
 				return;
 			}
-		}
-		//checking arguments is failed
-		else {
-			message = cp.getMessage();
 		}
 	}
 	
@@ -388,8 +348,7 @@ public class Tasks {
 		int[] array1 = {1, 2, 3, 4, 5, 6};
 		int[] array2 = {11,12,13};
 		
-		CheckParameters cp = new CheckParameters();
-		if (cp.ifValidParameters(1,TYPE_NUMBER, param)){
+		if (ifValidParameters(1,TYPE_NUMBER, param)){
 			try {
 				int position = Integer.parseInt(param[1]);
 				
@@ -414,10 +373,6 @@ public class Tasks {
 				return;
 			}
 		}
-		//checking arguments is failed
-		else {
-			message = cp.getMessage();
-		}
 	}
 	
 	/*
@@ -425,9 +380,7 @@ public class Tasks {
 	 */
 	public void doTask10(String[] param){
 		
-		CheckParameters cp = new CheckParameters();
-		
-		if (cp.ifValidParameters(1,TYPE_NUMBER, param)){
+		if (ifValidParameters(1,TYPE_NUMBER, param)){
 			try{
 				int order = Integer.parseInt(param[1]);
 				
@@ -456,9 +409,52 @@ public class Tasks {
 				return;
 			}
 		}
-		//checking arguments is failed
-		else {
-			message = cp.getMessage();
+	}
+	
+	/*---------------------------------------
+	 	
+	/*
+	 * Checking for valid number of parameters in array {param}
+	 * number_param - valid number of parameters in array {param} for checking. When do check
+	 * 					it is important to add 1 to length because the first element of {param}
+	 * 					is always contains task number 
+	 * type_param  - type for checking parameter
+	 * param	   - array with parameters for checking
+	 */
+	public boolean ifValidParameters(int number_param, String type_param, String[] param){
+		//checking array length
+		if (param.length != number_param+1){
+			message = "Invalid number of arguments!";
+			return false;
 		}
+		
+		//checking type of parameters
+		for (int i=1; i<(number_param+1) ; i++){
+			if(type_param.equals(TYPE_NUMBER)){
+				if (! isNumber(param[i])){
+					message = "Argument number "+(i+1)+" has to be numeric!";
+					
+					return false;
+				}
+			}
+		}
+		
+		return true;
+	}
+	
+	/*
+	 * Do checking if {str_for_check} is a number
+	 */
+	private boolean isNumber(String str_for_check){
+		//try to parse string into integer. 
+		try {
+			double res_number = Double.parseDouble(str_for_check);
+		}
+		catch (NumberFormatException e){
+			//it is not integer number
+			return false;
+		}
+		
+		return true;
 	}
 }
