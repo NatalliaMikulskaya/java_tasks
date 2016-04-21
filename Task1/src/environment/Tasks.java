@@ -14,8 +14,9 @@ public class Tasks {
 	
 	/*
 	 * Create a linear program, the print is true, if the above statement is true and false - otherwise:
-	 *The sum of the first two digits of a given four-digit number
-	 *is the sum of his last two digits.
+	 * The sum of the first two digits of a given four-digit number
+	 * is the sum of his last two digits.
+	 * Method operates with 1 number
 	 */
 	public void doTask1(String[] param){
 		
@@ -25,7 +26,7 @@ public class Tasks {
 			//task condition - number length have to be bigger than 3
 			//before checking number length split it by "" and "."
 			String newString = param[1].replaceAll("[^0-9]", ""); //replace all non_digit symbol from string
-			String[] str_array = newString.split(""); //split string to array
+			String[] str_array = newString.split(""); //split string to array - every digit will be as array elements
 			
 			if (str_array.length < 4) {
 				message = "Number of digits in the second parameter has to be equal or bigger than 4!";
@@ -56,6 +57,7 @@ public class Tasks {
 	/*
 	 * Calculate the value of expression by (all variables are real values):
 	 * (b + sqrt(b*b + 4ac))/(2a) + a*a*a*c - sqrt(b)
+	 * Method operates with 3 numbers
 	 * 
 	 */
 	public void doTask2(String[] param){
@@ -84,7 +86,7 @@ public class Tasks {
 				double c = Double.parseDouble(param[3]);
 				
 				//calculate sqrt(b*b+4ac)
-				double number1 = b*b + 4*a*c;
+				double number1 = Math.pow(b, 2) + 4*a*c;
 				if ( number1 < 0){
 					message = "Result of calculating (b*b+4ac) is less than 0. Program can't operate with complex numbers!";
 					return;
@@ -101,20 +103,19 @@ public class Tasks {
 				//calculate the third summand
 				double summand3 = Math.sqrt(b);
 				
-				double result = summand1 - a*a*a*c + summand3;
+				double result = summand1 - Math.pow(a, 3)*c + summand3;
 				message = String.valueOf(result);
 				
 			}
 			catch (NumberFormatException e) {
 				message = "Invalid arguments!";
 			}
-			
 		}
 	}
 	
-	
 	/*
 	 * Calculate the P and area of a right triangle of two of the legs (a and b).
+	 * Method operates with 2 numbers - triangle legs
 	 */
 	public void doTask3(String[] param){
 		
@@ -151,6 +152,7 @@ public class Tasks {
 	/*
 	 * For these areas create a linear program that prints true, if the point with coordinates (x, y) 
 	 * belongs to the shaded area, and false - otherwise
+	 * Method operates with 2 parameters - point co-ordinates
 	 */
 	public void doTask4(String[] param){
 		//border upper rectangle (set upper right co-ordinate). Other will be pertaining to mirror by real axis y
@@ -184,12 +186,11 @@ public class Tasks {
 					message = "true";
 					return;
 				}
-			}
-						
-			//if co-ordinate y equal or less than 0, work with lower rectangle
-			if ( y <=0.0 ) {
+			}else{
+			
+				//if co-ordinate y equal or less than 0, work with lower rectangle
 				if ( (x <= x_lower) && ( x >= -x_lower )&& 
-						( y >= y_lower)	){
+					( y >= y_lower)	){
 					message = "true";
 					return;
 				}
@@ -202,6 +203,7 @@ public class Tasks {
 	
 	/*
 	 * Given three real numbers. To square those whose values are non-negative, and in the fourth degree - negative.
+	 * Method operates with 3 numbers
 	 */
 	public void doTask5(String[] param){
 		double degree_non_negative = 2;
@@ -236,6 +238,7 @@ public class Tasks {
 	
 	/*
 	 * Write a program to find the sum of the larger and smaller of the three numbers.
+	 * Method operates with 3 numbers
 	 */
 	public void doTask6(String[] param){
 		double min;
@@ -273,6 +276,7 @@ public class Tasks {
 	 * The result is displayed as a table, the first column of which - the value of the argument, 
 	 * the second - the corresponding values of the function
 	 * F(x) = sin(x)*sin(x) - cos(2x)
+	 * Method operates with 3 numbers: start position, end position and step
 	 */
 	public void doTask7(String[] param){
 		
@@ -309,6 +313,10 @@ public class Tasks {
 	
 	/*
 	 * The array A[N] entered natural numbers. Find the sum of the elements that are multiples of a given K.
+	 * Method operates with parameters:
+	 * param 1 = number task (it is skipped in method)
+	 * param 2 = divider
+	 * param 3...n = elements of array
 	 */
 	public void doTask8(String[] param){
 		long sum=0;
@@ -320,13 +328,14 @@ public class Tasks {
 		
 		try {
 			long divider = Long.parseLong(param[1]);
-			if ( divider == 0) {
+			if ( divider == 0L) {
 				message = "Divider can't be equal zero!";
 				return;
 			}
 			
 			for (int i = 2; i < param.length; i++) {
 				long array_el =  Long.parseLong(param[i]);
+				//array element is divided by divider without excess?
 				if (array_el % divider == 0){
 					sum += array_el;
 				}
@@ -343,6 +352,7 @@ public class Tasks {
 	 * Two-dimensional array is set with a different number of elements and a natural number k. 
 	 *  Merge them into a single array, including a second array between k-th and (k + 1)-th elements
 	 *  of the first array.
+	 *  Method operates with 1 parameter - number of position
 	 */
 	public void doTask9(String[] param){
 		int[] array1 = {1, 2, 3, 4, 5, 6};
@@ -360,9 +370,13 @@ public class Tasks {
 				int size_new_array = array1.length + array2.length;
 				int[] array3 = new int[size_new_array];
 				
+				//put first part of array1 into array3
 				System.arraycopy(array1, 0, array3, 0, position);
+				//put array2 into array2 from {position}
 				System.arraycopy(array2, 0, array3, position, array2.length);
+				//put the rest of array1 into array3
 				System.arraycopy(array1, position, array3, position+array2.length, array1.length-position);
+				//print out result array
 				for (int i=0; i < size_new_array; i++){
 					message +=array3[i]+" ";
 				}
@@ -377,6 +391,7 @@ public class Tasks {
 	
 	/*
 	 * Form a square matrix of order n for a given sample (n - even)
+	 * Method operates with 1 number - n
 	 */
 	public void doTask10(String[] param){
 		
@@ -446,12 +461,12 @@ public class Tasks {
 	 * Do checking if {str_for_check} is a number
 	 */
 	private boolean isNumber(String str_for_check){
-		//try to parse string into integer. 
+		//try to parse string into float. 
 		try {
-			double res_number = Double.parseDouble(str_for_check);
+			float res_number = Float.parseFloat(str_for_check);
 		}
 		catch (NumberFormatException e){
-			//it is not integer number
+			//it is not a number
 			return false;
 		}
 		
