@@ -10,6 +10,6 @@ import by.epam.atl.task2.bin.NoteBook;
 public interface NoteBookDao {
 	
 	NoteBook loadNoteBookFromFile(String file_name);    //create new notebook from file
-	File saveNoteBookIntoFile(NoteBook ntb); // save existing notebook into file
+	File saveNoteBookIntoFile(NoteBook ntb, String file_name); // save existing notebook into file
 	
 }
