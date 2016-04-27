@@ -362,6 +362,11 @@ public class Tasks {
 			try {
 				int position = Integer.parseInt(param[1]);
 				
+				if (position < 0) {
+					message = "Number of position can't be less than 0!";
+					return;
+				}
+				
 				if (array1.length <= position ){
 					message = "Size of array1 is "+array1.length+". It is impossible insert the second array in position "+position;
 					return;

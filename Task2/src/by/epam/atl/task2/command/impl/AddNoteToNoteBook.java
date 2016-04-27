@@ -19,7 +19,7 @@ public class AddNoteToNoteBook implements Command{
 		Note nt = request.getNote();
 		NoteBook ntb = request.getNoteBook();
 		
-		noteBookService.addNoteToNoteBook(nt, ntb);
+		noteBookService.addNoteToNoteBook(nt);
 		
 		Response rsp = new Response();
 		rsp.setErrorMessage(null);
