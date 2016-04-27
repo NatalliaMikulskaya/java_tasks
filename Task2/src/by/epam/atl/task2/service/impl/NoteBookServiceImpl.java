@@ -1,13 +1,11 @@
 package by.epam.atl.task2.service.impl;
 
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
+import java.util.Date;
 import java.util.List;
 
 import by.epam.atl.task2.bin.Note;
 import by.epam.atl.task2.bin.NoteBook;
-import by.epam.atl.task2.dao.DAOFactory;
-import by.epam.atl.task2.dao.NoteBookDao;
 import by.epam.atl.task2.service.NoteBookService;
 
 public class NoteBookServiceImpl implements NoteBookService {
@@ -31,7 +29,7 @@ public class NoteBookServiceImpl implements NoteBookService {
 	}
 
 	@Override
-	public List<Note> findNotesByDate(GregorianCalendar dt) {
+	public List<Note> findNotesByDate(Date dt) {
 		List<Note> result_notes = new ArrayList<Note>();
 		
 		//get notes from notebook

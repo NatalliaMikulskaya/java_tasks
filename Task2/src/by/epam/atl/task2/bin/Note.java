@@ -1,24 +1,23 @@
 package by.epam.atl.task2.bin;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.Date;
 
 public class Note {
-	private GregorianCalendar date;
+	private Date date;
 	private String note;
 	
 	public Note(){
-		date = new GregorianCalendar(); //by default set current date
+		date = new Date(); //by default set current date
 		note = "";
 	}
 	
-	public Note(GregorianCalendar dt, String str){
+	public Note(Date dt, String str){
 		date = dt;
 		note = str.trim();
 	}
 	
-	public void setDate (GregorianCalendar dt){
+	public void setDate (Date dt){
 		
 		date = dt;
 		
@@ -28,7 +27,7 @@ public class Note {
 		note = nt;
 	}
 	
-	public GregorianCalendar getDate(){
+	public Date getDate(){
 		if (date != null) return date;
 		return null;
 	}

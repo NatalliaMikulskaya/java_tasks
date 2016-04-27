@@ -1,25 +1,25 @@
 package by.epam.atl.task2.bin;
 
-import java.util.GregorianCalendar;
+import java.util.Date;
 
 public class Request {
-	private GregorianCalendar date;
+	private Date date;
 	private String content;
 	private String commandName;
 	private NoteBook notebook;
 	private Note note;
 	
 	public Request(){
-		date = new GregorianCalendar();
+		date = new Date();
 	}
 	
-	public Request(GregorianCalendar dt, String str, NoteBook ntb){
+	public Request(Date dt, String str, NoteBook ntb){
 		date = dt;
 		content = str;
 		this.notebook = ntb;
 	}
 	
-	public void setDate(GregorianCalendar dt){
+	public void setDate(Date dt){
 		this.date = dt;
 	}
 	
@@ -27,7 +27,7 @@ public class Request {
 		this.content = str;
 	}
 	
-	public GregorianCalendar getDate(){
+	public Date getDate(){
 		return this.date;
 	}
 	
