@@ -5,6 +5,7 @@ import java.util.List;
 public class Response {
 	private NoteBook noteBook;
 	private Note note;
+	private List<Note> notes;
 	private String errorMessage;
 	private String message;
 	
@@ -44,5 +45,12 @@ public class Response {
 		this.noteBook = ntb;
 	}
 	
+	public void setNotes(List<Note> nts){
+		this.notes = nts;
+	}
+	
+	public List<Note> getNotes(){
+		return this.notes;
+	}
 	
 }
