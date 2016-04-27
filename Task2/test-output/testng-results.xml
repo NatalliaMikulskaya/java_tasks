@@ -2,24 +2,24 @@
 <testng-results skipped="0" failed="0" total="2" passed="2">
   <reporter-output>
   </reporter-output>
-  <suite name="TestNG" duration-ms="83" started-at="2016-04-26T07:58:25Z" finished-at="2016-04-26T07:58:25Z">
+  <suite name="TestNG" duration-ms="260" started-at="2016-04-27T06:35:43Z" finished-at="2016-04-27T06:35:43Z">
     <groups>
     </groups>
-    <test name="Notetest" duration-ms="83" started-at="2016-04-26T07:58:25Z" finished-at="2016-04-26T07:58:25Z">
+    <test name="Notetest" duration-ms="260" started-at="2016-04-27T06:35:43Z" finished-at="2016-04-27T06:35:43Z">
       <class name="by.epam.atl.task2.bin.NoteTest">
-        <test-method status="PASS" signature="beforeClass()[pri:0, instance:by.epam.atl.task2.bin.NoteTest@32e6e9c3]" name="beforeClass" is-config="true" duration-ms="26" started-at="2016-04-26T10:58:25Z" finished-at="2016-04-26T10:58:25Z">
+        <test-method status="PASS" signature="beforeClass()[pri:0, instance:by.epam.atl.task2.bin.NoteTest@32e6e9c3]" name="beforeClass" is-config="true" duration-ms="80" started-at="2016-04-27T09:35:43Z" finished-at="2016-04-27T09:35:43Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- beforeClass -->
-        <test-method status="PASS" signature="testNoteConstructor()[pri:0, instance:by.epam.atl.task2.bin.NoteTest@32e6e9c3]" name="testNoteConstructor" duration-ms="16" started-at="2016-04-26T10:58:25Z" finished-at="2016-04-26T10:58:25Z">
+        <test-method status="PASS" signature="testNoteConstructor()[pri:0, instance:by.epam.atl.task2.bin.NoteTest@32e6e9c3]" name="testNoteConstructor" duration-ms="120" started-at="2016-04-27T09:35:43Z" finished-at="2016-04-27T09:35:43Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testNoteConstructor -->
-        <test-method status="PASS" signature="testNoteSettersGetters()[pri:0, instance:by.epam.atl.task2.bin.NoteTest@32e6e9c3]" name="testNoteSettersGetters" duration-ms="4" started-at="2016-04-26T10:58:25Z" finished-at="2016-04-26T10:58:25Z">
+        <test-method status="PASS" signature="testNoteSettersGetters()[pri:0, instance:by.epam.atl.task2.bin.NoteTest@32e6e9c3]" name="testNoteSettersGetters" duration-ms="0" started-at="2016-04-27T09:35:43Z" finished-at="2016-04-27T09:35:43Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testNoteSettersGetters -->
-        <test-method status="PASS" signature="afterClass()[pri:0, instance:by.epam.atl.task2.bin.NoteTest@32e6e9c3]" name="afterClass" is-config="true" duration-ms="0" started-at="2016-04-26T10:58:25Z" finished-at="2016-04-26T10:58:25Z">
+        <test-method status="PASS" signature="afterClass()[pri:0, instance:by.epam.atl.task2.bin.NoteTest@32e6e9c3]" name="afterClass" is-config="true" duration-ms="10" started-at="2016-04-27T09:35:43Z" finished-at="2016-04-27T09:35:43Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- afterClass -->

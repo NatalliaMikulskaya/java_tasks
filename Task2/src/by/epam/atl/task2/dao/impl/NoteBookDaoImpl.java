@@ -36,7 +36,10 @@ public class NoteBookDaoImpl implements NoteBookDao {
 			
 			//try to open file
 			if (fl.exists() && fl.isFile() && fl.canRead()){
+				System.out.println("-----");
 				try{				
+					System.out.println("OK");
+					
 					DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 					DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 					Document doc = dBuilder.parse(fl);
@@ -75,6 +78,8 @@ public class NoteBookDaoImpl implements NoteBookDao {
 				catch(Exception e){
 					e.getStackTrace();
 				}
+			}else{
+				System.out.println("file error");
 			}
 		}
 		

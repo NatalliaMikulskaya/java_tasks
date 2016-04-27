@@ -8,6 +8,7 @@ public class Request {
 	private String commandName;
 	private NoteBook notebook;
 	private Note note;
+	private String fileName;
 	
 	public Request(){
 		date = new Date();
@@ -59,5 +60,12 @@ public class Request {
 		this.commandName = commandName;
 	}
 	
+	public void setFileName(String fname){
+		this.fileName = fname;
+	}
+	
+	public String getFileName(){
+		return this.fileName;
+	}
 	
 }

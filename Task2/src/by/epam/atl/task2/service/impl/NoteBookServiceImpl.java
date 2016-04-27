@@ -6,6 +6,8 @@ import java.util.List;
 
 import by.epam.atl.task2.bin.Note;
 import by.epam.atl.task2.bin.NoteBook;
+import by.epam.atl.task2.dao.DAOFactory;
+import by.epam.atl.task2.dao.impl.NoteBookDaoImpl;
 import by.epam.atl.task2.service.NoteBookService;
 
 public class NoteBookServiceImpl implements NoteBookService {
@@ -77,5 +79,25 @@ public class NoteBookServiceImpl implements NoteBookService {
 		NoteBookProvider.getInstance().setNoteBook(notebook);
 				
 	}
+
+	@Override
+	public NoteBook loadNoteBookFromFile(String file_name) {
+		
+		NoteBookDaoImpl ntb_dao = new NoteBookDaoImpl();
+		
+		NoteBook ntb = ntb_dao.loadNoteBookFromFile(file_name);
+		
+		return ntb;
+	}
+
+	@Override
+	public void unloadBookIntoFile(String file_name) {
+		NoteBookDaoImpl ntb_dao = new NoteBookDaoImpl();
+		NoteBook ntb = NoteBookProvider.getInstance();
+		
+		ntb_dao.saveNoteBookIntoFile(ntb, file_name);
+		
+	}
+	
 	
 }
