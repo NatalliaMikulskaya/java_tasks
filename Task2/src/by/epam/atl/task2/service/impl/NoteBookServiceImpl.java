@@ -98,6 +98,14 @@ public class NoteBookServiceImpl implements NoteBookService {
 		ntb_dao.saveNoteBookIntoFile(ntb, file_name);
 		
 	}
+
+	@Override
+	public Note createNote(Date dt, String str) {
+		//create empty note
+		Note new_note = new Note(dt, str);
+				
+		return new_note;
+	}
 	
 	
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import by.epam.atl.task2.command.Command;
 import by.epam.atl.task2.command.impl.AddNoteToNoteBook;
+import by.epam.atl.task2.command.impl.CreateNote;
 import by.epam.atl.task2.command.impl.CreateNoteBook;
 import by.epam.atl.task2.command.impl.FindNotesByContent;
 import by.epam.atl.task2.command.impl.FindNotesByDate;
@@ -21,6 +22,7 @@ public class CommandHelper {
 		commands.put(CommandName.UNLOAD_NOTEBOOK_INTO_FILE_COMMAND, new UnloadNoteBookIntoFile());
 		commands.put(CommandName.FIND_NOTES_BY_DATE, new FindNotesByDate());
 		commands.put(CommandName.FIND_NOTES_BY_CONTENT, new FindNotesByContent());
+		commands.put(CommandName.CREATE_NOTE_COMMAND, new CreateNote());
 	}
 	
 	public Command getCommand(String commandName){

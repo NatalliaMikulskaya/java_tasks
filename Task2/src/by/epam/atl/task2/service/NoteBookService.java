@@ -14,5 +14,6 @@ public interface NoteBookService {
 	void unloadBookIntoFile(String file_name); //load notebook into file
 	List<Note> findNotesByDate(Date dt);
 	List<Note> findNotesByContent(String str);
+	Note createNote(Date dt, String str);    //create new note
 	void addNoteToNoteBook(Note nt);
 }
