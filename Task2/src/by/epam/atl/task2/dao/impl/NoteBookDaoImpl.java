@@ -1,6 +1,7 @@
 package by.epam.atl.task2.dao.impl;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,10 +37,9 @@ public class NoteBookDaoImpl implements NoteBookDao {
 			
 			//try to open file
 			if (fl.exists() && fl.isFile() && fl.canRead()){
-				System.out.println("-----");
+				
 				try{				
-					System.out.println("OK");
-					
+										
 					DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 					DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 					Document doc = dBuilder.parse(fl);
@@ -48,27 +48,32 @@ public class NoteBookDaoImpl implements NoteBookDao {
 					doc.getDocumentElement().normalize();
 					
 					//get all nodes with tag <note>. It is notes in notebook
-					NodeList nList = doc.getElementsByTagName("node");
+					NodeList nList = doc.getElementsByTagName("note");
 					
 					for (int i =0; i<nList.getLength(); i++ ){
+						
 						Node node = nList.item(i);
-						Element eElement = (Element) node;
 						
-						//get date
-						String dt = eElement.getElementsByTagName("date").item(0).getTextContent();
-						Date date = new Date(dt);
+						if (node.getNodeType() == Node.ELEMENT_NODE) {
+							Element eElement = (Element) node;
+							
+							//get date
+							String dt = eElement.getElementsByTagName("date").item(0).getTextContent();
+														
+							SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+							Date date = formatter.parse(dt);
 						
-						//get content
-						String note = eElement.getElementsByTagName("content").item(0).getTextContent();
+							//get content
+							String note = eElement.getElementsByTagName("content").item(0).getTextContent();
 						
-						//create note
-						Note nt = new Note();
-						nt.setDate(date);
-						nt.setNote(note);
+							//create note
+							Note nt = new Note();
+							nt.setDate(date);
+							nt.setNote(note);
 						
-						//add note to list
-						notes.add(nt);
-						
+							//add note to list
+							notes.add(nt);
+						}
 					}
 					
 					//write notes into notebook
@@ -96,14 +101,12 @@ public class NoteBookDaoImpl implements NoteBookDao {
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
 			Document doc = docBuilder.newDocument();
-			//Element rootElement = doc.createElement("body");
-			//doc.appendChild(rootElement);
+
 			Element rootElement = doc.createElement("body");
 			doc.appendChild(rootElement);
 			
 			// root elements
-			
-		
+
 			for (Note nt : ntb.getNoteBook()){
 				Element noteElement = doc.createElement("note");
 				doc.appendChild(noteElement);

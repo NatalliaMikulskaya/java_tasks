@@ -11,7 +11,7 @@ public class MainApp {
 
 	public static void main(String[] args) {
 		
-		String fname = "/data/notebook.xml";
+		String fname = "c:/data/notebook.xml";
 		
 		Controller controller = new Controller();
 		
