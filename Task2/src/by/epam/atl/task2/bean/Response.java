@@ -1,11 +1,11 @@
-package by.epam.atl.task2.bin;
+package by.epam.atl.task2.bean;
 
 import java.util.List;
 
 public class Response {
 	private NoteBook noteBook;
 	private Note note;
-	private List<Note> notes;
+	private List<Note> listNotes;
 	private String errorMessage;
 	private String message;
 	
@@ -14,23 +14,23 @@ public class Response {
 	}
 	
 	public String getMessage(){
-		return message;
+		return this.message;
 	} 
 	
 	public String gerErrorMessage(){
-		return errorMessage;
+		return this.errorMessage;
 	}
 	
-	public void setMessage(String msg){
-		this.message = msg;
+	public void setMessage(String inMessage){
+		this.message = inMessage;
 	}
 	
-	public void setErrorMessage(String err_msg){
-		this.errorMessage = err_msg;
+	public void setErrorMessage(String inErrorMessage){
+		this.errorMessage = inErrorMessage;
 	}
 	
 	public Note getNote(){
-		return note;
+		return this.note;
 	}
 	
 	public void setNote(Note nt){
@@ -38,19 +38,19 @@ public class Response {
 	}
 	
 	public NoteBook getNoteBook(){
-		return noteBook;
+		return this.noteBook;
 	}
 	
 	public void setNoteBook(NoteBook ntb){
 		this.noteBook = ntb;
 	}
 	
-	public void setNotes(List<Note> nts){
-		this.notes = nts;
+	public void setNotes(List<Note> notes){
+		this.listNotes = notes;
 	}
 	
 	public List<Note> getNotes(){
-		return this.notes;
+		return this.listNotes;
 	}
 	
 }

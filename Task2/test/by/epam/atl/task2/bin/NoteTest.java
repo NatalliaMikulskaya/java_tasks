@@ -3,6 +3,9 @@ package by.epam.atl.task2.bin;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
+
+import by.epam.atl.task2.bean.Note;
+
 import org.testng.annotations.BeforeClass;
 
 import java.util.Date;

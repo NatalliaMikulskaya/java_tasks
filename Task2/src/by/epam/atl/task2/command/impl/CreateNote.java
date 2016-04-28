@@ -2,10 +2,9 @@ package by.epam.atl.task2.command.impl;
 
 import java.util.Date;
 
-import by.epam.atl.task2.bin.Note;
-import by.epam.atl.task2.bin.NoteBook;
-import by.epam.atl.task2.bin.Request;
-import by.epam.atl.task2.bin.Response;
+import by.epam.atl.task2.bean.Note;
+import by.epam.atl.task2.bean.Request;
+import by.epam.atl.task2.bean.Response;
 import by.epam.atl.task2.command.Command;
 import by.epam.atl.task2.service.NoteBookService;
 import by.epam.atl.task2.service.ServiceFactory;
@@ -18,14 +17,20 @@ public class CreateNote implements Command {
 		ServiceFactory factory = ServiceFactory.getInstance();
 		NoteBookService noteBookService = factory.getNoteBookService();
 		
-		Date dt = request.getDate();
-		String str = request.getContent();
+		Date date = request.getDate();
+		String content = request.getContent();
 		
-		Note nt = noteBookService.createNote(dt, str);
+		Note nt = noteBookService.createNote(date, content);
 				
 		Response rsp = new Response();
-		rsp.setErrorMessage(null);
-		rsp.setMessage("Note was created.");
+		
+		if (nt != null ){
+			rsp.setErrorMessage(null);
+			rsp.setMessage("Note was created.");
+		} else{
+			rsp.setErrorMessage("Error occured while note was created.");
+			rsp.setMessage(null);
+		}
 		rsp.setNote(nt);
 		
 		return rsp;

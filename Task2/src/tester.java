@@ -1,7 +1,7 @@
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import by.epam.atl.task2.bin.Note;
+import by.epam.atl.task2.bean.Note;
 
 public class tester {
 

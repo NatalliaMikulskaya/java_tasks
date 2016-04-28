@@ -1,8 +1,8 @@
 package by.epam.atl.task2.command.impl;
 
-import by.epam.atl.task2.bin.NoteBook;
-import by.epam.atl.task2.bin.Request;
-import by.epam.atl.task2.bin.Response;
+import by.epam.atl.task2.bean.NoteBook;
+import by.epam.atl.task2.bean.Request;
+import by.epam.atl.task2.bean.Response;
 import by.epam.atl.task2.command.Command;
 import by.epam.atl.task2.service.NoteBookService;
 import by.epam.atl.task2.service.ServiceFactory;
@@ -19,8 +19,13 @@ public class CreateNoteBook implements Command
 		NoteBook ntb = noteBookService.createNoteBook();
 		
 		Response rsp = new Response();
-		rsp.setErrorMessage(null);
-		rsp.setMessage("Notebook was created.");
+		if (ntb != null) {
+			rsp.setErrorMessage(null);
+			rsp.setMessage("Notebook was created.");
+		} else {
+			rsp.setErrorMessage("Error occured while notebook was created");
+			rsp.setMessage(null);
+		}
 		rsp.setNoteBook(ntb);
 		
 		return rsp;

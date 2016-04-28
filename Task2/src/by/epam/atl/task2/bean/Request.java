@@ -1,4 +1,4 @@
-package by.epam.atl.task2.bin;
+package by.epam.atl.task2.bean;
 
 import java.util.Date;
 
@@ -9,23 +9,25 @@ public class Request {
 	private NoteBook notebook;
 	private Note note;
 	private String fileName;
+	private int sizeNoteBook;
 	
 	public Request(){
 		date = new Date();
 	}
 	
-	public Request(Date dt, String str, NoteBook ntb){
-		date = dt;
-		content = str;
+	public Request(Date dateNote, String stringNote, NoteBook ntb){
+		this.date = dateNote;
+		this.content = stringNote;
 		this.notebook = ntb;
+		this.sizeNoteBook = ntb.getSizeNoteBook();
 	}
 	
-	public void setDate(Date dt){
-		this.date = dt;
+	public void setDate(Date dateNote){
+		this.date = dateNote;
 	}
 	
-	public void setContent(String str){
-		this.content = str;
+	public void setContent(String stringNote){
+		this.content = stringNote;
 	}
 	
 	public Date getDate(){
@@ -38,6 +40,7 @@ public class Request {
 	
 	public void setNoteBook(NoteBook ntb){
 		this.notebook = ntb;
+		this.sizeNoteBook = ntb.getSizeNoteBook();
 	}
 	
 	public NoteBook getNoteBook(){
@@ -52,6 +55,10 @@ public class Request {
 		return this.note;
 	}
 	
+	public int getSizeNoteBook(){
+		return this.sizeNoteBook;
+	}
+	
 	public String getCommandName() {
 		return this.commandName;
 	}
@@ -60,8 +67,8 @@ public class Request {
 		this.commandName = commandName;
 	}
 	
-	public void setFileName(String fname){
-		this.fileName = fname;
+	public void setFileName(String fName){
+		this.fileName = fName;
 	}
 	
 	public String getFileName(){

@@ -4,107 +4,103 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import by.epam.atl.task2.bin.Note;
-import by.epam.atl.task2.bin.NoteBook;
+import by.epam.atl.task2.bean.Note;
+import by.epam.atl.task2.bean.NoteBook;
 import by.epam.atl.task2.dao.DAOFactory;
-import by.epam.atl.task2.dao.impl.NoteBookDaoImpl;
+import by.epam.atl.task2.dao.NoteBookDao;
 import by.epam.atl.task2.service.NoteBookService;
 
 public class NoteBookServiceImpl implements NoteBookService {
 
 	@Override
-	public List<Note> getNoteBook() {
-		return NoteBookProvider.getInstance().getNoteBook();
+	public List<Note> getListNotes() {
+		return NoteBookProvider.getInstance().getListNotes();
 	}
 
 	@Override
 	public NoteBook createNoteBook() {
 		
 		//create empty list iof notes
-		List<Note> new_notebook = new ArrayList<Note>();
+		List<Note> newNoteList = new ArrayList<Note>();
 		
 		//set list of notes into notebook
-		NoteBookProvider.getInstance().setNoteBook(new_notebook);
+		NoteBookProvider.getInstance().setNoteBook(newNoteList);
 		
 		return NoteBookProvider.getInstance();
 		
 	}
 
 	@Override
-	public List<Note> findNotesByDate(Date dt) {
-		List<Note> result_notes = new ArrayList<Note>();
+	public List<Note> findNotesByDate(Date data) {
+		List<Note> resultNotes = new ArrayList<Note>();
 		
 		//get notes from notebook
-		List<Note> notebook = getNoteBook();
+		List<Note> notebook = getListNotes();
 		
 		//iterate notes
 		for(Note note: notebook){
-			if (note.getDate().equals(dt)){
-				result_notes.add(note);
+			if (note.getDate().equals(data)){
+				resultNotes.add(note);
 				
 			}
 		}
 		
-		return result_notes;
+		return resultNotes;
 	}
 
 	@Override
-	public List<Note> findNotesByContent(String str) {
-		List<Note> result_notes = new ArrayList<Note>();
+	public List<Note> findNotesByContent(String searchString) {
+		List<Note> resultNotes = new ArrayList<Note>();
 		
 		//get notes from notebook
-		List<Note> notebook = getNoteBook();
+		List<Note> notebook = getListNotes();
 		
 		//iterate notes
 		for(Note note: notebook){
-			if (note.getNote().contains(str)){
-				result_notes.add(note);
+			if (note.getNote().contains(searchString)){
+				resultNotes.add(note);
 				
 			}
 		}
 		
-		return result_notes;
+		return resultNotes;
 	}
 
 	@Override
 	public void addNoteToNoteBook(Note nt) {
 		
-		//get list of notes from notebook
-		List<Note> notebook = getNoteBook();
-		
-		//add new note
-		notebook.add(nt);
-		
 		//set list of notes into notebook
-		NoteBookProvider.getInstance().setNoteBook(notebook);
+		NoteBookProvider.getInstance().addNote(nt); 
 				
 	}
 
 	@Override
-	public NoteBook loadNoteBookFromFile(String file_name) {
+	public NoteBook loadNoteBookFromFile(String fileName) {
 		
-		NoteBookDaoImpl ntb_dao = new NoteBookDaoImpl();
-		
-		NoteBook ntb = ntb_dao.loadNoteBookFromFile(file_name);
+		NoteBookDao ntbDao = DAOFactory.getInstance().getNoteBookDao();
+
+		NoteBook ntb = ntbDao.loadNoteBookFromFile(fileName);
 		
 		return ntb;
 	}
 
 	@Override
-	public void unloadBookIntoFile(String file_name) {
-		NoteBookDaoImpl ntb_dao = new NoteBookDaoImpl();
+	public void unloadBookIntoFile(String fileName) {
+		
+		NoteBookDao ntbDao = DAOFactory.getInstance().getNoteBookDao();
+		
 		NoteBook ntb = NoteBookProvider.getInstance();
 		
-		ntb_dao.saveNoteBookIntoFile(ntb, file_name);
+		ntbDao.saveNoteBookIntoFile(ntb, fileName);
 		
 	}
 
 	@Override
-	public Note createNote(Date dt, String str) {
+	public Note createNote(Date date, String noteContent) {
 		//create empty note
-		Note new_note = new Note(dt, str);
+		Note newNote = new Note(date, noteContent);
 				
-		return new_note;
+		return newNote;
 	}
 	
 	

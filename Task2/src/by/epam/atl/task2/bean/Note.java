@@ -1,4 +1,4 @@
-package by.epam.atl.task2.bin;
+package by.epam.atl.task2.bean;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,32 +8,32 @@ public class Note {
 	private String note;
 	
 	public Note(){
-		date = new Date(); //by default set current date
-		note = "";
+		this.date = new Date(); //by default set current date
+		this.note = "";
 	}
 	
-	public Note(Date dt, String str){
-		date = dt;
-		note = str.trim();
+	public Note(Date dateNote, String content){
+		this.date = dateNote;
+		this.note = content.trim();
 	}
 	
-	public void setDate (Date dt){
-		
-		date = dt;
-		
+	public void setDate (Date dateNote){
+		this.date = dateNote;
 	}
 	
-	public void setNote(String nt){
-		note = nt;
+	public void setNote(String content){
+		this.note = content.trim();
 	}
 	
 	public Date getDate(){
-		if (date != null) return date;
+		if (this.date != null) {
+			return this.date;
+		}
 		return null;
 	}
 	
 	public String getNote(){
-		return note;
+		return this.note;
 	}
 
 	@Override
@@ -47,33 +47,39 @@ public class Note {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj){
 			return true;
-		if (obj == null)
+		}
+		if (obj == null){
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()){
 			return false;
+		}
+		
 		Note other = (Note) obj;
+		
 		if (date == null) {
-			if (other.date != null)
+			if (other.date != null){
 				return false;
-		} else if (!date.equals(other.date))
+			}
+		} else if (!date.equals(other.date)){
 			return false;
+		}
 		if (note == null) {
-			if (other.note != null)
+			if (other.note != null){
 				return false;
-		} else if (!note.equals(other.note))
+			}
+		} else if (!note.equals(other.note)){
 			return false;
+			}
 		return true;
 	}
 	
 	@Override
 	public String toString(){
-		String ret_str = "";
-		
-		 SimpleDateFormat date_format = new SimpleDateFormat("dd.MM.yyyy hh:mm");
-		
-		ret_str += "date: "+date_format.format(date.getTime())+ "\n note: "+note;
+				
+		String ret_str = "date: "+date.toString()+ "\n note: "+note;
 		
 		return ret_str;
 	}

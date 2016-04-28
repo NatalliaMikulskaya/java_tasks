@@ -2,15 +2,15 @@ package by.epam.atl.task2.view;
 
 import java.util.List;
 
-import by.epam.atl.task2.bin.Note;
-import by.epam.atl.task2.bin.NoteBook;
+import by.epam.atl.task2.bean.Note;
+import by.epam.atl.task2.bean.NoteBook;
 
 public class NoteBookConsoleView {
 	
 	//print whole notebook
 	public void print(NoteBook ntb){
 		
-		List<Note> notes = ntb.getNoteBook();
+		List<Note> notes = ntb.getListNotes();
 		
 		for (Note note: notes){
 			System.out.println(note.toString());

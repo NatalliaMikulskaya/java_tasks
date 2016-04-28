@@ -1,6 +1,6 @@
 package by.epam.atl.task2.service.impl;
 
-import by.epam.atl.task2.bin.NoteBook;
+import by.epam.atl.task2.bean.NoteBook;
 
 public class NoteBookProvider {
 	private static NoteBook instance;

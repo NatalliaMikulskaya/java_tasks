@@ -4,10 +4,10 @@ import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.Date;
 
-import by.epam.atl.task2.bin.Note;
-import by.epam.atl.task2.bin.NoteBook;
-import by.epam.atl.task2.bin.Request;
-import by.epam.atl.task2.bin.Response;
+import by.epam.atl.task2.bean.Note;
+import by.epam.atl.task2.bean.NoteBook;
+import by.epam.atl.task2.bean.Request;
+import by.epam.atl.task2.bean.Response;
 import by.epam.atl.task2.controller.Controller;
 import by.epam.atl.task2.view.NoteBookConsoleView;
 
@@ -77,6 +77,7 @@ public class MainApp {
 		}
 		
 		System.out.println(response.getMessage());
+		//get result note
 		Note nt = response.getNote();
 				
 		
@@ -95,6 +96,7 @@ public class MainApp {
 		
 		System.out.println(response.getMessage());
 		
+		//print result note
 		ntb_console.print(ntb);
 		
 	}
