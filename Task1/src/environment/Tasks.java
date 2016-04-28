@@ -1,16 +1,11 @@
 package environment;
 
 public class Tasks {
-	private final static String TYPE_NUMBER = "number"; 
-	private String message;
 
 	public Tasks(){
-		message = "";
 	}
 	
-	public String getMessage(){
-		return message;
-	}
+	
 	
 	/*
 	 * Create a linear program, the print is true, if the above statement is true and false - otherwise:
@@ -18,40 +13,37 @@ public class Tasks {
 	 * is the sum of his last two digits.
 	 * Method operates with 1 number
 	 */
-	public void doTask1(String[] param){
+	public String doTask1(String number){
+		String result = "";
 		
-		//checking parameters before processing them
-		if (ifValidParameters(1,TYPE_NUMBER, param)) {
-		
-			//task condition - number length have to be bigger than 3
-			//before checking number length split it by "" and "."
-			String newString = param[1].replaceAll("[^0-9]", ""); //replace all non_digit symbol from string
-			String[] str_array = newString.split(""); //split string to array - every digit will be as array elements
+		//task condition - number length have to be bigger than 3
+		//before checking number length split it by "" and "."
+		String newString = number.replaceAll("[^0-9]", ""); //replace all non_digit symbol from string
+		String[] tempArray = newString.split(""); //split string to array - every digit will be as array elements
 			
-			if (str_array.length < 4) {
-				message = "Number of digits in the second parameter has to be equal or bigger than 4!";
-				return;
-			}
-			
-			//calculate sum
-			try {
-				//convert to integer the two first digits and sum them
-				int sum1 = Integer.parseInt(str_array[0]) + Integer.parseInt(str_array[1]);
-				//convert to integer the two last digits and sum them
-				int sum2 = Integer.parseInt(str_array[str_array.length-2]) + Integer.parseInt(str_array[str_array.length-1]);
-				
-				if ( sum1 == sum2 ){
-					message = "true";
-				}
-				else {
-					message = "false";
-				}
-			}
-			catch (NumberFormatException e) {
-				message = "Invalid the second argument!";
-			}
-			
+		if (tempArray.length < 4) {
+			return "Number of digits in the second parameter has to be equal or bigger than 4!";
 		}
+			
+		//calculate sum
+		try {
+			//convert to integer the two first digits and sum them
+			int sum1 = Integer.parseInt(tempArray[0]) + Integer.parseInt(tempArray[1]);
+			//convert to integer the two last digits and sum them
+			int sum2 = Integer.parseInt(tempArray[tempArray.length-2]) + Integer.parseInt(tempArray[tempArray.length-1]);
+			
+			if ( sum1 == sum2 ){
+				result = "true";
+			}
+			else {
+				result = "false";
+			}
+		}
+		catch (NumberFormatException e) {
+			result = "Invalid the second argument!";
+		}
+			
+		return result;
 	}
 	
 	/*
@@ -60,93 +52,91 @@ public class Tasks {
 	 * Method operates with 3 numbers
 	 * 
 	 */
-	public void doTask2(String[] param){
+	public String doTask2(String number1, String number2, String number3){
+		String resultString = "";
 		
-		//checking parameters before processing them
-		if (ifValidParameters(3,TYPE_NUMBER, param)) {
-			
-			try {
+		try {
 				
-				//parse parameters into number
-				double a = Double.parseDouble(param[1]);
+			//parse parameters into number
+			double a = Double.parseDouble(number1);
 				
-				//check the first number. It can't be equal zero
-				if (a == 0.0) {
-					message = "The first number can't be equal 0!";
-					return;
-				}
-				
-				double b = Double.parseDouble(param[2]);
-				//check the second number. It can't be less than 0
-				if ( b < 0 ){
-					message = "The second number can't be less than 0!";					
-					return;
-				}
-				
-				double c = Double.parseDouble(param[3]);
-				
-				//calculate sqrt(b*b+4ac)
-				double number1 = Math.pow(b, 2) + 4*a*c;
-				if ( number1 < 0){
-					message = "Result of calculating (b*b+4ac) is less than 0. Program can't operate with complex numbers!";
-					return;
-				}
-				
-				double sqrt1 = Math.sqrt(number1);
-				
-				//calculate b+sqrt(b*b+4ac)
-				double dividend = b + sqrt1;
-				
-				//calculate the first summand
-				double summand1 = dividend / (2*a);
-				
-				//calculate the third summand
-				double summand3 = Math.sqrt(b);
-				
-				double result = summand1 - Math.pow(a, 3)*c + summand3;
-				message = String.valueOf(result);
-				
+			//check the first number. It can't be equal zero
+			if (a == 0.0) {
+				return "The first number can't be equal 0!";
 			}
-			catch (NumberFormatException e) {
-				message = "Invalid arguments!";
+				
+			double b = Double.parseDouble(number2);
+			//check the second number. It can't be less than 0
+			if ( b < 0 ){
+
+				return "The second number can't be less than 0!";					
+					
 			}
+				
+			double c = Double.parseDouble(number3);
+				
+			//calculate sqrt(b*b+4ac)
+			double tempNumber = Math.pow(b, 2) + 4*a*c;
+			if ( tempNumber < 0){
+
+				return "Result of calculating (b*b+4ac) is less than 0. Program can't operate with complex numbers!";
+
+			}
+				
+			double sqrt1 = Math.sqrt(tempNumber);
+				
+			//calculate b+sqrt(b*b+4ac)
+			double dividend = b + sqrt1;
+				
+			//calculate the first summand
+			double summand1 = dividend / (2*a);
+				
+			//calculate the third summand
+			double summand3 = Math.sqrt(b);
+				
+			double result = summand1 - Math.pow(a, 3)*c + summand3;
+			resultString = String.valueOf(result);
+				
 		}
+		catch (NumberFormatException e) {
+			return "Invalid arguments!";
+		}
+		
+		return resultString;
 	}
 	
 	/*
 	 * Calculate the P and area of a right triangle of two of the legs (a and b).
 	 * Method operates with 2 numbers - triangle legs
 	 */
-	public void doTask3(String[] param){
+	public String doTask3(String number1, String number2){
+		String resultString = "";
 		
-		//checking parameters before processing them
-		if (ifValidParameters(2,TYPE_NUMBER, param)) {
-			//parse parameters into number
-			double a = Double.parseDouble(param[1]);
+		//parse parameters into number
+		double a = Double.parseDouble(number1);
 			
-			//check the first number. It can't be equal or less than zero
-			if (a <= 0.0) {
-				message = "The first number can't be equal or less than 0!";
-				return;
-			}
-			
-			double b = Double.parseDouble(param[2]);
-			if (b <= 0.0) {
-				message = "The second number can't be equal or less than 0!";
-				return;
-			}
-			
-			//calculate	hypotenuse
-			double hyp = Math.sqrt(a*a + b*b);
-			
-			//calculate perimeter
-			double perimeter = a + b + hyp;
-			
-			//calculate area
-			double area = a*b/2;
-			
-			message = "Perimeter = "+perimeter+"  ;  Area = " + area;
+		//check the first number. It can't be equal or less than zero
+		if (a <= 0.0) {
+			return "The first number can't be equal or less than 0!";
 		}
+			
+		double b = Double.parseDouble(number2);
+		if (b <= 0.0) {
+			return "The second number can't be equal or less than 0!";
+		}
+			
+		//calculate	hypotenuse
+		double hyp = Math.sqrt(a*a + b*b);
+			
+		//calculate perimeter
+		double perimeter = a + b + hyp;
+			
+		//calculate area
+		double area = a*b/2;
+			
+		resultString = "Perimeter = "+perimeter+"  ;  Area = " + area;
+
+		return resultString;
 	}
 	
 	/*
@@ -154,121 +144,114 @@ public class Tasks {
 	 * belongs to the shaded area, and false - otherwise
 	 * Method operates with 2 parameters - point co-ordinates
 	 */
-	public void doTask4(String[] param){
+	public String doTask4(String number1, String number2){
+		String resultString = "";
 		//border upper rectangle (set upper right co-ordinate). Other will be pertaining to mirror by real axis y
-		int x_upper = 2;
-		int y_upper = 4;
+		int xUpper = 2;
+		int yUpper = 4;
 		
 		//border lower rectangle (set lower right co-ordinate). Other will be pertaining to mirror by real axis y
-		int x_lower = 4;
-		int y_lower = -3;
+		int xLower = 4;
+		int yLower = -3;
 		
 		double x;
 		double y;
 		
-		//checking parameters before processing them
-		if (ifValidParameters(2,TYPE_NUMBER, param)) {
-		
-			try{
-				x = Double.parseDouble(param[1]);
-				y = Double.parseDouble(param[2]);
-			}
-			catch (NumberFormatException e){
-				message = "Invalid parameters! Can't convert them into numbers!";
-				return;
-			}
-			
-			//if co-ordinate y bigger than 0, work with upper rectangle
-			if ( y > 0.0 ) {
-				
-				if ( (x <= x_upper) && ( x >= -x_upper )&& 
-					( y <= y_upper)	){
-					message = "true";
-					return;
-				}
-			}else{
-			
-				//if co-ordinate y equal or less than 0, work with lower rectangle
-				if ( (x <= x_lower) && ( x >= -x_lower )&& 
-					( y >= y_lower)	){
-					message = "true";
-					return;
-				}
-			}
-			
-			message = "false";
-		
+		try{
+			x = Double.parseDouble(number1);
+			y = Double.parseDouble(number2);
 		}
+		catch (NumberFormatException e){
+			return "Invalid parameters! Can't convert them into numbers!";
+		}
+			
+		//if co-ordinate y bigger than 0, work with upper rectangle
+		if ( y > 0.0 ) {
+				
+			if ( (x <= xUpper) && ( x >= -xUpper )&& 
+				( y <= yUpper)	){
+				return "true";
+			}
+		}else{
+		
+			//if co-ordinate y equal or less than 0, work with lower rectangle
+			if ( (x <= xLower) && ( x >= -xLower )&& 
+				( y >= yLower)	){
+				return "true";
+			}
+		}
+			
+		resultString = "false";
+	
+		return resultString;
+		
 	}
 	
 	/*
 	 * Given three real numbers. To square those whose values are non-negative, and in the fourth degree - negative.
 	 * Method operates with 3 numbers
 	 */
-	public void doTask5(String[] param){
-		double degree_non_negative = 2;
-		double degree_negative = 4;
+	public String doTask5(String[] numbers){
+		double degreeNonNegative = 2;
+		double degreeNegative = 4;
 		String result = "";
 		
-		//checking parameters before processing them
-		if (ifValidParameters(3,TYPE_NUMBER, param)) {
-			
-			for (int i = 1; i<param.length; i++){
-				try {
+		for (int i = 1; i<numbers.length; i++){
+			try {
 					
-					double number = Double.parseDouble(param[i]);
+				double number = Double.parseDouble(numbers[i]);
 					 
-					//non-negative number square
-					if (number >=0) {
-						result += String.valueOf(Math.pow(number,degree_non_negative))+"   ";
-					}
-					else {
-						result += String.valueOf(Math.pow(number,degree_negative))+"   ";
-					}
+				//non-negative number square
+				if (number >=0) {
+					result += String.valueOf(Math.pow(number,degreeNonNegative))+"   ";
+				}
+				else {
+					result += String.valueOf(Math.pow(number,degreeNegative))+"   ";
+				}
 					
-					message = result;
-				}
-				catch(NumberFormatException e){
-					message = "Parameter "+ i +" can't be converted into double! ";
-					return;
-				}
+			}
+			catch(NumberFormatException e){
+				return "Parameter "+ i +" can't be converted into double! ";
 			}
 		}
+	
+		return result;
 	}
 	
 	/*
 	 * Write a program to find the sum of the larger and smaller of the three numbers.
 	 * Method operates with 3 numbers
 	 */
-	public void doTask6(String[] param){
+	public String doTask6(String[] param){
 		double min;
 		double max;
 		
-		//checking parameters before processing them
-		if (ifValidParameters(3,TYPE_NUMBER, param)) {
-			try{
-				//setup min and max value
-				double number = Double.parseDouble(param[1]);
-				max = number;
-				min = number;
+		try{
+			//setup min and max value
+			double number = Double.parseDouble(param[1]);
+			max = number;
+			min = number;
 				
-				for (int i = 2; i< param.length; i++){
-					number = Double.parseDouble(param[i]);
-					if (number > max){
-						max = number;
-					}
-					if (number < min) {
-						min = number;
-					} 
+			for (int i = 2; i< param.length; i++){
+				number = Double.parseDouble(param[i]);
+				
+				if (number > max){
+					max = number;
 				}
 				
-				message = max+" + "+min+" = "+String.valueOf(max+min);
+				if (number < min) {
+					min = number;
+				} 
 			}
-			catch(NumberFormatException e){
-				message = "One or more parameters can't be converted into double!";
-				return;
-			}
+				
+			return max+" + "+min+" = "+String.valueOf(max+min);
 		}
+		catch(NumberFormatException e){
+			
+			return "One or more parameters can't be converted into double!";
+		
+		}
+		
 	}
 	
 	/*
@@ -278,37 +261,36 @@ public class Tasks {
 	 * F(x) = sin(x)*sin(x) - cos(2x)
 	 * Method operates with 3 numbers: start position, end position and step
 	 */
-	public void doTask7(String[] param){
+	public String doTask7(String param1, String param2, String param3){
+		String resultString = "";
 		
-		//checking parameters before processing them
-		if (ifValidParameters(3,TYPE_NUMBER, param)) {
-			try{
-				double start_pos = Double.parseDouble(param[1]);
-				double end_pos = Double.parseDouble(param[2]);
-				double step = Double.parseDouble(param[3]);
+		try{
+			double startPosition = Double.parseDouble(param1);
+			double endPosition = Double.parseDouble(param2);
+			double step = Double.parseDouble(param3);
 				
-				//start of interval can't be less than end
-				if (start_pos > end_pos){
-					message = "End of interval less than beginning. It is incorrect!";
-					return;
-				}
-				
-				//step can't be negative or equal zero
-				if ( step <= 0){
-					message = "Step has to be bigger than zero!";
-					return;
-				}
-				
-				for (double i = start_pos; i <= end_pos; i+=step){
-					double result = Math.pow(Math.sin(i),2) - Math.cos(2*i);
-					message += i+"		"+result+"\n";
-				}
+			//start of interval can't be less than end
+			if (startPosition > endPosition){
+				return "End of interval less than beginning. It is incorrect!";
 			}
-			catch(NumberFormatException e){
-				message = "One or more parameters can't be converted into double! ";
-				return;
+				
+			//step can't be negative or equal zero
+			if ( step <= 0){
+				return "Step has to be bigger than zero!";
+			}
+				
+			for (double i = startPosition; i <= endPosition; i+=step){
+				double result = Math.pow(Math.sin(i),2) - Math.cos(2*i);
+				resultString += i+"		"+result+"\n";
 			}
 		}
+		catch(NumberFormatException e){
+
+			return "One or more parameters can't be converted into double! ";
+		
+		}
+	
+		return resultString;
 	}
 	
 	/*
@@ -318,33 +300,32 @@ public class Tasks {
 	 * param 2 = divider
 	 * param 3...n = elements of array
 	 */
-	public void doTask8(String[] param){
+	public String doTask8(String param1, String[] array){
 		long sum=0;
 		
-		if (param.length < 3){
-			message = "Task 8 has to have at least 3 arguments: task number, divider and array with at least one element.";
-			return;
-		}
-		
 		try {
-			long divider = Long.parseLong(param[1]);
+			long divider = Long.parseLong(param1);
 			if ( divider == 0L) {
-				message = "Divider can't be equal zero!";
-				return;
+				return "Divider can't be equal zero!";
 			}
 			
-			for (int i = 2; i < param.length; i++) {
-				long array_el =  Long.parseLong(param[i]);
+			for (int i = 0; i < array.length; i++) {
+				long array_el =  Long.parseLong(array[i]);
+				
 				//array element is divided by divider without excess?
 				if (array_el % divider == 0){
+					
 					sum += array_el;
+					
 				}
+				
 			}
-			message = String.valueOf(sum);
+			return String.valueOf(sum);
 		}
 		catch(NumberFormatException e){
-			message = "One or more parameters can't be converted into long! ";
-			return;
+
+			return "One or more parameters can't be converted into long! ";
+			
 		}
 	}
 	
@@ -354,121 +335,143 @@ public class Tasks {
 	 *  of the first array.
 	 *  Method operates with 1 parameter - number of position
 	 */
-	public void doTask9(String[] param){
+	public String doTask9(String param){
 		int[] array1 = {1, 2, 3, 4, 5, 6};
 		int[] array2 = {11,12,13};
+		String resultString = "";
 		
-		if (ifValidParameters(1,TYPE_NUMBER, param)){
-			try {
-				int position = Integer.parseInt(param[1]);
+		try {
+			int position = Integer.parseInt(param);
 				
-				if (position < 0) {
-					message = "Number of position can't be less than 0!";
-					return;
-				}
+			if (position < 0) {
+					
+				return "Number of position can't be less than 0!";
+			}
 				
-				if (array1.length <= position ){
-					message = "Size of array1 is "+array1.length+". It is impossible insert the second array in position "+position;
-					return;
-				}
+			if (array1.length <= position ){
+					
+				return "Size of array1 is "+array1.length+". It is impossible insert the second array in position "+position;
+			}
 				
-				int size_new_array = array1.length + array2.length;
-				int[] array3 = new int[size_new_array];
+			int sizeNewArray = array1.length + array2.length;
+			int[] array3 = new int[sizeNewArray];
 				
-				//put first part of array1 into array3
-				System.arraycopy(array1, 0, array3, 0, position);
-				//put array2 into array2 from {position}
-				System.arraycopy(array2, 0, array3, position, array2.length);
-				//put the rest of array1 into array3
-				System.arraycopy(array1, position, array3, position+array2.length, array1.length-position);
-				//print out result array
-				for (int i=0; i < size_new_array; i++){
-					message +=array3[i]+" ";
-				}
+			//put first part of array1 into array3
+			System.arraycopy(array1, 0, array3, 0, position);
+			//put array2 into array2 from {position}
+			System.arraycopy(array2, 0, array3, position, array2.length);
+			//put the rest of array1 into array3
+			System.arraycopy(array1, position, array3, position + array2.length, array1.length - position);
+			//print out result array
+			for (int i=0; i < sizeNewArray; i++){
+				resultString +=array3[i]+" ";
+			}
 								
-			}
-			catch(NumberFormatException e){
-				message = "The second parameter can't be converted into integer! ";
-				return;
-			}
 		}
+		catch(NumberFormatException e){
+			return "The second parameter can't be converted into integer! ";
+		}
+	
+		return resultString;
 	}
 	
 	/*
 	 * Form a square matrix of order n for a given sample (n - even)
 	 * Method operates with 1 number - n
 	 */
-	public void doTask10(String[] param){
+	public String doTask10(String param){
+		String result = "";
 		
-		if (ifValidParameters(1,TYPE_NUMBER, param)){
-			try{
-				int order = Integer.parseInt(param[1]);
+		try{
+			int order = Integer.parseInt(param);
 				
-				//checking if order is even
-				if (order % 2 != 0) {
-					message = "Matrix order has to be even!";
-					return;
-				}
-				
-				int[][] matrix = new int[order][order];
-				for (int i = 0; i < order; i++) {
-					for (int j = 0; j < order; j++){
-						if ( i % 2 == 0){
-							matrix[i][j] = j +1;
-						} else {
-							matrix[i][j] = order - j;
-						}
-						message += matrix[i][j]+" ";
-					}
-					message +="\n";
-				}
-
+			//checking if order is even
+			if (order % 2 != 0) {
+				return "Matrix order has to be even!";
 			}
-			catch(NumberFormatException e){
-				message = "The second parameter can't be converted into integer! ";
-				return;
-			}
+			
+			//make matrix with order {order}
+			result = makeMatrix(order);
+			
 		}
+		catch(NumberFormatException e){
+
+			return "The second parameter can't be converted into integer! ";
+
+		}
+		
+		return result;
+	}
+	
+	private String makeMatrix(int order){
+		String result="";
+		
+		int[][] matrix = new int[order][order];
+		
+		for (int i = 0; i < order; i++) {
+			for (int j = 0; j < order; j++){
+				
+				matrix[i][j] = generateMatrixElement(i, j, order);
+				
+				result += matrix[i][j]+" ";
+			}
+			result +="\n";
+		}
+		
+		return result;
+	}
+	
+	private int generateMatrixElement(int number1, int number2, int order){
+		int element=0;
+		
+		if ( number1 % 2 == 0){
+			element = number2 +1;
+		} else {
+			element = order - number2;
+		}
+		
+		return element;
+		
 	}
 	
 	/*---------------------------------------
 	 	
 	/*
-	 * Checking for valid number of parameters in array {param}
-	 * number_param - valid number of parameters in array {param} for checking. When do check
+	 * Checking for valid number of parameters in array {param} and type of parameters
+	 * numberParam - valid number of parameters in array {param} for checking. When do check
 	 * 					it is important to add 1 to length because the first element of {param}
 	 * 					is always contains task number 
-	 * type_param  - type for checking parameter
+	 * typeParam  - type for checking parameter
 	 * param	   - array with parameters for checking
 	 */
-	public boolean ifValidParameters(int number_param, String type_param, String[] param){
+	public String ifValidParameters(int numberParam, String[] param){
 		//checking array length
-		if (param.length != number_param+1){
-			message = "Invalid number of arguments!";
-			return false;
+		if (param.length != numberParam+1){
+
+			return "Invalid number of arguments!";
 		}
 		
 		//checking type of parameters
-		for (int i=1; i<(number_param+1) ; i++){
-			if(type_param.equals(TYPE_NUMBER)){
-				if (! isNumber(param[i])){
-					message = "Argument number "+(i+1)+" has to be numeric!";
-					
-					return false;
-				}
+		for (int i=1; i<(numberParam+1) ; i++){
+			
+			if (! isNumber(param[i])){
+				
+				return "Argument number "+(i+1)+" has to be numeric!";
 			}
+			
 		}
 		
-		return true;
+		return "";
 	}
 	
 	/*
-	 * Do checking if {str_for_check} is a number
+	 * Do checking if {stringForCheck} is a number
 	 */
-	private boolean isNumber(String str_for_check){
+	private boolean isNumber(String stringForCheck){
+		
 		//try to parse string into float. 
 		try {
-			float res_number = Float.parseFloat(str_for_check);
+			float resultNumber = Float.parseFloat(stringForCheck);
 		}
 		catch (NumberFormatException e){
 			//it is not a number
