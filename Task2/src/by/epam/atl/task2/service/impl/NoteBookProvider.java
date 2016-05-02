@@ -16,4 +16,8 @@ public class NoteBookProvider {
 		return instance;
 	}
 	
+	public static void setInstance(NoteBook ntb){
+		instance = ntb;
+	}
+	
 }

@@ -136,7 +136,7 @@ public class NoteBookDaoImpl implements NoteBookDao {
 
 			for (Note nt : ntb.getListNotes()){
 				Element noteElement = doc.createElement("note");
-				doc.appendChild(noteElement);
+				rootElement.appendChild(noteElement);
 				
 				Element date = doc.createElement("date");
 				date.appendChild(doc.createTextNode(nt.getDate().toString()));

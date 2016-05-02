@@ -32,7 +32,7 @@ public class NoteBook {
 	
 	@Override
 	public int hashCode(){
-		final int prime = 47;
+		final int prime = 31;
 		int result = 1;
 		
 		result = prime*result + ((listNotes == null) ? 0 : listNotes.hashCode());
@@ -68,7 +68,7 @@ public class NoteBook {
 	public String toString(){
 		String result = "";
 		
-		result = this.getClass().getName()+" @ noteBook: "+ listNotes.toString();
+		result = getClass().getName()+" @ noteBook: "+ listNotes.toString();
 		
 		return result;
 		

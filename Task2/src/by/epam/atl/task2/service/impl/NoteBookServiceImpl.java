@@ -81,6 +81,8 @@ public class NoteBookServiceImpl implements NoteBookService {
 
 		NoteBook ntb = ntbDao.loadNoteBookFromFile(fileName);
 		
+		NoteBookProvider.setInstance(ntb);
+		
 		return ntb;
 	}
 

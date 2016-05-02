@@ -38,7 +38,7 @@ public class Note {
 
 	@Override
 	public int hashCode() {
-		final int prime = 47;
+		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		result = prime * result + ((note == null) ? 0 : note.hashCode());
@@ -79,7 +79,7 @@ public class Note {
 	@Override
 	public String toString(){
 				
-		String ret_str = "date: "+date.toString()+ "\n note: "+note;
+		String ret_str = getClass().getName()+" @ \n	date: "+date.toString()+ "\n	note: "+note;
 		
 		return ret_str;
 	}

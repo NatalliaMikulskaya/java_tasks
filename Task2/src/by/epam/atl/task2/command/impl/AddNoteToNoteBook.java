@@ -18,23 +18,23 @@ public class AddNoteToNoteBook implements Command{
 		
 		Note nt = request.getNote();
 		NoteBook ntb = request.getNoteBook();
+		
 		int oldSize = request.getSizeNoteBook();
 		
 		noteBookService.addNoteToNoteBook(nt);
+				
+		Response rsp = new Response();
+		rsp.setNoteBook(ntb);
 		
 		int newSize = ntb.getSizeNoteBook();
-		
-		Response rsp = new Response();
 		
 		if ((oldSize + 1) == newSize ) {
 			rsp.setErrorMessage(null);
 			rsp.setMessage("Note was added successfully.");
 		} else {
-			rsp.setErrorMessage("Error occured while new note was added.");
+			rsp.setErrorMessage("Error occured while trying to add new note.");
 			rsp.setMessage(null);
 		}
-		
-		rsp.setNoteBook(ntb);
 		
 		return rsp;
 	}
