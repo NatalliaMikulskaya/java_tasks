@@ -5,8 +5,6 @@ public class Tasks {
 	public Tasks(){
 	}
 	
-	
-	
 	/*
 	 * Create a linear program, the print is true, if the above statement is true and false - otherwise:
 	 * The sum of the first two digits of a given four-digit number

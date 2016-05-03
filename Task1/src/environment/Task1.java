@@ -1,13 +1,15 @@
 package environment;
 
+import exceptions.InvalidNumberOfTasks;
+import exceptions.NotEnoughParameters;
+
 public class Task1 {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws NotEnoughParameters, InvalidNumberOfTasks {
 		String result = "";
 		
 		if ( args.length < 1){
-			System.err.print("There are not enough parameters!");
-			return;
+			throw new NotEnoughParameters("There are not enough parameters!");
 		}
 		
 		Tasks ts = new Tasks();
@@ -130,8 +132,7 @@ public class Task1 {
 					result = ts.doTask8(args[1], array);
 					
 				}else {
-					System.out.println("Task 8 has to have at least 3 arguments: task number, divider and array with at least one element.");
-					return;
+					throw new NotEnoughParameters("Task 8 has to have at least 3 arguments: task number, divider and array with at least one element.");
 				}
 				
 				System.out.println(result);
@@ -163,7 +164,7 @@ public class Task1 {
 			}
 			
 			default:{
-				System.err.println("Invalid number of task. There are can be tasks from 1 to 10.");
+				throw new InvalidNumberOfTasks("Invalid number of task. There are can be tasks from 1 to 10.");
 			}
 		}
 
