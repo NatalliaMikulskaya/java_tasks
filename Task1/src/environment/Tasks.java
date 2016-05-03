@@ -1,5 +1,12 @@
 package environment;
 
+import exceptions.ZeroNotAllowed;
+import exceptions.EvenExpected;
+import exceptions.InvalidValue;
+import exceptions.NegativeAndZeroNotAllowed;
+import exceptions.NegativeNotAllowed;
+import exceptions.NotEnoughParameters;
+
 public class Tasks {
 
 	public Tasks(){
@@ -11,7 +18,7 @@ public class Tasks {
 	 * is the sum of his last two digits.
 	 * Method operates with 1 number
 	 */
-	public String doTask1(String number){
+	public String doTask1(String number) throws NotEnoughParameters{
 		String result = "";
 		
 		//task condition - number length have to be bigger than 3
@@ -20,7 +27,9 @@ public class Tasks {
 		String[] tempArray = newString.split(""); //split string to array - every digit will be as array elements
 			
 		if (tempArray.length < 4) {
-			return "Number of digits in the second parameter has to be equal or bigger than 4!";
+			
+			throw new NotEnoughParameters("Number of digits in the second parameter has to be equal or bigger than 4!");
+		
 		}
 			
 		//calculate sum
@@ -50,7 +59,7 @@ public class Tasks {
 	 * Method operates with 3 numbers
 	 * 
 	 */
-	public String doTask2(String number1, String number2, String number3){
+	public String doTask2(String number1, String number2, String number3) throws ZeroNotAllowed, NegativeNotAllowed{
 		String resultString = "";
 		
 		try {
@@ -60,14 +69,16 @@ public class Tasks {
 				
 			//check the first number. It can't be equal zero
 			if (a == 0.0) {
-				return "The first number can't be equal 0!";
+
+				throw new ZeroNotAllowed("The first number can't be equal 0!");
+
 			}
 				
 			double b = Double.parseDouble(number2);
 			//check the second number. It can't be less than 0
 			if ( b < 0 ){
 
-				return "The second number can't be less than 0!";					
+				throw new NegativeNotAllowed("The second number can't be less than 0!");					
 					
 			}
 				
@@ -77,7 +88,7 @@ public class Tasks {
 			double tempNumber = Math.pow(b, 2) + 4*a*c;
 			if ( tempNumber < 0){
 
-				return "Result of calculating (b*b+4ac) is less than 0. Program can't operate with complex numbers!";
+				throw new NegativeNotAllowed("Result of calculating (b*b+4ac) is less than 0. Program can't operate with complex numbers!");
 
 			}
 				
@@ -107,7 +118,7 @@ public class Tasks {
 	 * Calculate the P and area of a right triangle of two of the legs (a and b).
 	 * Method operates with 2 numbers - triangle legs
 	 */
-	public String doTask3(String number1, String number2){
+	public String doTask3(String number1, String number2) throws NegativeAndZeroNotAllowed{
 		String resultString = "";
 		
 		//parse parameters into number
@@ -115,12 +126,12 @@ public class Tasks {
 			
 		//check the first number. It can't be equal or less than zero
 		if (a <= 0.0) {
-			return "The first number can't be equal or less than 0!";
+			throw new NegativeAndZeroNotAllowed("The first number can't be equal or less than 0!");
 		}
 			
 		double b = Double.parseDouble(number2);
 		if (b <= 0.0) {
-			return "The second number can't be equal or less than 0!";
+			throw new NegativeAndZeroNotAllowed("The second number can't be equal or less than 0!");
 		}
 			
 		//calculate	hypotenuse
@@ -259,7 +270,7 @@ public class Tasks {
 	 * F(x) = sin(x)*sin(x) - cos(2x)
 	 * Method operates with 3 numbers: start position, end position and step
 	 */
-	public String doTask7(String param1, String param2, String param3){
+	public String doTask7(String param1, String param2, String param3) throws NegativeAndZeroNotAllowed, InvalidValue{
 		String resultString = "";
 		
 		try{
@@ -269,12 +280,12 @@ public class Tasks {
 				
 			//start of interval can't be less than end
 			if (startPosition > endPosition){
-				return "End of interval less than beginning. It is incorrect!";
+				throw new InvalidValue("End of interval less than beginning. It is incorrect!");
 			}
 				
 			//step can't be negative or equal zero
 			if ( step <= 0){
-				return "Step has to be bigger than zero!";
+				throw new NegativeAndZeroNotAllowed("Step has to be bigger than zero!");
 			}
 				
 			for (double i = startPosition; i <= endPosition; i+=step){
@@ -298,13 +309,13 @@ public class Tasks {
 	 * param 2 = divider
 	 * param 3...n = elements of array
 	 */
-	public String doTask8(String param1, String[] array){
+	public String doTask8(String param1, String[] array) throws ZeroNotAllowed{
 		long sum=0;
 		
 		try {
 			long divider = Long.parseLong(param1);
 			if ( divider == 0L) {
-				return "Divider can't be equal zero!";
+				throw new ZeroNotAllowed("Divider can't be equal zero!");
 			}
 			
 			for (int i = 0; i < array.length; i++) {
@@ -333,7 +344,7 @@ public class Tasks {
 	 *  of the first array.
 	 *  Method operates with 1 parameter - number of position
 	 */
-	public String doTask9(String param){
+	public String doTask9(String param) throws NegativeNotAllowed, InvalidValue{
 		int[] array1 = {1, 2, 3, 4, 5, 6};
 		int[] array2 = {11,12,13};
 		String resultString = "";
@@ -343,12 +354,12 @@ public class Tasks {
 				
 			if (position < 0) {
 					
-				return "Number of position can't be less than 0!";
+				throw new NegativeNotAllowed("Number of position can't be less than 0!");
 			}
 				
 			if (array1.length <= position ){
 					
-				return "Size of array1 is "+array1.length+". It is impossible insert the second array in position "+position;
+				throw new InvalidValue("Size of array1 is "+array1.length+". It is impossible insert the second array in position "+position);
 			}
 				
 			int sizeNewArray = array1.length + array2.length;
@@ -377,7 +388,7 @@ public class Tasks {
 	 * Form a square matrix of order n for a given sample (n - even)
 	 * Method operates with 1 number - n
 	 */
-	public String doTask10(String param){
+	public String doTask10(String param) throws EvenExpected{
 		String result = "";
 		
 		try{
@@ -385,7 +396,7 @@ public class Tasks {
 				
 			//checking if order is even
 			if (order % 2 != 0) {
-				return "Matrix order has to be even!";
+				throw new EvenExpected("Matrix order has to be even!");
 			}
 			
 			//make matrix with order {order}
@@ -442,11 +453,11 @@ public class Tasks {
 	 * typeParam  - type for checking parameter
 	 * param	   - array with parameters for checking
 	 */
-	public String ifValidParameters(int numberParam, String[] param){
+	public String ifValidParameters(int numberParam, String[] param) throws NotEnoughParameters{
 		//checking array length
 		if (param.length != numberParam+1){
 
-			return "Invalid number of arguments!";
+			throw new NotEnoughParameters("Invalid number of arguments!");
 		}
 		
 		//checking type of parameters
@@ -454,7 +465,7 @@ public class Tasks {
 			
 			if (! isNumber(param[i])){
 				
-				return "Argument number "+(i+1)+" has to be numeric!";
+				throw new NumberFormatException("Argument number "+(i+1)+" has to be numeric!");
 			}
 			
 		}

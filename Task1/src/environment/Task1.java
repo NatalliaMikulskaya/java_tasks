@@ -1,11 +1,16 @@
 package environment;
 
+import exceptions.EvenExpected;
 import exceptions.InvalidNumberOfTasks;
+import exceptions.InvalidValue;
+import exceptions.NegativeAndZeroNotAllowed;
+import exceptions.NegativeNotAllowed;
+import exceptions.ZeroNotAllowed;
 import exceptions.NotEnoughParameters;
 
 public class Task1 {
 
-	public static void main(String[] args) throws NotEnoughParameters, InvalidNumberOfTasks {
+	public static void main(String[] args) throws NotEnoughParameters, InvalidNumberOfTasks, ZeroNotAllowed, NegativeNotAllowed, NegativeAndZeroNotAllowed, EvenExpected, InvalidValue {
 		String result = "";
 		
 		if ( args.length < 1){
