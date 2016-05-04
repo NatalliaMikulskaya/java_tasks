@@ -7,4 +7,8 @@ public class ZeroNotAllowed extends Exception {
 	public ZeroNotAllowed(String message){
 		super(message);
 	}
+	
+	public String getMessage(){
+		return this.getMessage();
+	}
 }

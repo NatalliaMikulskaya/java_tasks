@@ -7,4 +7,8 @@ public class InvalidNumberOfTasks extends Exception {
 	public InvalidNumberOfTasks(String message){
 		super(message);
 	}
+	
+	public String getMessage(){
+		return this.getMessage();
+	}
 }

@@ -7,4 +7,8 @@ public class EvenExpected extends Exception {
 	public EvenExpected(String message){
 		super(message);
 	}
+	
+	public String getMessage(){
+		return this.getMessage();
+	}
 }

@@ -7,4 +7,8 @@ public class NegativeNotAllowed extends Exception {
 	public NegativeNotAllowed(String message){
 		super(message);
 	}
+	
+	public String getMessage(){
+		return this.getMessage();
+	}
 }

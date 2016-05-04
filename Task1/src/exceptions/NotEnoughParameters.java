@@ -11,4 +11,8 @@ public class NotEnoughParameters extends Exception{
 	public NotEnoughParameters(String message, Exception e){
 		super(message, e);
 	}
+	
+	public String getMessage(){
+		return this.getMessage();
+	}
 }

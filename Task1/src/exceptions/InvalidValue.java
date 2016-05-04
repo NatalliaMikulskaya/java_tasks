@@ -7,4 +7,8 @@ public class InvalidValue extends Exception {
 	public InvalidValue(String message){
 		super(message);
 	}
+	
+	public String getMessage(){
+		return this.getMessage();
+	}
 }
