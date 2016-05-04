@@ -1,6 +1,7 @@
 package by.epam.atl.task2.main;
 
 import java.util.Date;
+import org.apache.log4j.Logger;
 import java.util.List;
 
 import by.epam.atl.task2.bean.Note;
@@ -8,15 +9,23 @@ import by.epam.atl.task2.bean.NoteBook;
 import by.epam.atl.task2.bean.Request;
 import by.epam.atl.task2.bean.Response;
 import by.epam.atl.task2.controller.Controller;
+import by.epam.atl.task2.exceptions.EmptyCommandList;
+import by.epam.atl.task2.exceptions.EmptyNote;
+import by.epam.atl.task2.exceptions.EmptyNoteBook;
+import by.epam.atl.task2.exceptions.EmptyString;
+import by.epam.atl.task2.exceptions.InvalidFileName;
+import by.epam.atl.task2.exceptions.NullData;
 import by.epam.atl.task2.view.NoteBookConsoleView;
 
 public class Executor {
+		
 	private String[] commandList;
 	private String fileNameIn = "";
 	private String fileNameOut = "";
 	private Date date = null;
 	private String content = "";
 	private String search = "";
+	private Logger log = MainApp.LOG;
 	
 	private NoteBook noteBook = null;
 	private Note note = null;
@@ -45,12 +54,13 @@ public class Executor {
 		search = forSearch;
 	}
 	
-	public void execute(){
+	public void execute() throws EmptyCommandList, InvalidFileName, EmptyNoteBook, NullData, EmptyNote, EmptyString{
 		Controller controller = new Controller();
 		
 		
 		if (commandList.length == 0){
-			return;
+			throw new EmptyCommandList("Empty list of command!");
+			
 		}
 		
 		boolean previousCommandResult = true;
@@ -60,7 +70,7 @@ public class Executor {
 		while (previousCommandResult && (i < commandList.length )) {
 			
 			if (commandList[i].length() == 0) {
-				return; //stop processing if command is missed
+				continue; //skip if command is missed
 			}
 			
 			previousCommandResult = execCommand(controller, commandList[i]);
@@ -73,7 +83,7 @@ public class Executor {
 	/*
 	 * Execute particular command
 	 */
-	private boolean execCommand(Controller controller, String commandName){
+	private boolean execCommand(Controller controller, String commandName) throws InvalidFileName, EmptyNoteBook, NullData, EmptyNote, EmptyString{
 		Request request;
 		Response response;
 		boolean commandExecuteResult = false;
@@ -97,7 +107,7 @@ public class Executor {
 			case ("LOAD_NOTEBOOK_FROM_FILE_COMMAND"):{
 				
 				if (fileNameIn.length() == 0){
-					return false;
+					throw new InvalidFileName("File for loading note book is not determined.");
 				}
 				
 				//load data from file
@@ -122,7 +132,7 @@ public class Executor {
 			
 			case ("CREATE_NOTE_COMMAND"):{
 				if (date == null){
-					return false;
+					throw new NullData("Data is equal null!");
 				}
 				
 				//create new record 
@@ -144,12 +154,11 @@ public class Executor {
 			
 			case("ADD_NOTE_TO_NOTEBOOK_COMMAND"):{
 				if (noteBook == null) {
-					System.err.println("notebook does not exist");
-					return false;
+					throw new EmptyNoteBook ("Notebook does not exist");
 				}
 
 				if ( note == null ){
-					return false;
+					throw new EmptyNote ("Notebook does not exist");
 				}
 				
 				//add record to notebook
@@ -173,7 +182,7 @@ public class Executor {
 			case("FIND_NOTES_BY_DATE"):{
 				
 				if (noteBook == null) {
-					return false;
+					throw new EmptyNoteBook ("Notebook does not exist");
 				}
 				//find records into notebook
 				request = new Request();
@@ -197,12 +206,12 @@ public class Executor {
 			
 			case("FIND_NOTES_BY_CONTENT"):{
 				if (noteBook == null) {
-					return false;
+					throw new EmptyNoteBook ("Notebook does not exist");
 				}
 				//find records into notebook
 				
 				if (search.length() == 0) {
-					return true; //always return true because result is not important for further processing
+					throw new EmptyString ("String for searching is empty.");
 				}
 				
 				request = new Request();
@@ -226,10 +235,10 @@ public class Executor {
 			
 			case("UNLOAD_NOTEBOOK_INTO_FILE_COMMAND"):{
 				if (noteBook == null) {
-					return false;
+					throw new EmptyNoteBook ("Notebook does not exist");
 				}
 				if (fileNameOut.length() == 0){
-					return false;
+					throw new InvalidFileName("File for output note book is not determined.");
 				}
 				
 				//unload data into file
@@ -250,10 +259,10 @@ public class Executor {
 	
 	private boolean processResult(Response resp){
 		if (resp.gerErrorMessage() != null){
-			System.err.println(resp.gerErrorMessage());
+			log.info(resp.gerErrorMessage());
 			return false;
 		}
-		System.out.println(resp.getMessage());
+		log.info(resp.getMessage());
 		
 		return true;
 	}

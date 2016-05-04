@@ -3,10 +3,21 @@ package by.epam.atl.task2.main;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.log4j.Logger;
+
+import by.epam.atl.task2.exceptions.EmptyCommandList;
+import by.epam.atl.task2.exceptions.EmptyNote;
+import by.epam.atl.task2.exceptions.EmptyNoteBook;
+import by.epam.atl.task2.exceptions.EmptyString;
+import by.epam.atl.task2.exceptions.InvalidFileName;
+import by.epam.atl.task2.exceptions.NullData;
+
 public class MainApp {
+	public static final Logger LOG = Logger.getLogger(MainApp.class.getName());
 
 	public static void main(String[] args) {
 		String fNameIn = "c:/data/notebook.xml";
+		//String fNameIn = "";
 		String fNameOut = "c:/data/notebook_result.xml";
 		String testNote = "Note for test";
 		String dateString = "28/04/2016";
@@ -34,13 +45,33 @@ public class MainApp {
 			date = formatter.parse(dateString);
 		} catch (java.text.ParseException e) {
 			
-			System.err.println("Can't convert string to Data");
+			LOG.error("Exception:"+e+" Can't convert string to Data");
 			return;
 		}
 		
-		exec.setDate(date);
+		try{
+			exec.setDate(date);
 		
-		exec.execute();
+			exec.execute();
+		}catch (EmptyCommandList e){
+			LOG.error("Exception: "+e);
+			
+		}
+		catch (InvalidFileName e){
+			LOG.error("Exception: "+e);
+		}
+		catch (EmptyNoteBook e){
+			LOG.error("Exception: "+e);
+		}
+		catch (NullData e){
+			LOG.error("Exception: "+e);
+		}
+		catch (EmptyNote e){
+			LOG.error("Exception: "+e);
+		}
+		catch (EmptyString e){
+			LOG.error("Exception: "+e);
+		}
 		
 	}
 

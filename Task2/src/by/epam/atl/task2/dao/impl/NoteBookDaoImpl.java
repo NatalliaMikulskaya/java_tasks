@@ -27,9 +27,11 @@ import org.xml.sax.SAXException;
 import by.epam.atl.task2.bean.Note;
 import by.epam.atl.task2.bean.NoteBook;
 import by.epam.atl.task2.dao.NoteBookDao;
+import by.epam.atl.task2.main.MainApp;
 
 public class NoteBookDaoImpl implements NoteBookDao {
-
+	org.apache.log4j.Logger log = MainApp.LOG;
+	
 	@Override
 	public NoteBook loadNoteBookFromFile(String fileName) {
 		NoteBook ntb = new NoteBook();
@@ -64,16 +66,17 @@ public class NoteBookDaoImpl implements NoteBookDao {
 					
 				}
 				catch(IOException e){
-					System.err.println("XML reading error");
+					log.error("Exseption: XML reading error");
 				}
 				catch(ParserConfigurationException e){
-					System.err.println("XML reading error");
+					log.error("Exseption: XML reading error");
 				}
 				catch(SAXException e){
-					System.err.println("XML reading error");
+					log.error("Exseption: XML reading error");
 				}
 			}else{
-				System.err.println("file error");
+				log.error("Exseption: file error");
+				
 			}
 		}
 		
@@ -99,7 +102,8 @@ public class NoteBookDaoImpl implements NoteBookDao {
 					date = formatter.parse(dt);
 				}
 				catch(ParseException e){
-					System.out.println("Invalid data in file. ");
+					log.error("Exseption: Invalid data in file.");
+					
 				}
 			
 				//get content
@@ -158,14 +162,14 @@ public class NoteBookDaoImpl implements NoteBookDao {
 				
 			}
 			catch (TransformerConfigurationException e) {
-				System.err.println("Error occured while written data in XML");
+				log.error("Exception: Error occured while written data in XML");
 			}
 			catch (TransformerException e) {
-				System.err.println("Error occured while written data in XML");
+				log.error("Exception: Error occured while written data in XML");
 			}
 		}
 		catch(ParserConfigurationException e){
-			System.err.println("Error occured while written data in XML");
+			log.error("Exception: Error occured while written data in XML");
 		}
 		
 		return fl;
