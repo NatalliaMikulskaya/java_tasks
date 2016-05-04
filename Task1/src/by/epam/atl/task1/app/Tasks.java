@@ -1,14 +1,14 @@
-package environment;
+package by.epam.atl.task1.app;
 
-import exceptions.ZeroNotAllowed;
-import exceptions.EvenExpected;
-import exceptions.InvalidValue;
-import exceptions.NegativeAndZeroNotAllowed;
-import exceptions.NegativeNotAllowed;
-import exceptions.NotEnoughParameters;
+import by.epam.atl.task1.exceptions.EvenExpected;
+import by.epam.atl.task1.exceptions.InvalidValue;
+import by.epam.atl.task1.exceptions.NegativeAndZeroNotAllowed;
+import by.epam.atl.task1.exceptions.NegativeNotAllowed;
+import by.epam.atl.task1.exceptions.NotEnoughParameters;
+import by.epam.atl.task1.exceptions.ZeroNotAllowed;
 
 public class Tasks {
-
+		
 	public Tasks(){
 	}
 	
@@ -40,10 +40,10 @@ public class Tasks {
 			int sum2 = Integer.parseInt(tempArray[tempArray.length-2]) + Integer.parseInt(tempArray[tempArray.length-1]);
 			
 			if ( sum1 == sum2 ){
-				result = "true";
+				result = "Task1: Number : "+number+" / does sum of the first two digits is the sum of his last two digits? true";
 			}
 			else {
-				result = "false";
+				result = "Task1: Number : "+number+" / does sum of the first two digits is the sum of his last two digits? false";
 			}
 		}
 		catch (NumberFormatException e) {

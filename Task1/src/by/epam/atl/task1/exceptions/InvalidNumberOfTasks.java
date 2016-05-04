@@ -1,4 +1,4 @@
-package exceptions;
+package by.epam.atl.task1.exceptions;
 
 public class InvalidNumberOfTasks extends Exception {
 	

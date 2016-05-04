@@ -1,4 +1,4 @@
-package exceptions;
+package by.epam.atl.task1.exceptions;
 
 public class EvenExpected extends Exception {
 	

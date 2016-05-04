@@ -1,4 +1,4 @@
-package exceptions;
+package by.epam.atl.task1.exceptions;
 
 public class NotEnoughParameters extends Exception{
 
@@ -13,6 +13,6 @@ public class NotEnoughParameters extends Exception{
 	}
 	
 	public String getMessage(){
-		return this.getMessage();
+		return super.getMessage();
 	}
 }

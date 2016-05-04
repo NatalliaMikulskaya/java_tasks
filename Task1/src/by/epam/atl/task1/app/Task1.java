@@ -1,16 +1,20 @@
-package environment;
+package by.epam.atl.task1.app;
 
-import exceptions.EvenExpected;
-import exceptions.InvalidNumberOfTasks;
-import exceptions.InvalidValue;
-import exceptions.NegativeAndZeroNotAllowed;
-import exceptions.NegativeNotAllowed;
-import exceptions.ZeroNotAllowed;
-import exceptions.NotEnoughParameters;
+import org.apache.log4j.Logger;
+
+import by.epam.atl.task1.exceptions.EvenExpected;
+import by.epam.atl.task1.exceptions.InvalidNumberOfTasks;
+import by.epam.atl.task1.exceptions.InvalidValue;
+import by.epam.atl.task1.exceptions.NegativeAndZeroNotAllowed;
+import by.epam.atl.task1.exceptions.NegativeNotAllowed;
+import by.epam.atl.task1.exceptions.NotEnoughParameters;
+import by.epam.atl.task1.exceptions.ZeroNotAllowed;
 
 public class Task1 {
+	private static Logger log = Logger.getLogger(Task1.class.getName());
 
 	public static void main(String[] args) {
+	
 		String result = "";
 		try{
 			if ( args.length < 1){
@@ -18,7 +22,9 @@ public class Task1 {
 			}
 		}
 		catch(NotEnoughParameters e){
-			System.out.println(result);
+			log.error("Exception: "+ e.toString());
+			return;
+
 		}
 		
 		Tasks ts = new Tasks();
@@ -33,10 +39,11 @@ public class Task1 {
 						result = ts.doTask1(args[1]);
 						
 					} 
-					System.out.println(result);
+					log.info("Task 1: "+result);
+					
 				}
 				catch (NotEnoughParameters e){
-					System.err.println(e.getMessage());
+					log.error("Exception in task1: "+ e.getMessage());
 				}
 				
 				break;
@@ -53,17 +60,12 @@ public class Task1 {
 					
 					}
 				
-				System.out.println(result);
+					log.info("Task 2: "+result);
 				}
-				catch (NotEnoughParameters e){
-					System.err.println(e.getMessage());
+				catch (NotEnoughParameters|NegativeNotAllowed|ZeroNotAllowed e){
+					log.error("Exception in task 2: "+ e.getMessage());
 				}
-				catch (NegativeNotAllowed e){
-					System.err.println(e.getMessage());
-				}
-				catch (ZeroNotAllowed e){
-					System.err.println(e.getMessage());
-				}
+				
 				break;
 			}
 			
@@ -78,14 +80,12 @@ public class Task1 {
 						result = ts.doTask3(args[1], args[2]);
 					}
 				
-					System.out.println(result);
+					log.info("Task 3: "+result);
 				}
-				catch(NotEnoughParameters e){
-					System.err.println(e.getMessage());
+				catch(NotEnoughParameters|NegativeAndZeroNotAllowed e){
+					log.error("Exception in task 3: "+ e.getMessage());
 				}
-				catch(NegativeAndZeroNotAllowed e){
-					System.err.println(e.getMessage());
-				}
+				
 				break;
 			}
 			
@@ -100,10 +100,10 @@ public class Task1 {
 						result = ts.doTask4(args[1], args[2]);
 					}
 				
-					System.out.println(result);
+					log.info("Task 4: "+result);
 				}
 				catch (NotEnoughParameters e){
-					System.err.println(e.getMessage());
+					log.error("Exception in task 4: "+ e.getMessage());
 				}
 				break;
 			}
@@ -120,10 +120,10 @@ public class Task1 {
 						result = ts.doTask5(parameters);
 					}
 				
-					System.out.println(result);
+					log.info("Task 5: "+result);
 				}
 				catch(NotEnoughParameters e){
-					System.err.println(e.getMessage());
+					log.error("Exception in task 5: "+ e.getMessage());
 				}
 				break;
 			}
@@ -140,10 +140,10 @@ public class Task1 {
 						result = ts.doTask6(parameters);
 					}
 				
-					System.out.println(result);
+					log.info("Task 6:"+result);
 				}
 				catch (NotEnoughParameters e){
-					System.err.println(e.getMessage());
+					log.error("Exception in task 6: "+ e.getMessage());
 				}
 				break;
 			}
@@ -160,18 +160,12 @@ public class Task1 {
 						result = ts.doTask7(args[1], args[2], args[3]);
 					}
 				
-					System.out.println(result);
+					log.info("Task 7:"+result);
 				}
-				catch(NotEnoughParameters e){
-					System.err.println(e.getMessage());
+				catch(NotEnoughParameters|NegativeAndZeroNotAllowed|InvalidValue e){
+					log.error("Exception in task 7: "+ e.getMessage());
 				}
-				catch(NegativeAndZeroNotAllowed e){
-					System.err.println(e.getMessage());
-				}
-				catch (InvalidValue e){
-					System.err.println(e.getMessage());
-				}
-				
+								
 				break;
 				
 			}
@@ -190,20 +184,16 @@ public class Task1 {
 						}
 					
 						result = ts.doTask8(args[1], array);
-						System.out.println(result);
+						log.info("Task 8:"+result);
 					
 					}else {
 						throw new NotEnoughParameters("Task 8 has to have at least 3 arguments: task number, divider and array with at least one element.");
 					}
 					
 				}
-				catch (NotEnoughParameters e){
-					System.err.println(e.getMessage());
+				catch (NotEnoughParameters|ZeroNotAllowed e){
+					log.error("Exception: "+ e.getMessage());
 				}
-				catch(ZeroNotAllowed e){
-					
-				}
-				
 				
 				break;
 			}
@@ -217,17 +207,12 @@ public class Task1 {
 						result = ts.doTask9(args[1]);
 					}
 				
-					System.out.println(result);
+					log.info("Task 9:"+result);
 				}
-				catch(NotEnoughParameters e){
-					System.out.println(result);
+				catch(NotEnoughParameters|InvalidValue|NegativeNotAllowed e){
+					log.error("Exception in task 9: "+ e.getMessage());
 				}
-				catch(InvalidValue e){
-					System.out.println(result);
-				}
-				catch(NegativeNotAllowed e){
-					System.out.println(result);
-				}
+				
 				break;
 				
 			}
@@ -241,15 +226,13 @@ public class Task1 {
 						result = ts.doTask10(args[1]);
 					}
 				
-					System.out.println(result);
+					log.info("Task 10: "+result);
 				}
-				catch(NotEnoughParameters e){
-					System.out.println(result);
+				catch(NotEnoughParameters|EvenExpected e){
+					log.error("Exception in task 10: "+ e.getMessage());
 					
 				}
-				catch(EvenExpected e){
-					System.out.println(result);
-				}
+				
 				break;
 			}
 			
@@ -258,7 +241,7 @@ public class Task1 {
 					throw new InvalidNumberOfTasks("Invalid number of task. There are can be tasks from 1 to 10.");
 				}
 				catch(InvalidNumberOfTasks e){
-					System.out.println(result);
+					log.error("Exception: "+ e.getMessage());
 				}
 			}
 		}
