@@ -22,14 +22,18 @@ public class Task1 {
 			//Task 1 - sum the first two digits and the last two digits of number
 			case ("1"):{
 				//checking parameters before processing them
-				result = ts.ifValidParameters(1, args);
-
-				if (result.length() == 0){
-				
-					result = ts.doTask1(args[1]);
-					
-				} 
-				System.out.println(result);
+				try {
+					result = ts.ifValidParameters(1, args);
+					if (result.length() == 0){
+						
+						result = ts.doTask1(args[1]);
+						
+					} 
+					System.out.println(result);
+				}
+				catch (NotEnoughParameters e){
+					System.err.println(e.getMessage());
+				}
 				
 				break;
 			}
