@@ -7,6 +7,7 @@ import by.epam.atl.task1.exceptions.InvalidNumberOfTasks;
 import by.epam.atl.task1.exceptions.InvalidValue;
 import by.epam.atl.task1.exceptions.NegativeAndZeroNotAllowed;
 import by.epam.atl.task1.exceptions.NegativeNotAllowed;
+import by.epam.atl.task1.exceptions.NoEnoughDigits;
 import by.epam.atl.task1.exceptions.NotEnoughParameters;
 import by.epam.atl.task1.exceptions.ZeroNotAllowed;
 
@@ -18,7 +19,7 @@ public class Task1 {
 		String result = "";
 		try{
 			if ( args.length < 1){
-				throw new NotEnoughParameters("There are not enough parameters!");
+				throw new NotEnoughParameters("There are not enough parameters!", 2, 1);
 			}
 		}
 		catch(NotEnoughParameters e){
@@ -42,8 +43,8 @@ public class Task1 {
 					log.info("Task 1: "+result);
 					
 				}
-				catch (NotEnoughParameters e){
-					log.error("Exception in task1: "+ e.getMessage());
+				catch (NotEnoughParameters|NoEnoughDigits|NumberFormatException e){
+					log.error("Task1: "+ e.toString());
 				}
 				
 				break;
@@ -63,7 +64,7 @@ public class Task1 {
 					log.info("Task 2: "+result);
 				}
 				catch (NotEnoughParameters|NegativeNotAllowed|ZeroNotAllowed e){
-					log.error("Exception in task 2: "+ e.getMessage());
+					log.error("Task 2: "+ e.toString());
 				}
 				
 				break;
@@ -83,7 +84,7 @@ public class Task1 {
 					log.info("Task 3: "+result);
 				}
 				catch(NotEnoughParameters|NegativeAndZeroNotAllowed e){
-					log.error("Exception in task 3: "+ e.getMessage());
+					log.error("Task 3: "+ e.toString());
 				}
 				
 				break;
@@ -103,7 +104,7 @@ public class Task1 {
 					log.info("Task 4: "+result);
 				}
 				catch (NotEnoughParameters e){
-					log.error("Exception in task 4: "+ e.getMessage());
+					log.error("Task 4: "+ e.toString());
 				}
 				break;
 			}
@@ -123,7 +124,7 @@ public class Task1 {
 					log.info("Task 5: "+result);
 				}
 				catch(NotEnoughParameters e){
-					log.error("Exception in task 5: "+ e.getMessage());
+					log.error("Task 5: "+ e.toString());
 				}
 				break;
 			}
@@ -143,7 +144,7 @@ public class Task1 {
 					log.info("Task 6:"+result);
 				}
 				catch (NotEnoughParameters e){
-					log.error("Exception in task 6: "+ e.getMessage());
+					log.error("Task6: "+ e.toString());
 				}
 				break;
 			}
@@ -163,7 +164,7 @@ public class Task1 {
 					log.info("Task 7:"+result);
 				}
 				catch(NotEnoughParameters|NegativeAndZeroNotAllowed|InvalidValue e){
-					log.error("Exception in task 7: "+ e.getMessage());
+					log.error("Task 7: "+ e.toString());
 				}
 								
 				break;
@@ -187,12 +188,12 @@ public class Task1 {
 						log.info("Task 8:"+result);
 					
 					}else {
-						throw new NotEnoughParameters("Task 8 has to have at least 3 arguments: task number, divider and array with at least one element.");
+						throw new NotEnoughParameters("Task 8 has to have at least 3 arguments: task number, divider and array with at least one element.",3,args.length);
 					}
 					
 				}
 				catch (NotEnoughParameters|ZeroNotAllowed e){
-					log.error("Exception: "+ e.getMessage());
+					log.error("Task8: : "+ e.toString());
 				}
 				
 				break;
@@ -210,7 +211,7 @@ public class Task1 {
 					log.info("Task 9:"+result);
 				}
 				catch(NotEnoughParameters|InvalidValue|NegativeNotAllowed e){
-					log.error("Exception in task 9: "+ e.getMessage());
+					log.error("Task 9: "+ e.toString());
 				}
 				
 				break;
@@ -229,7 +230,7 @@ public class Task1 {
 					log.info("Task 10: "+result);
 				}
 				catch(NotEnoughParameters|EvenExpected e){
-					log.error("Exception in task 10: "+ e.getMessage());
+					log.error("Task 10: "+ e.toString());
 					
 				}
 				
@@ -238,10 +239,10 @@ public class Task1 {
 			
 			default:{
 				try{
-					throw new InvalidNumberOfTasks("Invalid number of task. There are can be tasks from 1 to 10.");
+					throw new InvalidNumberOfTasks("Invalid number of task. There are can be tasks from 1 to 10.", args[0]);
 				}
 				catch(InvalidNumberOfTasks e){
-					log.error("Exception: "+ e.getMessage());
+					log.error("Exception: "+ e.toString());
 				}
 			}
 		}

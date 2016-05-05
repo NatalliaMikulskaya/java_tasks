@@ -4,6 +4,7 @@ import by.epam.atl.task1.exceptions.EvenExpected;
 import by.epam.atl.task1.exceptions.InvalidValue;
 import by.epam.atl.task1.exceptions.NegativeAndZeroNotAllowed;
 import by.epam.atl.task1.exceptions.NegativeNotAllowed;
+import by.epam.atl.task1.exceptions.NoEnoughDigits;
 import by.epam.atl.task1.exceptions.NotEnoughParameters;
 import by.epam.atl.task1.exceptions.ZeroNotAllowed;
 
@@ -18,7 +19,7 @@ public class Tasks {
 	 * is the sum of his last two digits.
 	 * Method operates with 1 number
 	 */
-	public String doTask1(String number) throws NotEnoughParameters{
+	public String doTask1(String number) throws NotEnoughParameters, NoEnoughDigits{
 		String result = "";
 		
 		//task condition - number length have to be bigger than 3
@@ -28,7 +29,7 @@ public class Tasks {
 			
 		if (tempArray.length < 4) {
 			
-			throw new NotEnoughParameters("Number of digits in the second parameter has to be equal or bigger than 4!");
+			throw new NoEnoughDigits("Number of digits in the second parameter has to be equal or bigger than 4!",4,tempArray.length );
 		
 		}
 			
@@ -47,7 +48,7 @@ public class Tasks {
 			}
 		}
 		catch (NumberFormatException e) {
-			result = "Invalid the second argument!";
+			throw new  NumberFormatException("Invalid the second argument! Can't convert to number "+number);
 		}
 			
 		return result;
@@ -396,7 +397,7 @@ public class Tasks {
 				
 			//checking if order is even
 			if (order % 2 != 0) {
-				throw new EvenExpected("Matrix order has to be even!");
+				throw new EvenExpected("Matrix order has to be even!", order);
 			}
 			
 			//make matrix with order {order}
@@ -457,7 +458,7 @@ public class Tasks {
 		//checking array length
 		if (param.length != numberParam+1){
 
-			throw new NotEnoughParameters("Invalid number of arguments!");
+			throw new NotEnoughParameters("Invalid number of arguments!",numberParam+1, param.length);
 		}
 		
 		//checking type of parameters
