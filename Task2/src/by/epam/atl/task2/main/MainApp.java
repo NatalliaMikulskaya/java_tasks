@@ -53,25 +53,11 @@ public class MainApp {
 			exec.setDate(date);
 		
 			exec.execute();
-		}catch (EmptyCommandList e){
+		}catch (EmptyCommandList|InvalidFileName|EmptyNoteBook|NullData|EmptyNote|EmptyString e){
 			LOG.error("Exception: "+e);
 			
 		}
-		catch (InvalidFileName e){
-			LOG.error("Exception: "+e);
-		}
-		catch (EmptyNoteBook e){
-			LOG.error("Exception: "+e);
-		}
-		catch (NullData e){
-			LOG.error("Exception: "+e);
-		}
-		catch (EmptyNote e){
-			LOG.error("Exception: "+e);
-		}
-		catch (EmptyString e){
-			LOG.error("Exception: "+e);
-		}
+		
 		
 	}
 

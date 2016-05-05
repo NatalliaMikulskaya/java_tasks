@@ -24,7 +24,7 @@ public class FindNotesByDate implements Command {
 		Response rsp = new Response();
 		if (notes.size() != 0) {
 			rsp.setErrorMessage(null);
-			rsp.setMessage("Searching is done.");
+			rsp.setMessage("Searching is done."+notes.size()+" noted were founded.");
 		}else {
 			rsp.setErrorMessage("Nothing was founded.");
 			rsp.setMessage(null);

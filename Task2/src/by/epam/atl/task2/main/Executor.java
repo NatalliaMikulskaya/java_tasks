@@ -107,7 +107,7 @@ public class Executor {
 			case ("LOAD_NOTEBOOK_FROM_FILE_COMMAND"):{
 				
 				if (fileNameIn.length() == 0){
-					throw new InvalidFileName("File for loading note book is not determined.");
+					throw new InvalidFileName("File for loading notebook is not determined.");
 				}
 				
 				//load data from file
@@ -122,17 +122,17 @@ public class Executor {
 				//get result notebook
 				noteBook = response.getNoteBook();
 						
-				//print notebook
+				/*//print notebook
 				
 				ntb_console = new NoteBookConsoleView();
-				ntb_console.print(noteBook);
+				ntb_console.print(noteBook);*/
 				
 				return commandExecuteResult;
 			}
 			
 			case ("CREATE_NOTE_COMMAND"):{
 				if (date == null){
-					throw new NullData("Data is equal null!");
+					throw new NullData("Data is equal null! Can't create note whith empty date.");
 				}
 				
 				//create new record 
@@ -171,9 +171,9 @@ public class Executor {
 				response = controller.doAction(request);
 				commandExecuteResult = processResult(response);
 				
-				//print result note
+				/*//print result note
 				ntb_console = new NoteBookConsoleView();
-				ntb_console.print(noteBook);
+				ntb_console.print(noteBook);*/
 				
 				return commandExecuteResult;
 				
@@ -194,11 +194,11 @@ public class Executor {
 				response = controller.doAction(request);
 				commandExecuteResult = processResult(response);
 				
-				List<Note> foundedNotes = response.getNotes();
+				/*List<Note> foundedNotes = response.getNotes();
 				
 				//print founded notes
 				ntb_console = new NoteBookConsoleView();
-				ntb_console.print(foundedNotes);
+				ntb_console.print(foundedNotes);*/
 				
 				//always return true because result is not important for further processing
 				return true;
@@ -223,11 +223,11 @@ public class Executor {
 				response = controller.doAction(request);
 				commandExecuteResult = processResult(response);
 				
-				List<Note> foundedNotes = response.getNotes();
+				/*List<Note> foundedNotes = response.getNotes();
 				
 				//print founded notes
 				ntb_console = new NoteBookConsoleView();
-				ntb_console.print(foundedNotes);
+				ntb_console.print(foundedNotes);*/
 				
 				//always return true because result is not important for further processing
 				return true;

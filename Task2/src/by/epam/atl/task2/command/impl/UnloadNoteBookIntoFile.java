@@ -19,7 +19,7 @@ public class UnloadNoteBookIntoFile implements Command {
 		
 		Response rsp = new Response();
 		rsp.setErrorMessage(null);
-		rsp.setMessage("Notebook was unloaded.");
+		rsp.setMessage("Notebook was unloaded into file "+fileName);
 				
 		return rsp;
 	}

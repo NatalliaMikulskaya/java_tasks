@@ -8,7 +8,7 @@ public class EmptyCommandList extends Exception {
 	}
 	
 	public String getMessage(){
-		return this.getMessage();
+		return super.getMessage();
 	}
 
 }

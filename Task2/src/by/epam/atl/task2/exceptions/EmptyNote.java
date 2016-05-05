@@ -8,7 +8,7 @@ public class EmptyNote extends Exception {
 	}
 	
 	public String getMessage(){
-		return this.getMessage();
+		return super.getMessage();
 	}
 
 }
