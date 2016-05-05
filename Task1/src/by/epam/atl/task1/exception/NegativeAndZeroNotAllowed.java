@@ -1,10 +1,10 @@
-package by.epam.atl.task1.exceptions;
+package by.epam.atl.task1.exception;
 
-public class NegativeNotAllowed extends Exception {
+public class NegativeAndZeroNotAllowed extends Exception {
 
 	private static final long serialVersionUID = 13L;
 
-	public NegativeNotAllowed(String message){
+	public NegativeAndZeroNotAllowed(String message){
 		super(message);
 	}
 	

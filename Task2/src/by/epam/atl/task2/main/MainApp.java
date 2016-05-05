@@ -5,12 +5,12 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 
-import by.epam.atl.task2.exceptions.EmptyCommandList;
-import by.epam.atl.task2.exceptions.EmptyNote;
-import by.epam.atl.task2.exceptions.EmptyNoteBook;
-import by.epam.atl.task2.exceptions.EmptyString;
-import by.epam.atl.task2.exceptions.InvalidFileName;
-import by.epam.atl.task2.exceptions.NullData;
+import by.epam.atl.task2.exception.EmptyCommandList;
+import by.epam.atl.task2.exception.EmptyNote;
+import by.epam.atl.task2.exception.EmptyNoteBook;
+import by.epam.atl.task2.exception.EmptyString;
+import by.epam.atl.task2.exception.InvalidFileName;
+import by.epam.atl.task2.exception.NullData;
 
 public class MainApp {
 	public static final Logger LOG = Logger.getLogger(MainApp.class.getName());

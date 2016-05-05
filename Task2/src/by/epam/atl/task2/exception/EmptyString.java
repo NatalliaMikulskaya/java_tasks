@@ -1,9 +1,9 @@
-package by.epam.atl.task2.exceptions;
+package by.epam.atl.task2.exception;
 
-public class NullData extends Exception {
+public class EmptyString extends Exception {
 	private static final long serialVersionUID = 1L;
 	
-	public NullData(String message){
+	public EmptyString(String message){
 		super(message);
 	}
 	

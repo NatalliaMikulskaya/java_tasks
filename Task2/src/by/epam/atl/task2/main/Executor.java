@@ -9,12 +9,12 @@ import by.epam.atl.task2.bean.NoteBook;
 import by.epam.atl.task2.bean.Request;
 import by.epam.atl.task2.bean.Response;
 import by.epam.atl.task2.controller.Controller;
-import by.epam.atl.task2.exceptions.EmptyCommandList;
-import by.epam.atl.task2.exceptions.EmptyNote;
-import by.epam.atl.task2.exceptions.EmptyNoteBook;
-import by.epam.atl.task2.exceptions.EmptyString;
-import by.epam.atl.task2.exceptions.InvalidFileName;
-import by.epam.atl.task2.exceptions.NullData;
+import by.epam.atl.task2.exception.EmptyCommandList;
+import by.epam.atl.task2.exception.EmptyNote;
+import by.epam.atl.task2.exception.EmptyNoteBook;
+import by.epam.atl.task2.exception.EmptyString;
+import by.epam.atl.task2.exception.InvalidFileName;
+import by.epam.atl.task2.exception.NullData;
 import by.epam.atl.task2.view.NoteBookConsoleView;
 
 public class Executor {

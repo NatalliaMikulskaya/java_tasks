@@ -1,12 +1,12 @@
 package by.epam.atl.task1.app;
 
-import by.epam.atl.task1.exceptions.EvenExpected;
-import by.epam.atl.task1.exceptions.InvalidValue;
-import by.epam.atl.task1.exceptions.NegativeAndZeroNotAllowed;
-import by.epam.atl.task1.exceptions.NegativeNotAllowed;
-import by.epam.atl.task1.exceptions.NoEnoughDigits;
-import by.epam.atl.task1.exceptions.NotEnoughParameters;
-import by.epam.atl.task1.exceptions.ZeroNotAllowed;
+import by.epam.atl.task1.exception.EvenExpected;
+import by.epam.atl.task1.exception.InvalidValue;
+import by.epam.atl.task1.exception.NegativeAndZeroNotAllowed;
+import by.epam.atl.task1.exception.NegativeNotAllowed;
+import by.epam.atl.task1.exception.NoEnoughDigits;
+import by.epam.atl.task1.exception.NotEnoughParameters;
+import by.epam.atl.task1.exception.ZeroNotAllowed;
 
 public class Tasks {
 		

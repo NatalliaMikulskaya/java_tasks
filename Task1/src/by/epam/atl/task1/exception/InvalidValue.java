@@ -1,4 +1,4 @@
-package by.epam.atl.task1.exceptions;
+package by.epam.atl.task1.exception;
 
 public class InvalidValue extends Exception {
 	

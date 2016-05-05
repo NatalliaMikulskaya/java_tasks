@@ -1,9 +1,9 @@
-package by.epam.atl.task2.exceptions;
+package by.epam.atl.task2.exception;
 
-public class EmptyNoteBook extends Exception {
+public class EmptyCommandList extends Exception {
 	private static final long serialVersionUID = 1L;
 	
-	public EmptyNoteBook(String message){
+	public EmptyCommandList(String message){
 		super(message);
 	}
 	
