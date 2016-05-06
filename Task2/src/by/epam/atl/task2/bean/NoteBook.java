@@ -27,6 +27,9 @@ public class NoteBook {
 	}
 	
 	public int getSizeNoteBook(){
+		if (listNotes.isEmpty()){
+			return 0;
+		}
 		return this.listNotes.size();
 	}
 	
