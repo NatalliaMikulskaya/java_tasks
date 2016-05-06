@@ -27,11 +27,11 @@ public class CreateNote implements Command {
 		if (nt != null ){
 			rsp.setErrorMessage(null);
 			rsp.setMessage("Note was created.");
+			rsp.setNote(nt);
 		} else{
 			rsp.setErrorMessage("Error occured while note was created.");
 			rsp.setMessage(null);
 		}
-		rsp.setNote(nt);
 		
 		return rsp;
 	}

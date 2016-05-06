@@ -27,13 +27,12 @@ import org.xml.sax.SAXException;
 import by.epam.atl.task2.bean.Note;
 import by.epam.atl.task2.bean.NoteBook;
 import by.epam.atl.task2.dao.NoteBookDao;
-import by.epam.atl.task2.main.MainApp;
+import by.epam.atl.task2.dao.exception.DAOException;
 
 public class NoteBookDaoImpl implements NoteBookDao {
-	org.apache.log4j.Logger log = MainApp.LOG;
 	
 	@Override
-	public NoteBook loadNoteBookFromFile(String fileName) {
+	public NoteBook loadNoteBookFromFile(String fileName) throws DAOException {
 		NoteBook ntb = new NoteBook();
 		List<Note> notes = new ArrayList<Note>();
 		
@@ -65,17 +64,21 @@ public class NoteBookDaoImpl implements NoteBookDao {
 					ntb.setNoteBook(notes);
 					
 				}
-				catch(IOException e){
-					log.error("Exseption: XML reading error");
-				}
+				
 				catch(ParserConfigurationException e){
-					log.error("Exseption: XML reading error");
+					throw new DAOException("XML parser configuration error", e);
+
 				}
 				catch(SAXException e){
-					log.error("Exseption: XML reading error");
+					throw new DAOException("XML parser error", e);
+
+				}
+				catch(IOException e){
+					throw new DAOException("XML file reading error", e);
+					
 				}
 			}else{
-				log.error("Exseption: file error");
+				throw new DAOException("File "+fileName+" not found");
 				
 			}
 		}
@@ -83,7 +86,7 @@ public class NoteBookDaoImpl implements NoteBookDao {
 		return ntb;
 	}
 	
-	private List<Note> processNodeList(NodeList nList){
+	private List<Note> processNodeList(NodeList nList) throws DAOException{
 		List<Note> listNotes = new ArrayList<Note>();
 		
 		for (int i =0; i<nList.getLength(); i++ ){
@@ -102,7 +105,7 @@ public class NoteBookDaoImpl implements NoteBookDao {
 					date = formatter.parse(dt);
 				}
 				catch(ParseException e){
-					log.error("Exseption: Invalid data in file.");
+					throw new DAOException("Invalid data in file.", e);
 					
 				}
 			
@@ -123,7 +126,7 @@ public class NoteBookDaoImpl implements NoteBookDao {
 	}
 
 	@Override
-	public File saveNoteBookIntoFile(NoteBook ntb, String fileName) {
+	public File saveNoteBookIntoFile(NoteBook ntb, String fileName) throws DAOException {
 		
 		File fl = new File(fileName);
 		try {
@@ -162,14 +165,14 @@ public class NoteBookDaoImpl implements NoteBookDao {
 				
 			}
 			catch (TransformerConfigurationException e) {
-				log.error("Exception: Error occured while written data in XML");
+				throw new DAOException("Error occured while written data in XML: transformer configuration error", e);
 			}
 			catch (TransformerException e) {
-				log.error("Exception: Error occured while written data in XML");
+				throw new DAOException("Error occured while written data in XML: transformer error", e);
 			}
 		}
 		catch(ParserConfigurationException e){
-			log.error("Exception: Error occured while written data in XML");
+			throw new DAOException("Error occured while written data in XML: XML configuration error", e);
 		}
 		
 		return fl;

@@ -13,7 +13,7 @@ import by.epam.atl.task2.exception.InvalidFileName;
 import by.epam.atl.task2.exception.NullData;
 
 public class MainApp {
-	public static final Logger LOG = Logger.getLogger(MainApp.class.getName());
+	public static final Logger LOG = Logger.getRootLogger();
 
 	public static void main(String[] args) {
 		String fNameIn = "c:/data/notebook.xml";

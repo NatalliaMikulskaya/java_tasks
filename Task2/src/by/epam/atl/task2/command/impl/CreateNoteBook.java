@@ -22,11 +22,13 @@ public class CreateNoteBook implements Command
 		if (ntb != null) {
 			rsp.setErrorMessage(null);
 			rsp.setMessage("Notebook was created.");
+			rsp.setNoteBook(ntb);
+			
 		} else {
 			rsp.setErrorMessage("Error occured while notebook was created");
 			rsp.setMessage(null);
+			 
 		}
-		rsp.setNoteBook(ntb);
 		
 		return rsp;
 	}

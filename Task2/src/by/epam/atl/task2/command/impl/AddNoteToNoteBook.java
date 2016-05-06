@@ -1,5 +1,10 @@
 package by.epam.atl.task2.command.impl;
 
+import java.lang.invoke.MethodHandle;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import by.epam.atl.task2.bean.Note;
 import by.epam.atl.task2.bean.NoteBook;
 import by.epam.atl.task2.bean.Request;
@@ -7,8 +12,11 @@ import by.epam.atl.task2.bean.Response;
 import by.epam.atl.task2.command.Command;
 import by.epam.atl.task2.service.NoteBookService;
 import by.epam.atl.task2.service.ServiceFactory;
+import by.epam.atl.task2.service.exception.ServiceException;
+import java.lang.invoke.MethodHandles;
 
 public class AddNoteToNoteBook implements Command{
+	private static final Logger LOG = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
 	@Override
 	public Response execute(Request request) {
@@ -21,19 +29,23 @@ public class AddNoteToNoteBook implements Command{
 		
 		int oldSize = request.getSizeNoteBook();
 		
-		noteBookService.addNoteToNoteBook(nt);
-				
 		Response rsp = new Response();
-		rsp.setNoteBook(ntb);
 		
-		int newSize = ntb.getSizeNoteBook();
+		try{
+			noteBookService.addNoteToNoteBook(nt);
 		
-		if ((oldSize + 1) == newSize ) {
-			rsp.setErrorMessage(null);
-			rsp.setMessage("Note was added successfully.");
-		} else {
+			int newSize = ntb.getSizeNoteBook();
+		
+			if ((oldSize + 1) == newSize ) {
+				rsp.setErrorMessage(null);
+				rsp.setMessage("Note was added successfully.");
+				rsp.setNoteBook(ntb);
+			}
+		}
+		catch (ServiceException e){
 			rsp.setErrorMessage("Error occured while trying to add new note.");
 			rsp.setMessage(null);
+			LOG.error("Exception:"+e+" "+e.getCause());
 		}
 		
 		return rsp;
