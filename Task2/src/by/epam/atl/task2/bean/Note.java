@@ -1,6 +1,5 @@
 package by.epam.atl.task2.bean;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Note {

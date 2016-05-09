@@ -1,11 +1,7 @@
 package by.epam.atl.task2.dao;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.GregorianCalendar;
-import java.util.List;
 
-import by.epam.atl.task2.bean.Note;
 import by.epam.atl.task2.bean.NoteBook;
 import by.epam.atl.task2.dao.exception.DAOException;
 
