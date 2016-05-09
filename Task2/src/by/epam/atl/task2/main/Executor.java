@@ -137,7 +137,7 @@ public class Executor {
 				//create new record 
 				request = new Request();
 				request.setDate(date);
-				request.setNoteBook(noteBook);
+				//request.setNoteBook(noteBook);
 				request.setContent(content);
 				request.setCommandName(commandName);
 				
