@@ -22,7 +22,7 @@ public class NoteBookServiceImpl implements NoteBookService {
 	@Override
 	public NoteBook createNoteBook() {
 		
-		//create empty list iof notes
+		//create empty list of notes
 		List<Note> newNoteList = new ArrayList<Note>();
 		
 		//set list of notes into notebook
@@ -128,9 +128,15 @@ public class NoteBookServiceImpl implements NoteBookService {
 	}
 
 	@Override
-	public Note createNote(Date date, String noteContent) {
+	public Note createNote(Date date, String noteContent) throws ServiceException {
+		Note newNote = null;
+		
+		if (date == null){
+			throw new ServiceException("Can't create note with null date");
+		}
 		//create empty note
-		Note newNote = new Note(date, noteContent);
+		
+		newNote = new Note(date, noteContent);
 				
 		return newNote;
 	}

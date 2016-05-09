@@ -1,7 +1,5 @@
 package by.epam.atl.task2.command.impl;
 
-import java.lang.invoke.MethodHandle;
-
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 

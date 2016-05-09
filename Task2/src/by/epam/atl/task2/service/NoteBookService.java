@@ -15,6 +15,6 @@ public interface NoteBookService {
 	void unloadBookIntoFile(String file_name) throws ServiceException; //load notebook into file
 	List<Note> findNotesByDate(Date dt) throws ServiceException;
 	List<Note> findNotesByContent(String str) throws ServiceException;
-	Note createNote(Date dt, String str);    //create new note
+	Note createNote(Date dt, String str) throws ServiceException;    //create new note
 	void addNoteToNoteBook(Note nt) throws ServiceException;
 }
