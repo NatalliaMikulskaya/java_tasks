@@ -49,15 +49,10 @@ public class MainApp {
 			return;
 		}
 		
-		try{
-			exec.setDate(date);
+		exec.setDate(date);
 		
-			exec.execute();
-		}catch (EmptyCommandList|InvalidFileName|EmptyNoteBook|NullData|EmptyNote|EmptyString e){
-			LOG.error("Exception: "+e);
-			
-		}
-		
+		exec.execute();
+
 		
 	}
 

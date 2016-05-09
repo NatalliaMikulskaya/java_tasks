@@ -1,31 +1,27 @@
 package by.epam.atl.task2.main;
 
+import java.lang.invoke.MethodHandles;
 import java.util.Date;
+
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import java.util.List;
 
 import by.epam.atl.task2.bean.Note;
 import by.epam.atl.task2.bean.NoteBook;
 import by.epam.atl.task2.bean.Request;
 import by.epam.atl.task2.bean.Response;
 import by.epam.atl.task2.controller.Controller;
-import by.epam.atl.task2.exception.EmptyCommandList;
-import by.epam.atl.task2.exception.EmptyNote;
-import by.epam.atl.task2.exception.EmptyNoteBook;
-import by.epam.atl.task2.exception.EmptyString;
-import by.epam.atl.task2.exception.InvalidFileName;
-import by.epam.atl.task2.exception.NullData;
-import by.epam.atl.task2.view.NoteBookConsoleView;
 
 public class Executor {
 		
+	private static final Logger LOG = LogManager.getLogger(MethodHandles.lookup().lookupClass());
+	
 	private String[] commandList;
 	private String fileNameIn = "";
 	private String fileNameOut = "";
 	private Date date = null;
 	private String content = "";
 	private String search = "";
-	private Logger log = MainApp.LOG;
 	
 	private NoteBook noteBook = null;
 	private Note note = null;
@@ -54,12 +50,14 @@ public class Executor {
 		search = forSearch;
 	}
 	
-	public void execute() throws EmptyCommandList, InvalidFileName, EmptyNoteBook, NullData, EmptyNote, EmptyString{
+	public void execute() {
 		Controller controller = new Controller();
 		
 		
 		if (commandList.length == 0){
-			throw new EmptyCommandList("Empty list of command!");
+			LOG.error("Empty list of command! Nothig to execute.");
+			//throw new EmptyCommandList("Empty list of command!");
+			return;
 			
 		}
 		
@@ -70,6 +68,7 @@ public class Executor {
 		while (previousCommandResult && (i < commandList.length )) {
 			
 			if (commandList[i].length() == 0) {
+				LOG.trace("Empty command in position "+(i+1)+"! It was skipped.");
 				continue; //skip if command is missed
 			}
 			
@@ -83,11 +82,11 @@ public class Executor {
 	/*
 	 * Execute particular command
 	 */
-	private boolean execCommand(Controller controller, String commandName) throws InvalidFileName, EmptyNoteBook, NullData, EmptyNote, EmptyString{
+	private boolean execCommand(Controller controller, String commandName) {
 		Request request;
 		Response response;
 		boolean commandExecuteResult = false;
-		NoteBookConsoleView ntb_console;
+	//	NoteBookConsoleView ntb_console;
 		
 		switch(commandName){
 			case("CREATE_NOTEBOOK_COMMAND"):{
@@ -106,9 +105,9 @@ public class Executor {
 			
 			case ("LOAD_NOTEBOOK_FROM_FILE_COMMAND"):{
 				
-				if (fileNameIn.length() == 0){
+				/*if (fileNameIn.length() == 0){
 					throw new InvalidFileName("File for loading notebook is not determined.");
-				}
+				}*/
 				
 				//load data from file
 				request = new Request();
@@ -131,9 +130,9 @@ public class Executor {
 			}
 			
 			case ("CREATE_NOTE_COMMAND"):{
-				if (date == null){
+				/*if (date == null){
 					throw new NullData("Data is equal null! Can't create note whith empty date.");
-				}
+				}*/
 				
 				//create new record 
 				request = new Request();
@@ -153,13 +152,13 @@ public class Executor {
 			}
 			
 			case("ADD_NOTE_TO_NOTEBOOK_COMMAND"):{
-				if (noteBook == null) {
+				/*if (noteBook == null) {
 					throw new EmptyNoteBook ("Notebook does not exist");
 				}
 
 				if ( note == null ){
 					throw new EmptyNote ("Notebook does not exist");
-				}
+				}*/
 				
 				//add record to notebook
 				request = new Request();
@@ -181,9 +180,9 @@ public class Executor {
 			
 			case("FIND_NOTES_BY_DATE"):{
 				
-				if (noteBook == null) {
+				/*if (noteBook == null) {
 					throw new EmptyNoteBook ("Notebook does not exist");
-				}
+				}*/
 				//find records into notebook
 				request = new Request();
 
@@ -205,14 +204,14 @@ public class Executor {
 			}
 			
 			case("FIND_NOTES_BY_CONTENT"):{
-				if (noteBook == null) {
+				/*if (noteBook == null) {
 					throw new EmptyNoteBook ("Notebook does not exist");
-				}
+				}*/
 				//find records into notebook
 				
-				if (search.length() == 0) {
+				/*if (search.length() == 0) {
 					throw new EmptyString ("String for searching is empty.");
-				}
+				}*/
 				
 				request = new Request();
 				
@@ -234,12 +233,12 @@ public class Executor {
 			}
 			
 			case("UNLOAD_NOTEBOOK_INTO_FILE_COMMAND"):{
-				if (noteBook == null) {
+				/*if (noteBook == null) {
 					throw new EmptyNoteBook ("Notebook does not exist");
 				}
 				if (fileNameOut.length() == 0){
 					throw new InvalidFileName("File for output note book is not determined.");
-				}
+				}*/
 				
 				//unload data into file
 				request = new Request();
@@ -259,10 +258,10 @@ public class Executor {
 	
 	private boolean processResult(Response resp){
 		if (resp.gerErrorMessage() != null){
-			log.info(resp.gerErrorMessage());
+			LOG.error(resp.gerErrorMessage());
 			return false;
 		}
-		log.info(resp.getMessage());
+		LOG.info(resp.getMessage());
 		
 		return true;
 	}
