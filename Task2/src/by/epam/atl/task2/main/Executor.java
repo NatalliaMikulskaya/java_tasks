@@ -11,6 +11,7 @@ import by.epam.atl.task2.bean.NoteBook;
 import by.epam.atl.task2.bean.Request;
 import by.epam.atl.task2.bean.Response;
 import by.epam.atl.task2.controller.Controller;
+import by.epam.atl.task2.view.NoteBookConsoleView;
 
 public class Executor {
 		
@@ -86,11 +87,12 @@ public class Executor {
 		Request request;
 		Response response;
 		boolean commandExecuteResult = false;
-	//	NoteBookConsoleView ntb_console;
+		NoteBookConsoleView ntb_console;
 		
 		switch(commandName){
 			case("CREATE_NOTEBOOK_COMMAND"):{
 
+				LOG.info("Start command "+commandName);
 				//create empty notebook
 				request = new Request();
 				request.setCommandName(commandName);
@@ -100,11 +102,12 @@ public class Executor {
 				commandExecuteResult = processResult(response);
 				
 				noteBook = response.getNoteBook();
+				LOG.info("End command "+commandName);
 				return commandExecuteResult;
 			}
 			
 			case ("LOAD_NOTEBOOK_FROM_FILE_COMMAND"):{
-				
+				LOG.info("Start command "+commandName);
 				/*if (fileNameIn.length() == 0){
 					throw new InvalidFileName("File for loading notebook is not determined.");
 				}*/
@@ -118,18 +121,21 @@ public class Executor {
 				
 				commandExecuteResult = processResult(response);
 				
-				//get result notebook
-				noteBook = response.getNoteBook();
+				if (commandExecuteResult){
+					//get result notebook
+					noteBook = response.getNoteBook();
 						
-				/*//print notebook
+					//print notebook
 				
-				ntb_console = new NoteBookConsoleView();
-				ntb_console.print(noteBook);*/
-				
+					ntb_console = new NoteBookConsoleView();
+					ntb_console.print(noteBook);
+				}
+				LOG.info("End command "+commandName);
 				return commandExecuteResult;
 			}
 			
 			case ("CREATE_NOTE_COMMAND"):{
+				LOG.info("Start command "+commandName);
 				/*if (date == null){
 					throw new NullData("Data is equal null! Can't create note whith empty date.");
 				}*/
@@ -146,12 +152,13 @@ public class Executor {
 				
 				//get result note
 				note = response.getNote();
-				
+				LOG.info("End command "+commandName);
 				return commandExecuteResult;
 				
 			}
 			
 			case("ADD_NOTE_TO_NOTEBOOK_COMMAND"):{
+				LOG.info("Start command "+commandName);
 				/*if (noteBook == null) {
 					throw new EmptyNoteBook ("Notebook does not exist");
 				}
@@ -173,13 +180,13 @@ public class Executor {
 				/*//print result note
 				ntb_console = new NoteBookConsoleView();
 				ntb_console.print(noteBook);*/
-				
+				LOG.info("End command "+commandName);
 				return commandExecuteResult;
 				
 			}
 			
 			case("FIND_NOTES_BY_DATE"):{
-				
+				LOG.info("Start command "+commandName);
 				/*if (noteBook == null) {
 					throw new EmptyNoteBook ("Notebook does not exist");
 				}*/
@@ -200,10 +207,12 @@ public class Executor {
 				ntb_console.print(foundedNotes);*/
 				
 				//always return true because result is not important for further processing
+				LOG.info("End command "+commandName);
 				return true;
 			}
 			
 			case("FIND_NOTES_BY_CONTENT"):{
+				LOG.info("Start command "+commandName);
 				/*if (noteBook == null) {
 					throw new EmptyNoteBook ("Notebook does not exist");
 				}*/
@@ -228,11 +237,13 @@ public class Executor {
 				ntb_console = new NoteBookConsoleView();
 				ntb_console.print(foundedNotes);*/
 				
+				LOG.info("End command "+commandName);
 				//always return true because result is not important for further processing
 				return true;
 			}
 			
 			case("UNLOAD_NOTEBOOK_INTO_FILE_COMMAND"):{
+				LOG.info("Start command "+commandName);
 				/*if (noteBook == null) {
 					throw new EmptyNoteBook ("Notebook does not exist");
 				}
@@ -248,7 +259,7 @@ public class Executor {
 				response = controller.doAction(request);
 				
 				commandExecuteResult = processResult(response);
-
+				LOG.info("End command "+commandName);
 				return commandExecuteResult;
 			}
 			

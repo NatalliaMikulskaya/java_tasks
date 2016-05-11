@@ -28,15 +28,18 @@ public class LoadNoteBookFromFile implements Command{
 		try{
 			NoteBook ntb = noteBookService.loadNoteBookFromFile(fileName);
 		
-			if (ntb.getSizeNoteBook() == 0) {
-				rsp.setErrorMessage("Notebook is empty. Check file.");
-				rsp.setMessage(null);
+			if (ntb.getSizeNoteBook() > 0) {
+				rsp.setErrorMessage(null);
+				rsp.setMessage("Notebook was loaded.");
 				rsp.setNoteBook(ntb);
+			}else{
+				LOG.error("Notebook is empty. Check file.");
 			}
 		}
 		catch (ServiceException e){
-			rsp.setErrorMessage(null);
-			rsp.setMessage("Notebook was loaded.");
+			rsp.setErrorMessage("Notebook is empty. Check file.");
+			rsp.setMessage(null);
+			
 			LOG.error("Exception: "+e+" "+e.getCause());
 		}
 		

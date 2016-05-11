@@ -36,6 +36,14 @@ public class NoteBookDaoImpl implements NoteBookDao {
 		NoteBook ntb = new NoteBook();
 		List<Note> notes = new ArrayList<Note>();
 		
+		if(fileName.isEmpty()){
+			throw new DAOException("File "+fileName+" not spesified");
+		}
+		
+		if (fileName.length() == 0){
+			throw new DAOException("File "+fileName+" not spesified");
+		}
+		
 		//work with xml files
 		if (fileName.trim().endsWith(".xml")){
 			

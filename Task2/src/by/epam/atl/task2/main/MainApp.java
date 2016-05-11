@@ -11,7 +11,8 @@ public class MainApp {
 	public static void main(String[] args) {
 		String fNameIn = "c:/data/notebook.xml";
 		//String fNameIn = "";
-		String fNameOut = "c:/data/notebook_result.xml";
+		//String fNameOut = "c:/data/notebook_result.xml";
+		String fNameOut="";
 		String testNote = "Note for test";
 		String dateString = "28/04/2016";
 		String stringForSearching = "note";

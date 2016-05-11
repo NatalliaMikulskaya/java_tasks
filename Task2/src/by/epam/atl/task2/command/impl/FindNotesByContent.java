@@ -31,7 +31,7 @@ public class FindNotesByContent implements Command {
 		
 			if (notes.size() != 0 ){
 				rsp.setErrorMessage(null);
-				rsp.setMessage("Searching is done. "+notes.size()+" noted were founded.");
+				rsp.setMessage("Searching is done. "+notes.size()+" note were founded.");
 				rsp.setNotes(notes);
 			}
 		}
