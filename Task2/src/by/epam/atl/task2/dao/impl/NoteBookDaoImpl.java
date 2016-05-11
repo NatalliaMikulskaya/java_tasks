@@ -36,7 +36,7 @@ public class NoteBookDaoImpl implements NoteBookDao {
 		NoteBook ntb = new NoteBook();
 		List<Note> notes = new ArrayList<Note>();
 		
-		if(fileName.isEmpty()){
+		if(fileName == null){
 			throw new DAOException("File "+fileName+" not spesified");
 		}
 		
@@ -135,6 +135,14 @@ public class NoteBookDaoImpl implements NoteBookDao {
 
 	@Override
 	public File saveNoteBookIntoFile(NoteBook ntb, String fileName) throws DAOException {
+		
+		if (fileName == null){
+			throw new DAOException("File name is not specified!");
+		}
+		
+		if (fileName.length() == 0){
+			throw new DAOException("File name is not specified!");
+		}
 		
 		File fl = new File(fileName);
 		try {
