@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://www.example.org/bookSchema" 
+	xmlns:tns="http://www.example.org/bookSchema" 
+	xmlns:person="http://www.example.org/personSchema" 
+	elementFormDefault="qualified">
+	<xs:import namespace="http://www.example.org/personSchema" schemaLocation="personSchema.xsd" />
+
+	<xs:complexType name="bookType">
+		<xs:sequence>
+			<xs:element name="bookName" type="xs:string" />
+			<xs:element name="author" type="person:personType" minOccurs="1" maxOccurs="5"/>
+			<xs:element name="genre" type="tns:genreType" minOccurs="1" maxOccurs="2" />
+			<xs:element name="publicationDate" type="xs:date" />
+			<xs:element name="seriesName" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:string"/>
+	</xs:complexType>
+	
+	<xs:simpleType name="genreType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="drama" />
+			<xs:enumeration value="fantastic" />
+			<xs:enumeration value="fantasy" />
+			<xs:enumeration value="horor" />
+			<xs:enumeration value="love story" />
+		</xs:restriction>
+	</xs:simpleType>	
+	
+</xs:schema>

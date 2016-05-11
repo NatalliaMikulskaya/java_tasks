@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://www.example.org/personSchema" 
+	xmlns:tns="http://www.example.org/personSchema" 
+	elementFormDefault="qualified">
+
+	<xs:complexType name="personType">
+		<xs:sequence>
+			<xs:element name="firstName" type="xs:string" />
+			<xs:element name="secondName" type="xs:string" />
+			<xs:element name="parentName" type="xs:string" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

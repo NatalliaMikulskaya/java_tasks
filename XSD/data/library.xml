@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lib:library xmlns:lib="http://www.example.org/librarySchema"
+	xmlns:bookData="http://www.example.org/bookSchema"
+	xmlns:authorData="http://www.example.org/personSchema"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.example.org/librarySchema librarySchema.xsd"
+	>
+
+	<lib:book id="23-444">
+		<bookData:bookName>Vita nostra</bookData:bookName>
+		<bookData:author> 
+			<authorData:firstName>Marina</authorData:firstName>
+			<authorData:secondName>Dyachenko</authorData:secondName>
+		</bookData:author>
+		<bookData:author> 
+			<authorData:firstName>Sergei</authorData:firstName>
+			<authorData:secondName>Dyachenko</authorData:secondName>
+		</bookData:author>
+		<bookData:genre>fantastic</bookData:genre>
+		<bookData:publicationDate>2001-01-01</bookData:publicationDate>
+		<bookData:seriesName>SSS</bookData:seriesName>
+	</lib:book>
+
+	<lib:book id="23-111">
+		<bookData:bookName>Day D</bookData:bookName>
+		<bookData:author> 
+			<authorData:firstName>Luk</authorData:firstName>
+			<authorData:secondName>Smith</authorData:secondName>
+		</bookData:author>
+		<bookData:genre>fantastic</bookData:genre>
+		<bookData:publicationDate>2000-06-13</bookData:publicationDate>
+	</lib:book>
+</lib:library>
