@@ -108,9 +108,10 @@ public class Executor {
 			
 			case ("LOAD_NOTEBOOK_FROM_FILE_COMMAND"):{
 				LOG.info("Start command "+commandName);
-				/*if (fileNameIn.length() == 0){
-					throw new InvalidFileName("File for loading notebook is not determined.");
-				}*/
+				if (fileNameIn.length() == 0){
+					return writeErrorLog("File for loading notebook is not determined.", commandName);
+					
+				}
 				
 				//load data from file
 				request = new Request();
@@ -136,14 +137,14 @@ public class Executor {
 			
 			case ("CREATE_NOTE_COMMAND"):{
 				LOG.info("Start command "+commandName);
-				/*if (date == null){
-					throw new NullData("Data is equal null! Can't create note whith empty date.");
-				}*/
+				if (date == null){
+					return writeErrorLog("Date is equal null! Can't create note whith empty date.", commandName);
+					
+				}
 				
 				//create new record 
 				request = new Request();
 				request.setDate(date);
-				//request.setNoteBook(noteBook);
 				request.setContent(content);
 				request.setCommandName(commandName);
 				
@@ -159,13 +160,14 @@ public class Executor {
 			
 			case("ADD_NOTE_TO_NOTEBOOK_COMMAND"):{
 				LOG.info("Start command "+commandName);
-				/*if (noteBook == null) {
-					throw new EmptyNoteBook ("Notebook does not exist");
+				if (noteBook == null) {
+					return writeErrorLog("Notebook does not exist.", commandName);
 				}
 
 				if ( note == null ){
-					throw new EmptyNote ("Notebook does not exist");
-				}*/
+					return writeErrorLog("Note does not exist.", commandName);
+					
+				}
 				
 				//add record to notebook
 				request = new Request();
@@ -187,9 +189,11 @@ public class Executor {
 			
 			case("FIND_NOTES_BY_DATE"):{
 				LOG.info("Start command "+commandName);
-				/*if (noteBook == null) {
-					throw new EmptyNoteBook ("Notebook does not exist");
-				}*/
+				if (noteBook == null) {
+					//always return true because result is not important for further processing
+					return !writeErrorLog("Notebook does not exist.", commandName);
+					
+				}
 				//find records into notebook
 				request = new Request();
 
@@ -213,15 +217,17 @@ public class Executor {
 			
 			case("FIND_NOTES_BY_CONTENT"):{
 				LOG.info("Start command "+commandName);
-				/*if (noteBook == null) {
-					throw new EmptyNoteBook ("Notebook does not exist");
-				}*/
+				if (noteBook == null) {
+					//always return true because result is not important for further processing
+					return !writeErrorLog("Notebook does not exist.", commandName);
+					
+				}
+				
+				if (search.length() == 0) {
+					return !writeErrorLog("String for searching is empty.", commandName);
+					
+				}
 				//find records into notebook
-				
-				/*if (search.length() == 0) {
-					throw new EmptyString ("String for searching is empty.");
-				}*/
-				
 				request = new Request();
 				
 				request.setNoteBook(noteBook);
@@ -244,12 +250,14 @@ public class Executor {
 			
 			case("UNLOAD_NOTEBOOK_INTO_FILE_COMMAND"):{
 				LOG.info("Start command "+commandName);
-				/*if (noteBook == null) {
-					throw new EmptyNoteBook ("Notebook does not exist");
+				if (noteBook == null) {
+					return writeErrorLog("Notebook does not exist.", commandName);
+					
 				}
 				if (fileNameOut.length() == 0){
-					throw new InvalidFileName("File for output note book is not determined.");
-				}*/
+					return !writeErrorLog("File for output note book is not determined.", commandName);
+					
+				}
 				
 				//unload data into file
 				request = new Request();
@@ -267,6 +275,14 @@ public class Executor {
 		}
 	}
 	
+	/*
+	 * Write result of command executing in log
+	 * @param resp
+	 * 		object with response data
+	 * 
+	 * @return true if {resp} has massage and has not error message, false in opposite case 
+	 * 
+	 */
 	private boolean processResult(Response resp){
 		if (resp.gerErrorMessage() != null){
 			LOG.error(resp.gerErrorMessage());
@@ -275,5 +291,21 @@ public class Executor {
 		LOG.info(resp.getMessage());
 		
 		return true;
+	}
+	
+	/*
+	 * Write information in log about error. 
+	 * @param message 
+	 * 		 description of error
+	 * @param commandName 
+	 * 		 in which command error occurred
+	 * 
+	 * @ return always returns false
+	 */
+	private boolean writeErrorLog(String message, String commandName){
+		LOG.error("Error: " + message);
+		LOG.info("Command ends with errors: "+commandName);
+		
+		return false;
 	}
 }

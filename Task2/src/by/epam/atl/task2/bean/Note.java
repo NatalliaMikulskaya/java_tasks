@@ -39,8 +39,10 @@ public class Note {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		
 		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		result = prime * result + ((note == null) ? 0 : note.hashCode());
+		
 		return result;
 	}
 
@@ -77,10 +79,14 @@ public class Note {
 	
 	@Override
 	public String toString(){
-				
-		String ret_str = getClass().getName()+" @ \n	date: "+date.toString()+ "\n	note: "+note;
+		StringBuilder result;
 		
-		return ret_str;
+		result = new StringBuilder(getClass().getName());
+		
+		result.append(" @ \n	date: " +((date == null) ? null : date.toString()));
+		result.append("\n	note: "+note);
+		
+		return result.toString();
 	}
 }
 

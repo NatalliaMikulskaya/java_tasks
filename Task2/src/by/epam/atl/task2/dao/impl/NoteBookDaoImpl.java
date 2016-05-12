@@ -181,14 +181,14 @@ public class NoteBookDaoImpl implements NoteBookDao {
 				
 			}
 			catch (TransformerConfigurationException e) {
-				throw new DAOException("Error occured while written data in XML: transformer configuration error", e);
+				throw new DAOException("Error occurred while written data in XML: transformer configuration error", e);
 			}
 			catch (TransformerException e) {
-				throw new DAOException("Error occured while written data in XML: transformer error", e);
+				throw new DAOException("Error occurred while written data in XML: transformer error", e);
 			}
 		}
 		catch(ParserConfigurationException e){
-			throw new DAOException("Error occured while written data in XML: XML configuration error", e);
+			throw new DAOException("Error occurred while written data in XML: XML configuration error", e);
 		}
 		
 		return fl;

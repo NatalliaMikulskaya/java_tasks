@@ -72,11 +72,12 @@ public class NoteBook {
 	
 	@Override
 	public String toString(){
-		String result = "";
+		StringBuilder result;
 		
-		result = getClass().getName()+" @ noteBook: "+ listNotes.toString();
+		result = new StringBuilder(getClass().getName()+" @ noteBook: ");
+		result.append( (listNotes == null) ? "" : listNotes.toString());
 		
-		return result;
+		return result.toString();
 		
 	}
 	
