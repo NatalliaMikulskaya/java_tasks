@@ -7,14 +7,12 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.xerces.parsers.DOMParser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -46,12 +44,17 @@ public class DOMXMLParser {
 		
 			DOMParser parser = new DOMParser();
 			try{
+				LOG.info("DOM parsing started.");
+				
+				lib = new Library();
+				
 				parser.parse(fileName);
 				
 				Document doc = parser.getDocument();
 				Element root = doc.getDocumentElement();
 				
 				NodeList nodeList = root.getElementsByTagName("lib:book");
+				
 				Book book = null;
 				for (int i=0; i<nodeList.getLength(); i++){
 					book = new Book();
@@ -69,8 +72,10 @@ public class DOMXMLParser {
 					
 					setBookGenres(bookElement, "bookData:genre", book);
 					
+					lib.addBook(book);
 				}
 				
+				LOG.info("DOM parsing ended.");
 			}
 			catch(SAXException e){
 				LOG.error("Error occurred while create XML reader. "+e.getMessage());

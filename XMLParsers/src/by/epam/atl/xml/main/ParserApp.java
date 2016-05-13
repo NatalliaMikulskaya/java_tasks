@@ -7,6 +7,7 @@ import by.epam.atl.xml.bean.Library;
 import by.epam.atl.xml.bean.Book;
 import by.epam.atl.xml.dao.DOMXMLParser;
 import by.epam.atl.xml.dao.SAXParser;
+import by.epam.atl.xml.dao.STAXParser;
 
 public class ParserApp {
 	public static final Logger LOG = LogManager.getRootLogger();
@@ -18,27 +19,23 @@ public class ParserApp {
 			
 		saxExecute(fileIn);
 		
+		staxExecute(fileIn);
+		
 		domExecute(fileIn);
-		
-		
-		
+	
 
 	}
-	
 	
 	/*
 	 * Parse file by DOM parser
 	 */
 	private static void domExecute(String fName){
 		DOMXMLParser parser = new DOMXMLParser();
+		
 		Library lib = parser.parseXML(fName);
 		
-		if (lib != null){
-			System.out.println("DOM parser worked:");
-			printLibrary(lib);
-		} else {
-			System.err.println("Error occurred while DOM parser worked. See log.");
-		}
+		resultAlert("DOM", lib);
+		
 	}
 	
 	/*
@@ -46,13 +43,32 @@ public class ParserApp {
 	 */
 	private static void saxExecute(String fName){
 		SAXParser parser = new SAXParser();
+		
 		Library lib = parser.parseXML(fName);
 		
+		resultAlert("SAX", lib);
+		
+	}
+	
+	/*
+	 * Parse file by STAX parser
+	 */
+	private static void staxExecute(String fName){
+		STAXParser parser = new STAXParser();
+		
+		Library lib = parser.parseXML(fName);
+		
+		resultAlert("STAX", lib);
+		
+	}
+	
+	
+	public static void resultAlert(String parserName, Library lib){
 		if (lib != null){
-			System.out.println("SAX parser worked:");
+			System.out.println(parserName+" parser worked:");
 			printLibrary(lib);
 		} else {
-			System.err.println("Error occurred while SAX parser worked. See log.");
+			System.err.println("Error occurred while "+parserName+" parser worked. See log.");
 		}
 	}
 	
