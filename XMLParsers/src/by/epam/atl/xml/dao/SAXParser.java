@@ -30,7 +30,7 @@ public class SAXParser {
 		
 		File fl = new File(fileName);
 		
-		//checking if file exists and can be readed
+		//checking if file exists and can be read
 		if (fl.exists() && fl.isFile() && fl.canRead()){
 			try{
 				org.xml.sax.XMLReader reader =  XMLReaderFactory.createXMLReader();
