@@ -1,0 +1,5 @@
+package by.epam.atl.xml.bean;
+
+public enum LibraryTagName {
+	BOOK, BOOKNAME, AUTHOR, FIRSTNAME, SECONDNAME, PARENTNAME, GENRE, PUBLICATIONDATE, SERIESNAME, LIBRARY
+}

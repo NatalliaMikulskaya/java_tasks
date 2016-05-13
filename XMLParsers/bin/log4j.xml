@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE log4j:configuration PUBLIC "-//log4j/log4j Configuration//EN" "log4j.dtd"> 
+  
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">  
+<appender name="FILE" class="org.apache.log4j.RollingFileAppender"> 
+	<param name="append" value="true"/> 
+	<param name="File" value="log/MainApp.log" /> 
+	<param name="ImmediateFlush" value="true"/>
+	<param name="maxFileSize" value="1000KB"></param>
+	<param name="name" value="log" />
+	<layout class="org.apache.log4j.PatternLayout"> 
+		<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{2}:%L - %m%n"/> 
+	</layout> 
+</appender>     
+ 
+<root> 
+	<priority value ="DEBUG" /> 
+	<appender-ref ref="FILE" /> 
+</root> 
+</log4j:configuration>
+   

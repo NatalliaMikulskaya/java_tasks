@@ -1,0 +1,37 @@
+2016-05-12 17:10:04 INFO  dao.SAXHandler:129 - SAX parsing started
+2016-05-12 17:10:04 ERROR dao.SAXHandler:56 - ERROR: unknown tag bookData:bookName
+2016-05-12 17:13:35 INFO  dao.SAXHandler:137 - SAX parsing started
+2016-05-12 17:14:22 INFO  dao.SAXHandler:138 - SAX parsing started
+2016-05-12 17:14:49 INFO  dao.SAXHandler:139 - SAX parsing started
+2016-05-12 17:15:45 INFO  dao.SAXHandler:140 - SAX parsing started
+2016-05-12 17:18:38 INFO  dao.SAXHandler:140 - SAX parsing started
+2016-05-12 17:19:49 INFO  dao.SAXHandler:140 - SAX parsing started
+2016-05-12 17:20:48 INFO  dao.SAXHandler:140 - SAX parsing started
+2016-05-12 17:22:08 INFO  dao.SAXHandler:136 - SAX parsing started
+2016-05-12 17:24:41 INFO  dao.SAXHandler:141 - SAX parsing started
+2016-05-12 17:26:54 INFO  dao.SAXHandler:146 - SAX parsing started
+2016-05-12 17:26:54 ERROR dao.SAXHandler:116 - ERROR: can't parse string  2001-01-01 into Date format. 
+2016-05-12 17:27:19 INFO  dao.SAXHandler:146 - SAX parsing started
+2016-05-12 17:27:19 ERROR dao.SAXHandler:116 - ERROR: can't parse string  2001-01-01 into Date format. 
+2016-05-12 17:27:19 ERROR dao.SAXHandler:116 - ERROR: can't parse string  2000-06-13 into Date format. 
+2016-05-12 17:27:19 ERROR dao.SAXHandler:66 - ERROR: unknown tag lib:library
+2016-05-12 17:28:00 INFO  dao.SAXHandler:146 - SAX parsing started
+2016-05-12 17:28:00 ERROR dao.SAXHandler:116 - ERROR: can't parse string  2001-01-01 into Date format. 
+2016-05-12 17:28:00 ERROR dao.SAXHandler:116 - ERROR: can't parse string  2000-06-13 into Date format. 
+2016-05-12 17:28:00 ERROR dao.SAXHandler:128 - ERROR: unknown tag lib:library
+2016-05-12 17:28:00 INFO  dao.SAXHandler:47 - SAX parsing ended.
+2016-05-12 17:28:01 ERROR dao.SAXParser:54 - Error occurred while create XML reader. Feature 'http://xml.org/sax/feathures/validation' is not recognized.
+2016-05-12 17:29:19 INFO  dao.SAXHandler:146 - SAX parsing started
+2016-05-12 17:29:19 ERROR dao.SAXHandler:116 - ERROR: can't parse string  2001-01-01 into Date format. 
+2016-05-12 17:29:19 ERROR dao.SAXHandler:116 - ERROR: can't parse string  2000-06-13 into Date format. 
+2016-05-12 17:29:19 ERROR dao.SAXHandler:128 - ERROR: unknown tag lib:library
+2016-05-12 17:29:19 INFO  dao.SAXHandler:47 - SAX parsing ended.
+2016-05-12 17:29:19 ERROR dao.SAXParser:54 - Error occurred while create XML reader. Feature 'http://xml.org/sax/feathures/validation' is not recognized.
+2016-05-12 17:30:17 INFO  dao.SAXHandler:146 - SAX parsing started
+2016-05-12 17:30:17 ERROR dao.SAXHandler:116 - ERROR: can't parse string  2001-01-01 into Date format. 
+2016-05-12 17:30:17 ERROR dao.SAXHandler:116 - ERROR: can't parse string  2000-06-13 into Date format. 
+2016-05-12 17:30:17 ERROR dao.SAXHandler:128 - ERROR: unknown tag lib:library
+2016-05-12 17:30:17 INFO  dao.SAXHandler:47 - SAX parsing ended.
+2016-05-12 17:31:06 INFO  dao.SAXHandler:146 - SAX parsing started
+2016-05-12 17:31:06 ERROR dao.SAXHandler:128 - ERROR: unknown tag lib:library
+2016-05-12 17:31:06 INFO  dao.SAXHandler:47 - SAX parsing ended.
