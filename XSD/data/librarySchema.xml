@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:library xmlns:tns="http://www.example.org/librarySchema" xmlns:tns1="http://www.example.org/bookSchema" xmlns:tns2="http://www.example.org/personSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/librarySchema librarySchema.xsd ">
+  <tns:book>
+    <tns1:bookName>tns1:bookName</tns1:bookName>
+    <tns1:author>
+      <tns2:firstName>tns2:firstName</tns2:firstName>
+      <tns2:secondName>tns2:secondName</tns2:secondName>
+    </tns1:author>
+    <tns1:genre>drama</tns1:genre>
+    <tns1:publicationDate>2001-01-01</tns1:publicationDate>
+  </tns:book>
+</tns:library>

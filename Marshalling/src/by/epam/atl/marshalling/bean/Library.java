@@ -5,13 +5,16 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType (XmlAccessType.FIELD)
-@XmlType(name = "Library", propOrder = { "books" })
+@XmlType (namespace="http://www.example.org/lib")
+@XmlRootElement(name = "library")
 public class Library {
-	@XmlAttribute(required = true)
+	
+	@XmlElement(name = "book", type=Book.class, required = true)
 	private List<Book> books;
 		
 	public Library(){

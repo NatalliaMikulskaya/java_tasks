@@ -8,27 +8,36 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType (XmlAccessType.FIELD)
-@XmlType(name = "Book", propOrder = { "authors", "name", "datePublication", "genre", "series", "id"  })
+@XmlType (namespace="http://www.example.org/bookSchema")
+/*@XmlType( propOrder = {"id",  
+						"bookData:bookName", 
+						"bookData:author", 
+						"bookData:genre", 
+						"bookData:publicationDate",  
+						"bookData:seriesName" })*/
+@XmlRootElement(name = "book")
 public class Book {
-	@XmlAttribute(required = true)
+	@XmlElement(name = "author", type=Person.class, required = true)
 	private List<Person> authors;
 	
-	@XmlAttribute(required = true)
+	@XmlElement(name = "bookName", required = true)
 	private String name="";
 	
-	@XmlAttribute(required = true)
+	@XmlElement(name = "publicationDate", required = true)
 	private Date datePublication;
 	
-	@XmlAttribute(required = true)
+	@XmlElement(name = "genre", type=Genre.class, required = true)
 	private EnumSet<Genre> genre;
 	
-	@XmlAttribute(required = false)
+	@XmlElement(name = "seriesName", required = false)
 	private String series="";
 	
-	@XmlAttribute(required = true)
+	@XmlAttribute(name = "id", required = true)
 	private String id="";
 	
 	public Book(){

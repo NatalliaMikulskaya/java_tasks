@@ -33,7 +33,12 @@ public class LibraryMarshaller {
 				LOG.info("Start unmurshalling file "+fileName);
 				
 				Unmarshaller unmarsh = context.createUnmarshaller();
+				System.out.println("1");
+				
 				lib = (Library) unmarsh.unmarshal(fl);
+				System.out.println("2");
+				
+				System.out.println(lib.toString());
 			}
 			catch(JAXBException e){
 				LOG.error("ERROR: can't unmarshall file");

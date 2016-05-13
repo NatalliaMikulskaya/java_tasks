@@ -2,22 +2,32 @@ package by.epam.atl.marshalling.bean;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlAccessorType (XmlAccessType.FIELD)
-@XmlType(name = "Person", propOrder = { "firstName", "secondName", "parentName" })
+@XmlType (namespace="http://www.example.org/personSchema")
+@XmlAccessorType ( XmlAccessType.FIELD)
+/*@XmlType( propOrder = { "authorData:firstName",
+						"authorData:secondName", 
+						"authorData:parentName" })*/
+@XmlRootElement(name = "author")
 public class Person {
-	@XmlAttribute(required = true)
+	@XmlElementWrapper(name="author")
+	
+	@XmlElement(name = "firstName", required = true)
 	private String firstName="";
 	
-	@XmlAttribute(required = true)
+	
+	@XmlElement(name = "secondName", required = true)
 	private String secondName="";
 	
-	@XmlAttribute(required = false)
+	
+	@XmlElement(name = "parentName" , required = false)
 	private String parentName="";
 
-public Person(){
+	public Person(){
 		
 	}
 	
