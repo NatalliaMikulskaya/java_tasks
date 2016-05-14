@@ -8,41 +8,45 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlType (namespace="http://www.example.org/personSchema")
-@XmlAccessorType ( XmlAccessType.FIELD)
+//@XmlAccessorType ( XmlAccessType.FIELD)
 /*@XmlType( propOrder = { "authorData:firstName",
 						"authorData:secondName", 
 						"authorData:parentName" })*/
-@XmlRootElement(name = "author")
-public class Person {
-	@XmlElementWrapper(name="author")
+//@XmlRootElement(name = "author")
+@XmlRootElement
+public class Person2 {
+	//@XmlElementWrapper(name="author")
 	
 	
 	private String firstName="";
+	
+	
+	
 	private String secondName="";
+	
+	
+	
 	private String parentName="";
 
-	public Person(){
+	public Person2(){
 		
 	}
 	
-	public Person(String fName, String sName, String pName){
+	public Person2(String fName, String sName, String pName){
 		
 		firstName = fName;
 		secondName = sName;
 		parentName = pName;
 		
 	}
-	
 	@XmlElement(name = "firstName", required = true)
 	public void setFirstName(String fName){
 		firstName = fName;
 	}
-	
 	@XmlElement(name = "secondName", required = true)
 	public void setSecondName(String sName){
 		secondName = sName;
 	}
-	
 	@XmlElement(name = "parentName" , required = false)
 	public void setParentName(String pName){
 		parentName = pName;
@@ -86,7 +90,7 @@ public class Person {
 		if (obj == null) { return false; }
 		if (getClass() != obj.getClass()) { return false; }
 		
-		Person other = (Person) obj;
+		Person2 other = (Person2) obj;
 		
 		if (firstName == null) {
 			if (other.firstName != null){

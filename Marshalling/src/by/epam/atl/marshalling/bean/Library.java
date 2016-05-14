@@ -9,12 +9,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-@XmlAccessorType (XmlAccessType.FIELD)
+//@XmlAccessorType (XmlAccessType.FIELD)
 @XmlType (namespace="http://www.example.org/lib")
 @XmlRootElement(name = "library")
 public class Library {
-	
-	@XmlElement(name = "book", type=Book.class, required = true)
+
 	private List<Book> books;
 		
 	public Library(){
@@ -26,6 +25,7 @@ public class Library {
 		books = inBooks;
 	}
 	
+	@XmlElement(name = "book", type=Book.class, required = true)
 	public void setBooks(List<Book> inBooks){
 		books = inBooks;
 	}

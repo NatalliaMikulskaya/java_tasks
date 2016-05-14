@@ -21,26 +21,26 @@ import javax.xml.bind.annotation.XmlType;
 						"bookData:publicationDate",  
 						"bookData:seriesName" })*/
 @XmlRootElement(name = "book")
-public class Book {
+public class Book2 {
 	
-	private List<Person> authors;
+	private List<Person2> authors;
 	private String name="";
 	private Date datePublication;
 	private EnumSet<Genre> genre;
 	private String series="";
 	private String id="";
 	
-	public Book(){
-		authors = new ArrayList<Person>();
+	public Book2(){
+		authors = new ArrayList<Person2>();
 		genre = EnumSet.noneOf(Genre.class);
 	}
 	
-	@XmlElement(name = "author", type=Person.class, required = true)
-	public void setAuthors(List<Person> auth){
+	@XmlElement(name = "author", type=Person2.class, required = true)
+	public void setAuthors(List<Person2> auth){
 		authors = auth;
 	}
 	
-	public void addAuthor(Person auth){
+	public void addAuthor(Person2 auth){
 		authors.add(auth);
 	}
 	
@@ -73,12 +73,12 @@ public class Book {
 		id = bookID;
 	}
 	
-	public List<Person> getAuthors(){
+	public List<Person2> getAuthors(){
 		return authors;
 	}
 	
-	public Person getAuthorByPosition(int position){
-		Person retPerson = new Person();
+	public Person2 getAuthorByPosition(int position){
+		Person2 retPerson = new Person2();
 		
 		if ((authors != null ) && position < authors.size() ){
 			retPerson = authors.get(position);
@@ -158,7 +158,7 @@ public class Book {
 		
 		if (getClass() != obj.getClass()) { return false;}
 		
-		Book getObj = (Book) obj;
+		Book2 getObj = (Book2) obj;
 		
 		if ( getObj.authors == null) {
 			if (authors != null) {
