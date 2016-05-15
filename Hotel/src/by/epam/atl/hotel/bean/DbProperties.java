@@ -5,6 +5,7 @@ public class DbProperties {
 	private String location="";
 	private String login="";
 	private String password="";
+	private String dbName="";
 	
 	public DbProperties(){
 		
@@ -25,4 +26,27 @@ public class DbProperties {
 		password = pas;
 	}
 
+	public void setDbName(String name){
+		
+		dbName = name;
+	}
+	
+	public String getLocation(){
+		return location;
+	}
+	
+	public String getLoin(){
+		
+		return login;
+	}
+	
+	public String getPassword(){
+		
+		return password;
+	}
+	
+	public String getDbName(){
+		
+		return dbName;
+	}
 }
