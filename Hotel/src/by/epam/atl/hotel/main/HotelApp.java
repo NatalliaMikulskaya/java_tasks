@@ -10,7 +10,7 @@ public class HotelApp {
 	public static final Logger LOG = LogManager.getRootLogger();
 	
 	public static void main(String[] args) {
-		String fileName = "D:/git/java_tasks/Hotel/parameters";
+		String fileName = "C:/git_repository/java_tasks/Hotel/parameters";
 		
 		
 		HotelDAOImpl hd = new HotelDAOImpl();
