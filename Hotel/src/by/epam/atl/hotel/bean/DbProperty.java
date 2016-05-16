@@ -1,13 +1,13 @@
 package by.epam.atl.hotel.bean;
 
-public class DbProperties {
+public class DbProperty {
 
 	private String location="";
 	private String login="";
 	private String password="";
 	private String dbName="";
 	
-	public DbProperties(){
+	public DbProperty(){
 		
 	}
 	

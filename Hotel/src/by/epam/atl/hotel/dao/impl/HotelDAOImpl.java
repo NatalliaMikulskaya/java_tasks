@@ -6,6 +6,8 @@ import java.lang.invoke.MethodHandles;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
@@ -13,7 +15,7 @@ import java.util.Scanner;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import by.epam.atl.hotel.bean.DbProperties;
+import by.epam.atl.hotel.bean.DbProperty;
 import by.epam.atl.hotel.dao.HotelDAO;
 import by.epam.atl.hotel.dao.exception.DAOException;
 
@@ -21,52 +23,46 @@ public class HotelDAOImpl implements HotelDAO {
 
 	private static final Logger LOG = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 	
+	//private static String driverClassName = "com.mysql.jdbc.Driver";
+	private static DbProperty dbProperties = null;
+	
+	private static Connection conn;
+    private static Statement stmnt;
+    private static PreparedStatement pStmnt;
+    private static ResultSet rs;
+	
 	public HotelDAOImpl(){
 		
 	}
 	
 	@Override
 	public boolean createDatabase(String filePreferencies) throws DAOException  {
-		String driverClassName = "com.mysql.jdbc.Driver";
-		
-		DbProperties properties = parseProperties(filePreferencies);
 		
 		try{
-			
-			Driver driver = (Driver)Class.forName(driverClassName).newInstance();
-			LOG.info("Driver was created... ");
-		    DriverManager.registerDriver(driver);
-		    LOG.info("Driver was registered... ");
-		    
-		    Connection conn = DriverManager.getConnection(properties.getLocation(), properties.getLoin(), properties.getPassword());
-		    
-		    LOG.info("Connection was created... ");
-		    
+
 		    // Create BD
-		    String query = "CREATE DATABASE IF NOT EXISTS " + properties.getDbName();
-		    Statement stmnt = conn.createStatement();
+		    String query = "CREATE DATABASE IF NOT EXISTS " + dbProperties.getDbName();
+		    stmnt = conn.createStatement();
 		    
 		    stmnt.executeUpdate(query);
 		       
 		    LOG.info("Query was executed... ");
 		    
 		    // choose database
-		    conn.setCatalog(properties.getDbName());
+		    conn.setCatalog(dbProperties.getDbName());
 			
 		    //create table with permissions
-		    if (!createPermissions(conn)){
+		    if (!createPermissions()){
 		    	throw new DAOException("Error occurred while table Permissions was created");
 		    }
 		    
-		    stmnt.close();
-		    conn.close();
+		    //create table with users
+		    if (!createUsers()){
+		    	throw new DAOException("Error occurred while table Permissions was created");
+		    }
+		    
+
 			return true;
-		}
-		catch(InstantiationException |ClassNotFoundException e){
-			throw new DAOException("Can't create connection.", e);
-		}
-		catch(IllegalAccessException e){
-			throw new DAOException("Can't create access to MySQL.", e);
 		}
 		catch (SQLException e){
 			throw new DAOException("Can't create connection to database.", e);
@@ -75,58 +71,13 @@ public class HotelDAOImpl implements HotelDAO {
 		
 	}
 	
-	private DbProperties parseProperties(String fileName) throws DAOException{
-		DbProperties dp = new DbProperties();
-		
-		File fl = new File(fileName);
-		
-		if (fl.exists() && fl.isFile() && fl.canRead()){
-			try (Scanner sc = new Scanner(fl)) {
-				
-				 while (sc.hasNextLine()){
-					 String line = sc.nextLine();
-					 
-					 int position = line.indexOf("=");
-					 if (position == -1){
-						 continue;
-					 }
-					 
-					 if (line.startsWith("location")) {
-						dp.setLocation(line.substring(position+1).trim()); 
-					 }
-					 
-					 if (line.startsWith("login")) {
-						dp.setLogin(line.substring(position+1).trim()); 
-					 }
-					 
-					 if (line.startsWith("password")) {
-						dp.setPassword(line.substring(position+1).trim()); 
-					 }
-					 
-					 if (line.startsWith("databasename")) {
-						dp.setDbName(line.substring(position+1).trim()); 
-					 }
-				 }
-				
-			}
-			catch (FileNotFoundException e){
-				throw new DAOException("File "+fileName+" not found.", e);
-			}
-			
-		}
-		else {
-			throw new DAOException("Can't read file whith properties.");
-		}
-		
-		return dp;
-	}
-
 	
-	private boolean createPermissions(Connection con) throws DAOException{
+	private boolean createPermissions() throws DAOException{
 		
 		try {
 			
-			Statement stmnt = con.createStatement();
+			stmnt = conn.createStatement();
+			
 			
 			//create table 
 			String query = "CREATE TABLE permissions (id  INT NOT NULL AUTO_INCREMENT,"
@@ -136,25 +87,77 @@ public class HotelDAOImpl implements HotelDAO {
 			    
 			stmnt.executeUpdate(query);
 			 
-			//add data into table
-			query = "INSERT INTO permissions (permission) VALUES ('Administrator');" ;
-
-			stmnt.executeUpdate(query); 
-			 
-			query = "INSERT INTO permissions (permission) VALUES ('Look for rooms');" ;
-
-			stmnt.executeUpdate(query); 
+			query = "INSERT INTO permissions (permission) VALUES (?);" ;
 			
-			query = "INSERT INTO permissions (permission) VALUES ('Do booking');" ;
+			pStmnt = conn.prepareStatement(query);
+			pStmnt.setString(1, "Administrator");
+			pStmnt.executeUpdate();
+			
+			pStmnt.setString(1, "Look for rooms");
+			pStmnt.executeUpdate();
+			
+			pStmnt.setString(1, "Do booking");
+			pStmnt.executeUpdate();
 
-			stmnt.executeUpdate(query);
 			
 			stmnt.close();
+			pStmnt.close();
 		}
 		catch (SQLException e){
 			throw new DAOException("Error occurred while table Permissions was created", e);
 		}
 		return true;
 	}
+
+	
+private boolean createUsers() throws DAOException{
+		
+		try {
+			
+			stmnt = conn.createStatement();
+			
+			
+			//create table 
+			String query = "CREATE TABLE users (id  INT NOT NULL AUTO_INCREMENT,"
+					+ " username VARCHAR(300) NOT NULL,"
+					+ " userlogin CHAR(20) NOT NULL,"
+					+ " userpassword VARCHAR(16) NOT NULL,"
+					+ " isBanned BOOL,"
+			 		+ " permissions INT,"
+			 		+ " PRIMARY KEY (id));" ;
+			
+			    
+			stmnt.executeUpdate(query);
+			 
+			query = "INSERT INTO users (username, userlogin, userpassword, isBanned) VALUES (?,?,?,?);" ;
+			
+			pStmnt = conn.prepareStatement(query);
+			pStmnt.setString(1, "'Administrator'");
+			pStmnt.setString(2, "'Admin'");
+			pStmnt.setString(3, "'111'");
+			pStmnt.setString(4, "0");
+			pStmnt.executeUpdate();
+			
+			//get id for added string from {users}
+			query = "SELECT ID FROM users WHERE username = 'Administrator'";
+			
+			rs = stmnt.executeQuery(query);
+			rs.next();
+			
+			int adminID = rs.getInt("id"); // id for Administrator
+				
+			//add permission for administrator
+							
+			
+			
+			stmnt.close();
+			pStmnt.close();
+		}
+		catch (SQLException e){
+			throw new DAOException("Error occurred while table Permissions was created", e);
+		}
+		return true;
+	}
+	
 	
 }
