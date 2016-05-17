@@ -1,20 +1,26 @@
 package by.epam.atl.hotel.bean;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
 
-public class User {
+public class User implements Serializable{
+	
+	// Constants ------------------------------------
+    private static final long serialVersionUID = 1L;
+
+    // Properties -----------------------------------
 	private String userName;
 	private int userID = 0;
 	private String userLogin;
 	private String userPassword;
-	private List<Permission> access;
+	private TypeUser type;
+	private String email;
 	private boolean isBanned = false;
 	
 	public User(){
-		access = new ArrayList<Permission>();
+		
 	}
 	
+	// Getters/setters -------------------------------
 	public void setUserName(String name){
 		userName = name;
 	}
@@ -23,7 +29,7 @@ public class User {
 		userID = id;
 	}
 	
-	public void serUserLogin(String login){
+	public void setUserLogin(String login){
 		userLogin = login;
 	}
 	
@@ -31,16 +37,16 @@ public class User {
 		userPassword = password;
 	}
 	
-	public void setAccess(List<Permission> rights){
-		access = rights;
-	}
-	
-	public void addAccess(Permission p){
-		access.add(p);
+	public void setType(TypeUser userType){
+		type = userType;
 	}
 	
 	public void setIsBanned(boolean flagBan){
 		isBanned = flagBan;
+	}
+	
+	public void setEmail(String mail){
+		email = mail;
 	}
 	
 	public String getUserName(){
@@ -59,14 +65,19 @@ public class User {
 		return userPassword;
 	}
 	
-	public List<Permission> getAccess(){
-		return access;
+	public TypeUser getType(){
+		return type;
 	}
 	
 	public boolean isBanned(){
 		return isBanned;
 	}
 	
+	public String getEmail(){
+		return email;
+	}
+	
+	// Object overrides --------------------------
 	@Override
 	public int hashCode(){
 		int prime = 47;
@@ -76,7 +87,8 @@ public class User {
 		result = result * prime + userID;
 		result = result * prime + ((userLogin == null) ? 0 : userLogin.hashCode());
 		result = result * prime + ((userPassword == null) ? 0 : userPassword.hashCode());
-		result = result * prime + ((access == null) ? 0 : access.hashCode());
+		result = result * prime + ((type == null) ? 0 : type.hashCode());
+		result = result * prime + ((email == null) ? 0 : email.hashCode());
 		result = result * prime + (isBanned ? 1231 : 1237);
 		
 		return result;
@@ -97,11 +109,11 @@ public class User {
 		}
 		
 		User other = (User) obj;
-		if (access == null) {
-			if (other.access != null) {
+		if (type == null) {
+			if (other.type != null) {
 				return false;
 			}
-		} else if (!access.equals(other.access)) {
+		} else if (!type.equals(other.type)) {
 			return false;
 		}
 		
@@ -137,6 +149,15 @@ public class User {
 			return false;
 		}
 		
+
+		if (email == null) {
+			if (other.email != null){
+				return false;
+			}
+		} else if (!email.equals(other.email)){
+			return false;
+		}
+		
 		return true;
 	}
 	
@@ -149,8 +170,9 @@ public class User {
 		result.append("[ userName:  "+ userName + ", \n");
 		result.append("[ userLogin:  "+ userLogin + ", \n");
 		result.append("[ userPassword:  "+ userPassword + ", \n");
+		result.append("[ email:  "+ email + ", \n");
 		result.append("[ isBanned:  "+ isBanned + ", \n");
-		result.append("[ access:  "+ access.toString() + "] \n");
+		result.append("[ access:  "+ type.toString() + "] \n");
 		
 		return result.toString();
 	}
