@@ -10,14 +10,13 @@ import by.epam.atl.hotel.dao.impl.ConnectionFactory;
 
 public class HotelApp {
 	public static final Logger LOG = LogManager.getRootLogger();
-	private static final String DB_NAME = "hotel"; 
-	
+		
 	public static void main(String[] args) {
 		
 		try {
 			ConnectionFactory factory = ConnectionFactory.getInstance("hotel.jdbc");
 			
-			DatabaseDAO db = factory.getDatabaseDAO(DB_NAME);
+			DatabaseDAO db = factory.getDatabaseDAO();
 			
 			db.createDatabase();
 			LOG.info("Database was created successfully.");

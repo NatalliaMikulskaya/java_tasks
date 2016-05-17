@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 
 import by.epam.atl.hotel.dao.DAOProperties;
 import by.epam.atl.hotel.dao.DatabaseDAO;
+import by.epam.atl.hotel.dao.RoomDAO;
 import by.epam.atl.hotel.dao.UserDAO;
 import by.epam.atl.hotel.dao.exception.DAOException;
 
@@ -77,8 +78,12 @@ public abstract class ConnectionFactory {
         return new UserDAOImpl(this);
     }
 	
-	public DatabaseDAO getDatabaseDAO(String dbName) {
-        return new DatabaseDAOImpl(this, dbName);
+	public DatabaseDAO getDatabaseDAO() {
+        return new DatabaseDAOImpl(this);
+    }
+	
+	public RoomDAO getRommDAO() {
+        return new RoomDAOImpl(this);
     }
 	
 }

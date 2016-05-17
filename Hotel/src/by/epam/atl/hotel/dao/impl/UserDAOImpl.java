@@ -17,12 +17,9 @@ import by.epam.atl.hotel.dao.exception.DAOException;
 public class UserDAOImpl implements UserDAO{
 	
 	// Constants ----------------------------------------------------------------------------------
-    private static final String SQL_FIND_BY_ID =
-        "SELECT id, name, email, login, password, banned, access  FROM users WHERE id = ?";
-    private static final String SQL_FIND_BY_EMAIL_AND_PASSWORD =
-        "SELECT id, name, email, login, password, banned, access FROM users WHERE email = ? AND password = (?)";
-    private static final String SQL_LIST_ORDER_BY_ID =
-        "SELECT id, name, email, login, password, banned, access FROM users ORDER BY id";
+    private static final String SQL_FIND_BY_ID = "SELECT *  FROM users WHERE id = ?";
+    private static final String SQL_FIND_BY_EMAIL_AND_PASSWORD = "SELECT * FROM users WHERE email = ? AND password = (?)";
+    private static final String SQL_LIST_ORDER_BY_ID = "SELECT * FROM users ORDER BY id";
     private static final String SQL_INSERT =
         "INSERT INTO users (name, login, password, email, access) VALUES (?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE =
@@ -213,23 +210,6 @@ public class UserDAOImpl implements UserDAO{
 		
 	}
 
-	private static User map(ResultSet resultSet) throws SQLException {
-        User user = new User();
-        
-        user.setUserID(resultSet.getInt("id"));
-        user.setEmail(resultSet.getString("email"));
-        user.setUserName(resultSet.getString("name"));
-        user.setUserPassword(resultSet.getString("password"));
-        user.setUserLogin(resultSet.getString("login"));
-        TypeUser t = TypeUser.valueOf(resultSet.getString("access"));
-        user.setType(t);
-        user.setIsBanned(resultSet.getBoolean("ban"));
-        
-        return user;
-    }
-
-
-
 	@Override
 	public boolean existLogin(String login) throws DAOException {
 		Object[] values = { 
@@ -295,4 +275,19 @@ public class UserDAOImpl implements UserDAO{
 	   	}
 		
 	}
+	
+	private static User map(ResultSet resultSet) throws SQLException {
+        User user = new User();
+        
+        user.setUserID(resultSet.getInt("id"));
+        user.setEmail(resultSet.getString("email"));
+        user.setUserName(resultSet.getString("name"));
+        user.setUserPassword(resultSet.getString("password"));
+        user.setUserLogin(resultSet.getString("login"));
+        TypeUser t = TypeUser.valueOf(resultSet.getString("access"));
+        user.setType(t);
+        user.setIsBanned(resultSet.getBoolean("ban"));
+        
+        return user;
+    }
 }
