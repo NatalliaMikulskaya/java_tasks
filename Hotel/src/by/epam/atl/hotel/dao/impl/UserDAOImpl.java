@@ -17,24 +17,27 @@ import by.epam.atl.hotel.dao.exception.DAOException;
 public class UserDAOImpl implements UserDAO{
 	
 	// Constants ----------------------------------------------------------------------------------
-    private static final String SQL_FIND_BY_ID = "SELECT *  FROM users WHERE id = ?";
-    private static final String SQL_FIND_BY_EMAIL_AND_PASSWORD = "SELECT * FROM users WHERE email = ? AND password = (?)";
-    private static final String SQL_LIST_ORDER_BY_ID = "SELECT * FROM users ORDER BY id";
+    private static final String SQL_FIND_BY_ID = "SELECT *  FROM hotel.users WHERE id = ?";
+    private static final String SQL_FIND_BY_EMAIL_AND_PASSWORD = "SELECT * FROM hotel.users WHERE email = ? AND password = (?)";
+    private static final String SQL_LIST_ORDER_BY_ID = "SELECT * FROM hotel.users ORDER BY id";
     private static final String SQL_INSERT =
-        "INSERT INTO users (name, login, password, email, access) VALUES (?, ?, ?, ?, ?)";
+        "INSERT INTO hotel.users (name, login, password, email, access, ban) VALUES (?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE =
-        "UPDATE users SET email = ?, name = ?, login = ?, password = ?, access = ?, banned = ? WHERE id = ?";
-    private static final String SQL_DELETE = "DELETE FROM users WHERE id = ?";
-    private static final String SQL_EXIST_EMAIL = "SELECT id FROM users WHERE email = ?";
-    private static final String SQL_EXIST_LOGIN = "SELECT id FROM users WHERE login = ?";
-    private static final String SQL_CHANGE_PASSWORD = "UPDATE users SET password = ? WHERE id = ?";
-    private static final String SQL_BAN_UNBAN_USER = "UPDATE users SET banned = ? WHERE id = ?";
-    private static final String SQL_GET_ACCESS_USER = "UPDATE users SET type = ? WHERE id = ?";
+        "UPDATE hotel.users SET email = ?, name = ?, login = ?, password = ?, access = ?, ban = ? WHERE id = ?";
+    private static final String SQL_DELETE = "DELETE FROM hotel.users WHERE id = ?";
+    private static final String SQL_EXIST_EMAIL = "SELECT id FROM hotel.users WHERE email = ?";
+    private static final String SQL_EXIST_LOGIN = "SELECT id FROM hotel.users WHERE login = ?";
+    private static final String SQL_CHANGE_PASSWORD = "UPDATE hotel.users SET password = ? WHERE id = ?";
+    private static final String SQL_BAN_UNBAN_USER = "UPDATE hotel.users SET ban = ? WHERE id = ?";
+    private static final String SQL_GET_ACCESS_USER = "UPDATE hotel.users SET type = ? WHERE id = ?";
+    
+    private static String DB_NAME;
     
     private ConnectionFactory conFactory;
     
-    public UserDAOImpl(ConnectionFactory factory){
+    public UserDAOImpl(ConnectionFactory factory, String dbName){
     	conFactory = factory;
+    	DB_NAME = dbName;
     }
     
 	@Override
@@ -51,12 +54,13 @@ public class UserDAOImpl implements UserDAO{
         User user = null;
 
         try (Connection connection = conFactory.getConnection();
-            PreparedStatement statement = DAOUtil.prepareStatement(connection, sql, false, values);
+             PreparedStatement statement = DAOUtil.prepareStatement(connection, sql, false, values);
             ResultSet resultSet = statement.executeQuery();) 
         {
-            if (resultSet.next()) {
+        	if (resultSet.next()) {
                 user = map(resultSet);
             }
+        	
         } catch (SQLException e) {
             throw new DAOException(e);
         }
@@ -90,9 +94,12 @@ public class UserDAOImpl implements UserDAO{
         }
 
         Object[] values = {
-            user.getEmail(),
-            user.getUserPassword(),
-            user.getUserName()
+       		user.getUserName(),
+       		user.getUserLogin(),
+       		user.getUserPassword(),
+       		user.getEmail(),
+            user.getType().toString(),
+            false
         };
 
         try (

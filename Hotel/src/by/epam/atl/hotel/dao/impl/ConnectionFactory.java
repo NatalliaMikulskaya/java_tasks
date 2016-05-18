@@ -22,6 +22,8 @@ public abstract class ConnectionFactory {
     private static final String PROPERTY_USERNAME = "username";
     private static final String PROPERTY_PASSWORD = "password";
     
+    private static String DB_NAME = "hotel";
+    
     
     //private static ConnectionFactory instance = new ConnectionFactory();
     
@@ -73,17 +75,16 @@ public abstract class ConnectionFactory {
 	 
 	abstract Connection getConnection() throws SQLException;
 	 
-	
 	public UserDAO getUserDAO() {
-        return new UserDAOImpl(this);
+        return new UserDAOImpl(this, DB_NAME);
     }
 	
 	public DatabaseDAO getDatabaseDAO() {
-        return new DatabaseDAOImpl(this);
+        return new DatabaseDAOImpl(this, DB_NAME);
     }
 	
 	public RoomDAO getRommDAO() {
-        return new RoomDAOImpl(this);
+        return new RoomDAOImpl(this, DB_NAME);
     }
 	
 }

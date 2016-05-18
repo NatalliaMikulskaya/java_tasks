@@ -16,7 +16,7 @@ import by.epam.atl.hotel.dao.RoomDAO;
 import by.epam.atl.hotel.dao.exception.DAOException;
 
 public class RoomDAOImpl implements RoomDAO {
-
+	
 	// Constants ----------------------------------------------------------------------------------
     private static final String SQL_FIND_BY_ID =
         "SELECT *  FROM rooms WHERE id = ?";
@@ -38,19 +38,22 @@ public class RoomDAOImpl implements RoomDAO {
     private static final String SQL_LIST_AVAILABLE_ROOMS_BY_CAPACITY_AND_SMOKE =
     		"SELECT * FROM rooms WHERE available = ? AND capacity = ? AND smoke = ?  ORDER BY id";
     private static final String SQL_INSERT =
-        "INSERT INTO rooms (capacity, type, canSmoke, available) VALUES (?, ?, ?, ?)";
+        "INSERT INTO rooms (capacity, type, smoke, available) VALUES (?, ?, ?, ?)";
     private static final String SQL_UPDATE =
-        "UPDATE rooms SET capacity = ?, type = ?, canSmoke = ?, available = ? WHERE id = ?";
+        "UPDATE rooms SET capacity = ?, type = ?, smoke = ?, available = ? WHERE id = ?";
     private static final String SQL_DELETE = "DELETE FROM rooms WHERE id = ?";
     private static final String SQL_CLOSE_ROOM =
             "UPDATE rooms SET available = false WHERE id = ?";
     private static final String SQL_OPEN_ROOM =
             "UPDATE rooms SET available = true WHERE id = ?";
 	
+    private static String DB_NAME;
+    
 	private ConnectionFactory conFactory;
     
-    public RoomDAOImpl(ConnectionFactory factory){
+    public RoomDAOImpl(ConnectionFactory factory, String dbName){
     	conFactory = factory;
+    	DB_NAME = dbName;
     }
     
 	@Override

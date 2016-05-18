@@ -24,26 +24,35 @@ public class DatabaseDAOImpl implements DatabaseDAO {
 													+ " ban BOOL,"
 													+ " access VARCHAR(100),"
 													+ " PRIMARY KEY (id));";
-	private static String DB_NAME="";
+	
+	private static final String SQL_CREATE_ROOMS = "CREATE TABLE rooms (id  INT NOT NULL AUTO_INCREMENT,"
+													+ " capacity INT NOT NULL,"
+													+ " type CHAR(40) NOT NULL,"
+													+ " smoke BOOL,"
+													+ " available  BOOL,"
+													+ " PRIMARY KEY (id));";
+	
+	private static String DB_NAME;
 	
 	private ConnectionFactory conFactory;
 	
-	public DatabaseDAOImpl(ConnectionFactory factory) {
+	public DatabaseDAOImpl(ConnectionFactory factory, String dbName) {
 		conFactory = factory;
+		DB_NAME = dbName;
 	}
 		
-	public DatabaseDAOImpl(ConnectionFactory factory, String databaseName) {
+	/*public DatabaseDAOImpl(ConnectionFactory factory, String databaseName) {
 		this(factory);
 		
 		DB_NAME = databaseName;
-	}
+	}*/
 	 
 	@Override
 	public void createDatabase() throws DAOException {
 		
-		if (DB_NAME.isEmpty()){
+		/*if (DB_NAME.isEmpty()){
 			throw new DAOException("Database name not specified.");
-		}
+		}*/
 		
 		try (Connection connection = conFactory.getConnection();
 			Statement statement = connection.createStatement())
@@ -59,7 +68,12 @@ public class DatabaseDAOImpl implements DatabaseDAO {
 		    
 		    //create table {users}
 		    if (!createUsers(connection)){
-		    	throw new DAOException("Error occurred while table User was created");
+		    	throw new DAOException("Error occurred while table {Users} was created");
+		    }
+		    
+		    //create table {rooms}
+		    if (!createRooms(connection)){
+		    	throw new DAOException("Error occurred while table {Rooms} was created");
 		    }
             
 		}
@@ -85,6 +99,32 @@ public class DatabaseDAOImpl implements DatabaseDAO {
             }
 
             LOG.info("Table {users} was created... ");
+            
+            return true;
+		}
+		catch (SQLException e){
+			throw new DAOException("Can't create connection to database.", e);
+		}
+		
+		
+	}
+	
+	/*
+	 * Create table {Rooms}
+	 * @return true if table was created successfully
+	 */
+	private boolean createRooms(Connection connection) throws DAOException{
+		
+		try (Statement statement = connection.createStatement())
+		{
+			statement.executeUpdate(SQL_CREATE_ROOMS);
+			
+			SQLWarning warning = statement.getWarnings();
+            if (warning != null) {
+                throw new DAOException(warning.getMessage());
+            }
+
+            LOG.info("Table {rooms} was created... ");
             
             return true;
 		}
