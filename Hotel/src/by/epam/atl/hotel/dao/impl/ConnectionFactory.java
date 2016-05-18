@@ -75,7 +75,7 @@ public abstract class ConnectionFactory {
 	 
 	abstract Connection getConnection() throws SQLException;
 	 
-	public UserDAO getUserDAO() {
+	/*public UserDAO getUserDAO() {
         return new UserDAOImpl(this, DB_NAME);
     }
 	
@@ -85,7 +85,7 @@ public abstract class ConnectionFactory {
 	
 	public RoomDAO getRommDAO() {
         return new RoomDAOImpl(this, DB_NAME);
-    }
+    }*/
 	
 }
 

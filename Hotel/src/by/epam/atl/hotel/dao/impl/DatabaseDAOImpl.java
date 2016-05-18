@@ -34,10 +34,10 @@ public class DatabaseDAOImpl implements DatabaseDAO {
 	
 	private static String DB_NAME;
 	
-	private ConnectionFactory conFactory;
+	private Connection connection;
 	
-	public DatabaseDAOImpl(ConnectionFactory factory, String dbName) {
-		conFactory = factory;
+	public DatabaseDAOImpl(Connection con, String dbName) {
+		connection = con;
 		DB_NAME = dbName;
 	}
 		
@@ -54,8 +54,7 @@ public class DatabaseDAOImpl implements DatabaseDAO {
 			throw new DAOException("Database name not specified.");
 		}*/
 		
-		try (Connection connection = conFactory.getConnection();
-			Statement statement = connection.createStatement())
+		try (Statement statement = connection.createStatement())
 		{
 			statement.executeUpdate(SQL_CREATE_DATABASE);
 			
@@ -67,12 +66,12 @@ public class DatabaseDAOImpl implements DatabaseDAO {
             LOG.info("Database set as default... ");
 		    
 		    //create table {users}
-		    if (!createUsers(connection)){
+		    if (!createUsers()){
 		    	throw new DAOException("Error occurred while table {Users} was created");
 		    }
 		    
 		    //create table {rooms}
-		    if (!createRooms(connection)){
+		    if (!createRooms()){
 		    	throw new DAOException("Error occurred while table {Rooms} was created");
 		    }
             
@@ -87,7 +86,7 @@ public class DatabaseDAOImpl implements DatabaseDAO {
 	 * Create table {Users}
 	 * @return true if table was created successfully
 	 */
-	private boolean createUsers(Connection connection) throws DAOException{
+	private boolean createUsers() throws DAOException{
 		
 		try (Statement statement = connection.createStatement())
 		{
@@ -113,7 +112,7 @@ public class DatabaseDAOImpl implements DatabaseDAO {
 	 * Create table {Rooms}
 	 * @return true if table was created successfully
 	 */
-	private boolean createRooms(Connection connection) throws DAOException{
+	private boolean createRooms() throws DAOException{
 		
 		try (Statement statement = connection.createStatement())
 		{

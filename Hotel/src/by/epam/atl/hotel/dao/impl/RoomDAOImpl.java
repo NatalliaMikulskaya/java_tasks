@@ -9,8 +9,6 @@ import java.util.List;
 
 import by.epam.atl.hotel.bean.Room;
 import by.epam.atl.hotel.bean.TypeRoom;
-import by.epam.atl.hotel.bean.TypeUser;
-import by.epam.atl.hotel.bean.User;
 import by.epam.atl.hotel.dao.DAOUtil;
 import by.epam.atl.hotel.dao.RoomDAO;
 import by.epam.atl.hotel.dao.exception.DAOException;
@@ -49,10 +47,10 @@ public class RoomDAOImpl implements RoomDAO {
 	
     private static String DB_NAME;
     
-	private ConnectionFactory conFactory;
+	private Connection connection;
     
-    public RoomDAOImpl(ConnectionFactory factory, String dbName){
-    	conFactory = factory;
+    public RoomDAOImpl(Connection con, String dbName){
+    	connection = con;
     	DB_NAME = dbName;
     }
     
@@ -65,9 +63,7 @@ public class RoomDAOImpl implements RoomDAO {
 	public List<Room> list() throws DAOException {
 		List<Room> rooms = new ArrayList<Room>();
 
-        try (
-            Connection connection = conFactory.getConnection();
-            PreparedStatement statement = connection.prepareStatement(SQL_LIST_ORDER_BY_ID);
+        try (PreparedStatement statement = connection.prepareStatement(SQL_LIST_ORDER_BY_ID);
             ResultSet resultSet = statement.executeQuery();
         ) {
             while (resultSet.next()) {
@@ -88,9 +84,7 @@ public class RoomDAOImpl implements RoomDAO {
 			available	
 		};
 
-        try (
-            Connection connection = conFactory.getConnection();
-            PreparedStatement statement = DAOUtil.prepareStatement(connection,SQL_LIST_AVAILABLE_ROOMS, true, values);
+        try (PreparedStatement statement = DAOUtil.prepareStatement(connection,SQL_LIST_AVAILABLE_ROOMS, true, values);
             ResultSet resultSet = statement.executeQuery();
         ) {
             while (resultSet.next()) {
@@ -112,9 +106,7 @@ public class RoomDAOImpl implements RoomDAO {
 			canSmoke
 		};
 
-        try (
-            Connection connection = conFactory.getConnection();
-            PreparedStatement statement = DAOUtil.prepareStatement(connection,SQL_LIST_AVAILABLE_ROOMS_BY_SMOKE, true, values);
+        try (PreparedStatement statement = DAOUtil.prepareStatement(connection,SQL_LIST_AVAILABLE_ROOMS_BY_SMOKE, true, values);
             ResultSet resultSet = statement.executeQuery();
         ) {
             while (resultSet.next()) {
@@ -137,13 +129,9 @@ public class RoomDAOImpl implements RoomDAO {
 			canSmoke
 		};
 
-        try (
-            Connection connection = conFactory.getConnection();
-            
-        		PreparedStatement statement = 
+        try (PreparedStatement statement = 
             	DAOUtil.prepareStatement(connection,SQL_LIST_AVAILABLE_ROOMS_BY_TYPE_AND_SMOKE, true, values);
-            
-        		ResultSet resultSet = statement.executeQuery())
+       		ResultSet resultSet = statement.executeQuery())
         {
             while (resultSet.next()) {
             	rooms.add(map(resultSet));
@@ -166,9 +154,7 @@ public class RoomDAOImpl implements RoomDAO {
 			canSmoke
 		};
 
-        try (
-            Connection connection = conFactory.getConnection();
-            PreparedStatement statement = 
+        try ( PreparedStatement statement = 
             	DAOUtil.prepareStatement(connection,SQL_LIST_AVAILABLE_ROOMS_BY_TYPE_AND_SMOKE_AND_CAPACITY, true, values);
             ResultSet resultSet = statement.executeQuery())
         {
@@ -192,9 +178,7 @@ public class RoomDAOImpl implements RoomDAO {
 			capacity
 		};
 
-        try (
-            Connection connection = conFactory.getConnection();
-            PreparedStatement statement = 
+        try (PreparedStatement statement = 
             	DAOUtil.prepareStatement(connection,SQL_LIST_AVAILABLE_ROOMS_BY_TYPE_AND_CAPACITY, true, values);
             ResultSet resultSet = statement.executeQuery())
         {
@@ -217,9 +201,7 @@ public class RoomDAOImpl implements RoomDAO {
 			capacity
 		};
 
-        try (
-            Connection connection = conFactory.getConnection();
-            PreparedStatement statement = 
+        try (PreparedStatement statement = 
             	DAOUtil.prepareStatement(connection,SQL_LIST_AVAILABLE_ROOMS_BY_CAPACITY, true, values);
             ResultSet resultSet = statement.executeQuery())
         {
@@ -242,9 +224,7 @@ public class RoomDAOImpl implements RoomDAO {
 			type
 		};
 
-        try (
-            Connection connection = conFactory.getConnection();
-            PreparedStatement statement = 
+        try (PreparedStatement statement = 
             	DAOUtil.prepareStatement(connection,SQL_LIST_AVAILABLE_ROOMS_BY_TYPE, true, values);
             ResultSet resultSet = statement.executeQuery())
         {
@@ -268,9 +248,7 @@ public class RoomDAOImpl implements RoomDAO {
 			canSmoke
 		};
 
-        try (
-            Connection connection = conFactory.getConnection();
-            PreparedStatement statement = 
+        try (PreparedStatement statement = 
             	DAOUtil.prepareStatement(connection,SQL_LIST_AVAILABLE_ROOMS_BY_CAPACITY_AND_SMOKE, true, values);
             ResultSet resultSet = statement.executeQuery())
         {
@@ -297,10 +275,8 @@ public class RoomDAOImpl implements RoomDAO {
         	room.isAvailable()
         };
 
-        try (
-            Connection connection = conFactory.getConnection();
-            PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_INSERT, true, values);
-        ) {
+        try ( PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_INSERT, true, values) )
+        {
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
                 throw new DAOException("Creating room failed, no rows affected.");
@@ -333,10 +309,8 @@ public class RoomDAOImpl implements RoomDAO {
         	room.getId()
         };
 
-        try (
-            Connection connection = conFactory.getConnection();
-            PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_UPDATE, true, values);
-        ) {
+        try (PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_UPDATE, true, values))
+        {
         	int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
             	throw new DAOException("Updating room failed, no rows affected.");
@@ -353,8 +327,7 @@ public class RoomDAOImpl implements RoomDAO {
 			room.getId()
 		};
 
-	    try (Connection connection = conFactory.getConnection();
-	          PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_DELETE, false, values))
+	    try ( PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_DELETE, false, values))
 	    {
 	        int affectedRows = statement.executeUpdate();
 	        if (affectedRows == 0) {
@@ -374,8 +347,7 @@ public class RoomDAOImpl implements RoomDAO {
 			 throw new DAOException("Room is already closed.");
 		}
 		
-		try (Connection connection = conFactory.getConnection();
-			PreparedStatement statement = connection.prepareStatement(SQL_CLOSE_ROOM))
+		try (PreparedStatement statement = connection.prepareStatement(SQL_CLOSE_ROOM))
 	    {
 		    int affectedRows = statement.executeUpdate();
 		    if (affectedRows == 0) {
@@ -393,8 +365,7 @@ public class RoomDAOImpl implements RoomDAO {
 			 throw new DAOException("Room is already open.");
 		}
 		
-		try (Connection connection = conFactory.getConnection();
-			PreparedStatement statement = connection.prepareStatement(SQL_OPEN_ROOM))
+		try (PreparedStatement statement = connection.prepareStatement(SQL_OPEN_ROOM))
 	    {
 		    int affectedRows = statement.executeUpdate();
 		    if (affectedRows == 0) {
@@ -409,8 +380,7 @@ public class RoomDAOImpl implements RoomDAO {
 	private Room find(String sql, Object... values) throws DAOException {
         Room room = null;
 
-        try (Connection connection = conFactory.getConnection();
-            PreparedStatement statement = DAOUtil.prepareStatement(connection, sql, false, values);
+        try ( PreparedStatement statement = DAOUtil.prepareStatement(connection, sql, false, values);
             ResultSet resultSet = statement.executeQuery();) 
         {
             if (resultSet.next()) {

@@ -33,10 +33,10 @@ public class UserDAOImpl implements UserDAO{
     
     private static String DB_NAME;
     
-    private ConnectionFactory conFactory;
+    private Connection connection;
     
-    public UserDAOImpl(ConnectionFactory factory, String dbName){
-    	conFactory = factory;
+    public UserDAOImpl(Connection con, String dbName){
+    	connection = con;
     	DB_NAME = dbName;
     }
     
@@ -53,8 +53,7 @@ public class UserDAOImpl implements UserDAO{
 	private User find(String sql, Object... values) throws DAOException {
         User user = null;
 
-        try (Connection connection = conFactory.getConnection();
-             PreparedStatement statement = DAOUtil.prepareStatement(connection, sql, false, values);
+        try (PreparedStatement statement = DAOUtil.prepareStatement(connection, sql, false, values);
             ResultSet resultSet = statement.executeQuery();) 
         {
         	if (resultSet.next()) {
@@ -72,9 +71,7 @@ public class UserDAOImpl implements UserDAO{
 	public List<User> list() throws DAOException {
 		List<User> users = new ArrayList<User>();
 
-        try (
-            Connection connection = conFactory.getConnection();
-            PreparedStatement statement = connection.prepareStatement(SQL_LIST_ORDER_BY_ID);
+        try (PreparedStatement statement = connection.prepareStatement(SQL_LIST_ORDER_BY_ID);
             ResultSet resultSet = statement.executeQuery();
         ) {
             while (resultSet.next()) {
@@ -102,9 +99,7 @@ public class UserDAOImpl implements UserDAO{
             false
         };
 
-        try (
-            Connection connection = conFactory.getConnection();
-            PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_INSERT, true, values);
+        try ( PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_INSERT, true, values);
         ) {
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
@@ -136,9 +131,7 @@ public class UserDAOImpl implements UserDAO{
             user.getUserID()
         };
 
-        try (
-            Connection connection = conFactory.getConnection();
-            PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_UPDATE, false, values);
+        try ( PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_UPDATE, false, values);
         ) {
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
@@ -156,9 +149,7 @@ public class UserDAOImpl implements UserDAO{
 			user.getUserID()
 	    };
 
-        try (
-            Connection connection = conFactory.getConnection();
-            PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_DELETE, false, values);
+        try ( PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_DELETE, false, values);
         ) {
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
@@ -180,9 +171,7 @@ public class UserDAOImpl implements UserDAO{
 
         boolean exist = false;
 
-        try (
-            Connection connection = conFactory.getConnection();
-            PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_EXIST_EMAIL, false, values);
+        try (PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_EXIST_EMAIL, false, values);
             ResultSet resultSet = statement.executeQuery();
         ) {
             exist = resultSet.next();
@@ -203,10 +192,8 @@ public class UserDAOImpl implements UserDAO{
             user.getUserID()
         };
 
-        try (
-            Connection connection = conFactory.getConnection();
-            PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_CHANGE_PASSWORD, false, values);
-        ) {
+        try ( PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_CHANGE_PASSWORD, false, values))
+        {
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
                 throw new DAOException("Changing password failed, no rows affected.");
@@ -225,9 +212,7 @@ public class UserDAOImpl implements UserDAO{
 
         boolean exist = false;
 
-        try (
-	        Connection connection = conFactory.getConnection();
-	        PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_EXIST_LOGIN, false, values);
+        try ( PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_EXIST_LOGIN, false, values);
 	        ResultSet resultSet = statement.executeQuery();
 	    ) {
         	exist = resultSet.next();
@@ -245,10 +230,8 @@ public class UserDAOImpl implements UserDAO{
 			user.getUserID()
 	    };
 		
-        try (
-        	Connection connection = conFactory.getConnection();
-            PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_BAN_UNBAN_USER, false, values);
-        ) {
+        try (PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_BAN_UNBAN_USER, false, values))
+        {
            int affectedRows = statement.executeUpdate();
            if (affectedRows == 0) {
                throw new DAOException("Ban/unban user failed, no rows affected.");
@@ -268,9 +251,8 @@ public class UserDAOImpl implements UserDAO{
 			user.getUserID()
 		};
 			
-	    try (Connection connection = conFactory.getConnection();
-	        PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_GET_ACCESS_USER, false, values);
-	    ) {
+	    try ( PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_GET_ACCESS_USER, false, values)) 
+	    {
 	    	int affectedRows = statement.executeUpdate();
 	        if (affectedRows == 0) {
 	            throw new DAOException("Set user access failed, no rows affected.");
