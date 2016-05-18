@@ -8,7 +8,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import by.epam.atl.hotel.dao.DAOProperties;
+import by.epam.atl.hotel.dao.DAOProperty;
 import by.epam.atl.hotel.dao.DatabaseDAO;
 import by.epam.atl.hotel.dao.RoomDAO;
 import by.epam.atl.hotel.dao.UserDAO;
@@ -22,23 +22,14 @@ public abstract class ConnectionFactory {
     private static final String PROPERTY_USERNAME = "username";
     private static final String PROPERTY_PASSWORD = "password";
     
-    private static String DB_NAME = "hotel";
+    private static ConnectionFactory instance = new ConnectionFactory();
     
-    
-    //private static ConnectionFactory instance = new ConnectionFactory();
-    
-	//public static final String PROPERTY_FILE = "C:/git_repository/java_tasks/Hotel/parameters";
-
-	/*public static DbProperty DP = new DbProperty();
-	public static Connection connection;*/
-	
-
-	 public static ConnectionFactory getInstance(String name) throws DAOException {
-		 if (name == null) {
+	public static ConnectionFactory getInstance(String name) throws DAOException {
+		if (name == null) {
 			 throw new DAOException("Database name is null.");
 		 }
 	
-	     DAOProperties properties = new DAOProperties(name);
+	     DAOProperty properties = new DAOProperty(name);
 	     String url = properties.getProperty(PROPERTY_URL, true);
 	     String driverClassName = properties.getProperty(PROPERTY_DRIVER, false);
 	     String password = properties.getProperty(PROPERTY_PASSWORD, false);
@@ -72,21 +63,10 @@ public abstract class ConnectionFactory {
 	     return instance;
 	}
 	 
-	 
+
 	abstract Connection getConnection() throws SQLException;
 	 
-	/*public UserDAO getUserDAO() {
-        return new UserDAOImpl(this, DB_NAME);
-    }
-	
-	public DatabaseDAO getDatabaseDAO() {
-        return new DatabaseDAOImpl(this, DB_NAME);
-    }
-	
-	public RoomDAO getRommDAO() {
-        return new RoomDAOImpl(this, DB_NAME);
-    }*/
-	
+
 }
 
 
