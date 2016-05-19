@@ -1,4 +1,4 @@
-package by.epam.atl.hotel.dao.impl;
+package by.epam.atl.hotel.dao;
 
 import java.sql.Connection;
 import java.util.concurrent.ArrayBlockingQueue;

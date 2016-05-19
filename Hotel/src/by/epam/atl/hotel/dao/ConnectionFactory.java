@@ -1,10 +1,9 @@
-package by.epam.atl.hotel.dao.impl;
+package by.epam.atl.hotel.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import by.epam.atl.hotel.dao.DAOProperty;
 import by.epam.atl.hotel.dao.exception.DAOException;
 
 public class ConnectionFactory {

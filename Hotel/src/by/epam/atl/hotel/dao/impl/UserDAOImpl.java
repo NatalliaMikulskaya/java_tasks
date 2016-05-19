@@ -10,6 +10,7 @@ import java.util.List;
 import by.epam.atl.hotel.bean.TypeUser;
 //import by.epam.atl.hotel.dao.DAOUtil.*;
 import by.epam.atl.hotel.bean.User;
+import by.epam.atl.hotel.dao.ConnectionPoolManager;
 import by.epam.atl.hotel.dao.DAOUtil;
 import by.epam.atl.hotel.dao.UserDAO;
 import by.epam.atl.hotel.dao.exception.DAOException;
@@ -18,7 +19,7 @@ public class UserDAOImpl implements UserDAO{
 
 	// Constants ----------------------------------------------------------------------------------
 	private static final String SQL_FIND_BY_ID = "SELECT *  FROM users WHERE id = ?";
-	private static final String SQL_FIND_BY_EMAIL_AND_PASSWORD = "SELECT * FROM users WHERE email = ? AND password = (?)";
+	private static final String SQL_FIND_BY_LOGIN_AND_PASSWORD = "SELECT * FROM users WHERE login = ? AND password = (?)";
 	private static final String SQL_LIST_ORDER_BY_ID = "SELECT * FROM users ORDER BY id";
 	private static final String SQL_INSERT =
 			"INSERT INTO users (name, login, password, email, access, ban) VALUES (?, ?, ?, ?, ?, ?)";
@@ -35,13 +36,13 @@ public class UserDAOImpl implements UserDAO{
 	public UserDAOImpl(){}
 
 	@Override
-	public User find(Long id) throws DAOException {
+	public User find(int id) throws DAOException {
 		return find(SQL_FIND_BY_ID, id);
 	}
 
 	@Override
-	public User find(String email, String password) throws DAOException {
-		return find(SQL_FIND_BY_EMAIL_AND_PASSWORD, email, password);
+	public User find(String login, String password) throws DAOException {
+		return find(SQL_FIND_BY_LOGIN_AND_PASSWORD, login, password);
 	}
 
 	private User find(String sql, Object... values) throws DAOException {

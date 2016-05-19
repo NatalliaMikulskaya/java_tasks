@@ -9,6 +9,7 @@ import java.util.List;
 
 import by.epam.atl.hotel.bean.Room;
 import by.epam.atl.hotel.bean.TypeRoom;
+import by.epam.atl.hotel.dao.ConnectionPoolManager;
 import by.epam.atl.hotel.dao.DAOUtil;
 import by.epam.atl.hotel.dao.RoomDAO;
 import by.epam.atl.hotel.dao.exception.DAOException;
@@ -18,8 +19,11 @@ public class RoomDAOImpl implements RoomDAO {
 	// Constants ----------------------------------------------------------------------------------
 	private static final String SQL_FIND_BY_ID =
 			"SELECT *  FROM rooms WHERE id = ?";
+	
+	private static final String SQL_FIND_BY_NUMBER =
+			"SELECT *  FROM rooms WHERE number = ?";
 
-	private static final String SQL_LIST_ORDER_BY_ID = "SELECT * FROM rooms ORDER BY id";
+	private static final String SQL_LIST_ROOMS_BY_ID = "SELECT * FROM rooms ORDER BY id";
 	private static final String SQL_LIST_AVAILABLE_ROOMS = "SELECT * FROM rooms WHERE available = ? ORDER BY id";
 	private static final String SQL_LIST_AVAILABLE_ROOMS_BY_SMOKE =
 			"SELECT * FROM rooms WHERE available = ? AND smoke = ? ORDER BY id";
@@ -49,308 +53,69 @@ public class RoomDAOImpl implements RoomDAO {
 	public RoomDAOImpl(){}
 
 	@Override
-	public Room find(int id) throws DAOException {
+	public Room findByID(int id) throws DAOException {
+		
 		return find(SQL_FIND_BY_ID, id);
+	}
+	
+	@Override
+	public Room findByNumber(int number) throws DAOException {
+		
+		return find(SQL_FIND_BY_NUMBER, number);
 	}
 
 	@Override
 	public List<Room> list() throws DAOException {
-		List<Room> rooms = new ArrayList<Room>();
-
-		ConnectionPoolManager poolManager = ConnectionPoolManager.getInstance();
-		//take free connection from pool
-		Connection connection = poolManager.getConnectionFromPool();
-
-		try ( 
-				PreparedStatement statement = connection.prepareStatement(SQL_LIST_ORDER_BY_ID);
-				ResultSet resultSet = statement.executeQuery();
-				)
-		{
-			while ( resultSet.next() ) {
-				rooms.add( map(resultSet) );
-			}
-		} 
-		catch (SQLException e) {
-			throw new DAOException(e);
-		}
-		finally{
-			//free connection
-			poolManager.returnConnectionToPool(connection);
-		}
-
-		return rooms;
+	
+		return findList(SQL_LIST_ROOMS_BY_ID);
 	}
 
 	@Override
 	public List<Room> findAvailableRooms(boolean available) throws DAOException {
-		List<Room> rooms = new ArrayList<Room>();
-
-		Object[] values ={
-				available	
-		};
-
-		ConnectionPoolManager poolManager = ConnectionPoolManager.getInstance();
-		//take free connection from pool
-		Connection connection = poolManager.getConnectionFromPool();
-
-		try (
-				PreparedStatement statement = DAOUtil.prepareStatement(connection,SQL_LIST_AVAILABLE_ROOMS, true, values);
-				ResultSet resultSet = statement.executeQuery();
-				)
-		{
-			while (resultSet.next()) {
-				rooms.add(map(resultSet));
-			}
-		} 
-		catch (SQLException e) {
-			throw new DAOException(e);
-		}
-		finally{
-			//free connection
-			poolManager.returnConnectionToPool(connection);
-		}
-		return rooms;
+		
+		return findList(SQL_LIST_AVAILABLE_ROOMS, available);
 	}
 
 	@Override
 	public List<Room> findAllAvailableRooms(boolean canSmoke) throws DAOException {
-		List<Room> rooms = new ArrayList<Room>();
-
-		Object[] values ={
-				true,
-				canSmoke
-		};
-
-		ConnectionPoolManager poolManager = ConnectionPoolManager.getInstance();
-		//take free connection from pool
-		Connection connection = poolManager.getConnectionFromPool();
-
-		try (
-				PreparedStatement statement = DAOUtil.prepareStatement(connection,SQL_LIST_AVAILABLE_ROOMS_BY_SMOKE, true, values);
-				ResultSet resultSet = statement.executeQuery();
-				)
-		{
-			while (resultSet.next()) {
-				rooms.add(map(resultSet));
-			}
-		} 
-		catch (SQLException e) {
-			throw new DAOException(e);
-		}
-		finally{
-			//free connection
-			poolManager.returnConnectionToPool(connection);
-		}
-		return rooms;
+	
+		return findList(SQL_LIST_AVAILABLE_ROOMS_BY_SMOKE, true, canSmoke);
 	}
 
 	@Override
 	public List<Room> findAllAvailableRooms(TypeRoom type, boolean canSmoke) throws DAOException {
-		List<Room> rooms = new ArrayList<Room>();
 
-		Object[] values ={
-				true,
-				type,
-				canSmoke
-		};
-
-		ConnectionPoolManager poolManager = ConnectionPoolManager.getInstance();
-		//take free connection from pool
-		Connection connection = poolManager.getConnectionFromPool();
-
-		try (
-				PreparedStatement statement = 
-				DAOUtil.prepareStatement(connection,SQL_LIST_AVAILABLE_ROOMS_BY_TYPE_AND_SMOKE, true, values);
-				ResultSet resultSet = statement.executeQuery()
-				)
-		{
-			while (resultSet.next()) {
-				rooms.add(map(resultSet));
-			}
-		} 
-		catch (SQLException e) {
-			throw new DAOException(e);
-		}
-		finally{
-			//free connection
-			poolManager.returnConnectionToPool(connection);
-		}
-
-		return rooms;
+		return findList(SQL_LIST_AVAILABLE_ROOMS_BY_TYPE_AND_SMOKE, true, type.toString(), canSmoke);
 	}
 
 	@Override
 	public List<Room> findAllAvailableRooms(TypeRoom type, int capacity, boolean canSmoke) throws DAOException {
-		List<Room> rooms = new ArrayList<Room>();
-
-		Object[] values ={
-				true,
-				type,
-				capacity,
-				canSmoke
-		};
-
-		ConnectionPoolManager poolManager = ConnectionPoolManager.getInstance();
-		//take free connection from pool
-		Connection connection = poolManager.getConnectionFromPool();
-
-		try ( 
-				PreparedStatement statement = 
-				DAOUtil.prepareStatement(connection,SQL_LIST_AVAILABLE_ROOMS_BY_TYPE_AND_SMOKE_AND_CAPACITY, true, values);
-				ResultSet resultSet = statement.executeQuery()
-				)
-		{
-			while (resultSet.next()) {
-				rooms.add(map(resultSet));
-			}
-		} 
-		catch (SQLException e) {
-			throw new DAOException(e);
-		}
-		finally{
-			//free connection
-			poolManager.returnConnectionToPool(connection);
-		}
-
-		return rooms;
+		
+		return findList(SQL_LIST_AVAILABLE_ROOMS_BY_TYPE_AND_SMOKE_AND_CAPACITY, true, type.toString(), capacity, canSmoke);
 	}
 
 	@Override
 	public List<Room> findAllAvailableRooms(TypeRoom type, int capacity) throws DAOException {
-		List<Room> rooms = new ArrayList<Room>();
 
-		Object[] values ={
-				true,
-				type,
-				capacity
-		};
-
-		ConnectionPoolManager poolManager = ConnectionPoolManager.getInstance();
-		//take free connection from pool
-		Connection connection = poolManager.getConnectionFromPool();
-
-		try (
-				PreparedStatement statement = 
-				DAOUtil.prepareStatement(connection,SQL_LIST_AVAILABLE_ROOMS_BY_TYPE_AND_CAPACITY, true, values);
-				ResultSet resultSet = statement.executeQuery()
-				)
-		{
-			while (resultSet.next()) {
-				rooms.add(map(resultSet));
-			}
-		} 
-		catch (SQLException e) {
-			throw new DAOException(e);
-		}
-		finally{
-			//free connection
-			poolManager.returnConnectionToPool(connection);
-		}
-
-		return rooms;
+		return findList(SQL_LIST_AVAILABLE_ROOMS_BY_TYPE_AND_CAPACITY, true, type.toString(), capacity);
 	}
 
 	@Override
 	public List<Room> findAllAvailableRooms(int capacity) throws DAOException {
-		List<Room> rooms = new ArrayList<Room>();
-
-		Object[] values ={
-				true,
-				capacity
-		};
-
-		ConnectionPoolManager poolManager = ConnectionPoolManager.getInstance();
-		//take free connection from pool
-		Connection connection = poolManager.getConnectionFromPool();
-
-		try (
-				PreparedStatement statement = 
-				DAOUtil.prepareStatement(connection,SQL_LIST_AVAILABLE_ROOMS_BY_CAPACITY, true, values);
-				ResultSet resultSet = statement.executeQuery()
-				)
-		{
-			while (resultSet.next()) {
-				rooms.add(map(resultSet));
-			}
-		} 
-		catch (SQLException e) {
-			throw new DAOException(e);
-		}
-		finally{
-			//free connection
-			poolManager.returnConnectionToPool(connection);
-		}
-
-		return rooms;
+		
+		return findList(SQL_LIST_AVAILABLE_ROOMS_BY_CAPACITY, true, capacity);
 	}
 
 	@Override
 	public List<Room> findAllAvailableRooms(TypeRoom type) throws DAOException {
-		List<Room> rooms = new ArrayList<Room>();
-
-		Object[] values ={
-				true,
-				type
-		};
-
-		ConnectionPoolManager poolManager = ConnectionPoolManager.getInstance();
-		//take free connection from pool
-		Connection connection = poolManager.getConnectionFromPool();
-
-		try (
-				PreparedStatement statement = 
-				DAOUtil.prepareStatement(connection,SQL_LIST_AVAILABLE_ROOMS_BY_TYPE, true, values);
-				ResultSet resultSet = statement.executeQuery()
-				)
-		{
-			while (resultSet.next()) {
-				rooms.add(map(resultSet));
-			}
-		} 
-		catch (SQLException e) {
-			throw new DAOException(e);
-		}
-		finally{
-			//free connection
-			poolManager.returnConnectionToPool(connection);
-		}
-
-		return rooms;
+		
+		return findList(SQL_LIST_AVAILABLE_ROOMS_BY_TYPE, true, type.toString());
 	}
 
 	@Override
 	public List<Room> findAllAvailableRooms(int capacity, boolean canSmoke ) throws DAOException {
-		List<Room> rooms = new ArrayList<Room>();
-
-		Object[] values ={
-				true,
-				capacity,
-				canSmoke
-		};
-
-		ConnectionPoolManager poolManager = ConnectionPoolManager.getInstance();
-		//take free connection from pool
-		Connection connection = poolManager.getConnectionFromPool();
-
-		try (
-				PreparedStatement statement = 
-				DAOUtil.prepareStatement(connection,SQL_LIST_AVAILABLE_ROOMS_BY_CAPACITY_AND_SMOKE, true, values);
-				ResultSet resultSet = statement.executeQuery()
-				)
-		{
-			while (resultSet.next()) {
-				rooms.add(map(resultSet));
-			}
-		} 
-		catch (SQLException e) {
-			throw new DAOException(e);
-		}
-		finally{
-			//free connection
-			poolManager.returnConnectionToPool(connection);
-		}
-
-		return rooms;
+		
+		return findList(SQL_LIST_AVAILABLE_ROOMS_BY_CAPACITY_AND_SMOKE, true, capacity, canSmoke);
 	}
 
 	@Override
@@ -474,7 +239,8 @@ public class RoomDAOImpl implements RoomDAO {
 			if (affectedRows == 0) {
 				throw new DAOException("Closing room failed, no rows affected.");
 			}
-		} catch (SQLException e) {
+		} 
+		catch (SQLException e) {
 			throw new DAOException(e);
 		}
 		finally{
@@ -535,11 +301,66 @@ public class RoomDAOImpl implements RoomDAO {
 
 		return room;
 	}
+	
+	private List<Room> findList(String sql) throws DAOException {
+		List<Room> rooms = new ArrayList<Room>();
+
+		ConnectionPoolManager poolManager = ConnectionPoolManager.getInstance();
+		//take free connection from pool
+		Connection connection = poolManager.getConnectionFromPool();
+
+		try ( 
+				PreparedStatement statement = connection.prepareStatement(sql);
+				ResultSet resultSet = statement.executeQuery();
+				)
+		{
+			while ( resultSet.next() ) {
+				rooms.add( map(resultSet) );
+			}
+		} 
+		catch (SQLException e) {
+			throw new DAOException(e);
+		}
+		finally{
+			//free connection
+			poolManager.returnConnectionToPool(connection);
+		}
+
+		return rooms;
+	}
+	
+	private List<Room> findList(String sql, Object... values) throws DAOException {
+		List<Room> rooms = new ArrayList<Room>();
+
+		ConnectionPoolManager poolManager = ConnectionPoolManager.getInstance();
+		//take free connection from pool
+		Connection connection = poolManager.getConnectionFromPool();
+
+		try ( 
+				PreparedStatement statement = DAOUtil.prepareStatement(connection, sql, true, values);
+				ResultSet resultSet = statement.executeQuery();
+				)
+		{
+			while ( resultSet.next() ) {
+				rooms.add( map(resultSet) );
+			}
+		} 
+		catch (SQLException e) {
+			throw new DAOException(e);
+		}
+		finally{
+			//free connection
+			poolManager.returnConnectionToPool(connection);
+		}
+
+		return rooms;
+	}
 
 	private static Room map(ResultSet resultSet) throws SQLException {
 		Room room = new Room();
 
 		room.setId(resultSet.getInt("id"));
+		room.setNumber(resultSet.getInt("number"));
 		room.setCapacity(resultSet.getInt("capacity"));
 		room.setSmoke(resultSet.getBoolean("smoke"));
 		room.setAvailable(resultSet.getBoolean("available"));

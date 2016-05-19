@@ -8,7 +8,7 @@ public class UsersConsoleView {
 
 	public void print(User user){
 		
-		System.out.println(" Userid: " + user.getUserID() + "\n"
+		System.out.println(" User: id: " + user.getUserID() + "\n"
 						+ " login: " + user.getUserLogin() + "\n"
 						+ " password: " + user.getUserPassword() + "\n"
 						+ " name: " + user.getUserName() + "\n"

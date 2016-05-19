@@ -8,7 +8,8 @@ import by.epam.atl.hotel.dao.exception.DAOException;
 
 public interface RoomDAO {
 	
-	public Room find(int id) throws DAOException;
+	public Room findByID(int number) throws DAOException;
+	public Room findByNumber(int number) throws DAOException;
 	public List<Room> list() throws DAOException;
 	
 	public List<Room> findAvailableRooms(boolean available) throws DAOException;
