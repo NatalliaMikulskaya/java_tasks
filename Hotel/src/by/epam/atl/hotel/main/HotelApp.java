@@ -1,18 +1,12 @@
 package by.epam.atl.hotel.main;
 
-import java.sql.Connection;
-
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import by.epam.atl.hotel.bean.TypeUser;
 import by.epam.atl.hotel.bean.User;
-import by.epam.atl.hotel.dao.DatabaseDAO;
 import by.epam.atl.hotel.dao.UserDAO;
 import by.epam.atl.hotel.dao.exception.DAOException;
-import by.epam.atl.hotel.dao.impl.ConnectionFactory;
-import by.epam.atl.hotel.dao.impl.ConnectionPoolManager;
-import by.epam.atl.hotel.dao.impl.DatabaseDAOImpl;
 import by.epam.atl.hotel.dao.impl.UserDAOImpl;
 import by.epam.atl.hotel.view.UsersConsoleView;
 
@@ -23,17 +17,7 @@ public class HotelApp {
 		
 		try {
 			
-			ConnectionPoolManager connectionPool = new ConnectionPoolManager();
-			Connection connection = connectionPool.getConnectionFromPool();
-			
-			//ConnectionFactory factory = ConnectionFactory.getInstance("hotel.jdbc");
-			
-			//DatabaseDAO db = new DatabaseDAOImpl(connection, "hotel");
-			
-			//db.createDatabase();
-			//LOG.info("Database was created successfully.");
-
-			UserDAO userDao = new UserDAOImpl(connection, "hotel");
+			UserDAO userDao = new UserDAOImpl();
 			//create user
 			User usr = new User();
 			usr.setUserName("Administrator");
@@ -54,7 +38,6 @@ public class HotelApp {
 			
 			//check if user exists
 			
-			connectionPool.returnConnectionToPool(connection);
 			
 		}
 		
