@@ -11,5 +11,8 @@ public interface UserAccess {
 	boolean isUserAllowedSeeAllBooking(User user);
 	boolean isUserAllowedCloseRooms(User user);
 	boolean isUserAllowedOpenRooms(User user);
+	boolean isUserAllowedAddRooms(User user);
+	boolean isUserAllowedDeleteRooms(User user);
+	boolean isUserAllowedUpdateRooms(User user);
 	
 }

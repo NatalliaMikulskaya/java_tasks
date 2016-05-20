@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import by.epam.atl.hotel.bean.Room;
@@ -43,12 +46,21 @@ public class RoomDAOImpl implements RoomDAO {
 			"INSERT INTO rooms (capacity, type, smoke, available) VALUES (?, ?, ?, ?)";
 	private static final String SQL_UPDATE =
 			"UPDATE rooms SET capacity = ?, type = ?, smoke = ?, available = ? WHERE id = ?";
-	private static final String SQL_DELETE = "DELETE FROM rooms WHERE id = ?";
+	private static final String SQL_DELETE = 
+			"DELETE FROM rooms WHERE id = ? "
+			+ " AND id NOT IN (SELECT room_id FROM booking)";
 	private static final String SQL_CLOSE_ROOM =
 			"UPDATE rooms SET available = false WHERE id = ?";
 	private static final String SQL_OPEN_ROOM =
 			"UPDATE rooms SET available = true WHERE id = ?";
-
+	private static final String SQL_LIST_NOT_BOOKED_ROOMS_IN_PERIOD =
+			"SELECT * FROM rooms WHERE id NOT IN (SELECT room_id FROM hotel.booking "+ 
+			" WHERE booking.date_from >= ? AND booking.date_to <= ?)";
+	
+	private static final String SQL_CLOSE_ROOM_IF_NOT_BOOKED = ""
+			+ "UPDATE rooms SET rooms.available = 0 WHERE (rooms.id = ? "
+			+ "AND rooms.id NOT IN " 
+			+ " (SELECT room_id FROM booking  WHERE booking.date_from >= ? AND hotel.booking.date_to <= ? )) ";
 
 	public RoomDAOImpl(){}
 
@@ -197,6 +209,9 @@ public class RoomDAOImpl implements RoomDAO {
 
 	@Override
 	public void delete(Room room) throws DAOException {
+		
+		//To Do
+		
 		Object[] values = { 
 				room.getId()
 		};
@@ -233,7 +248,11 @@ public class RoomDAOImpl implements RoomDAO {
 		//take free connection from pool
 		Connection connection = poolManager.getConnectionFromPool();
 
-		try (PreparedStatement statement = connection.prepareStatement(SQL_CLOSE_ROOM))
+		Object[] values = {
+				room.getId()	
+			};
+		
+		try (PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_CLOSE_ROOM, true, values))
 		{
 			int affectedRows = statement.executeUpdate();
 			if (affectedRows == 0) {
@@ -259,7 +278,11 @@ public class RoomDAOImpl implements RoomDAO {
 		//take free connection from pool
 		Connection connection = poolManager.getConnectionFromPool();
 
-		try (PreparedStatement statement = connection.prepareStatement(SQL_OPEN_ROOM))
+		Object[] values = {
+			room.getId()	
+		};
+		
+		try (PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_OPEN_ROOM, true, values))
 		{
 			int affectedRows = statement.executeUpdate();
 			if (affectedRows == 0) {
@@ -274,7 +297,133 @@ public class RoomDAOImpl implements RoomDAO {
 			poolManager.returnConnectionToPool(connection);
 		}
 	}
+	
+	@Override
+	public int openRoom(List<Room> rooms) throws DAOException {
+		int openedRooms = 0;
+		
+		ConnectionPoolManager poolManager = ConnectionPoolManager.getInstance();
+		//take free connection from pool
+		Connection connection = poolManager.getConnectionFromPool();
 
+		try{
+			connection.setAutoCommit(false);
+			for (Room room : rooms){
+				if (room.isAvailable()) {
+					continue;
+				}
+				Object[] values = {
+					room.getId()	
+				};
+				
+				PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_OPEN_ROOM, true, values); 
+				openedRooms += statement.executeUpdate();
+
+			}
+			connection.commit();
+			
+		} 
+		catch (SQLException e) {
+			throw new DAOException(e);
+		}
+		finally{
+			try{
+				connection.setAutoCommit(true);
+			}
+			catch (SQLException e){
+				
+			}
+			finally{
+				//free connection
+				poolManager.returnConnectionToPool(connection);
+			}
+		}
+		
+		return openedRooms;
+	}
+
+	@Override
+	public List<Room> findAllNotBookedRoomsInPeriod(Date dateFrom, Date dateTo) throws DAOException {
+		
+		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+		 
+		String sqlDateFrom = df.format(dateFrom);
+		String sqlDateTo = df.format(dateTo);
+		
+		return findList(SQL_LIST_NOT_BOOKED_ROOMS_IN_PERIOD, sqlDateFrom, sqlDateTo);
+	}
+	
+	@Override
+	public int closeRoomsIfNotBookedInPeriod(List<Room> rooms, Date dateFrom, Date dateTo) throws DAOException {
+		int closed = 0;
+		
+		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+		 
+		String sqlDateFrom = df.format(dateFrom);
+		String sqlDateTo = df.format(dateTo);
+		
+		ConnectionPoolManager poolManager = ConnectionPoolManager.getInstance();
+		//take free connection from pool
+		Connection connection = poolManager.getConnectionFromPool();
+		
+		try {
+			connection.setAutoCommit(false);
+
+			for (Room room: rooms){
+				if (closeRoom (connection, room, sqlDateFrom, sqlDateTo )) {
+					closed ++;
+				}
+
+			}
+			try {
+				connection.commit();
+			} 
+			catch (SQLException e){
+				closed = 0;
+			} 
+		}
+		catch (SQLException e ) {
+			throw new DAOException(e);
+		}
+		finally{
+			try {
+				connection.setAutoCommit(true);
+			}
+			catch (SQLException e ) {
+				throw new DAOException(e);
+			}
+			finally{
+				poolManager.returnConnectionToPool(connection);
+			}
+		}
+		
+		return closed;
+	}
+	
+	
+	private boolean closeRoom(Connection connection, Room room, String from, String to) throws DAOException{
+		if (room.isAvailable()){
+			Object[] values = {
+					room.getId(),
+					from,
+					to
+			};
+
+
+			try (PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_CLOSE_ROOM_IF_NOT_BOOKED, true, values))
+			{
+				int affectedRows = statement.executeUpdate();
+				if (affectedRows != 0) {
+					return true;
+				}
+			} 
+			catch (SQLException e) {
+				throw new DAOException(e);
+			}
+		}
+		return true;
+	}
+	
 	private Room find(String sql, Object... values) throws DAOException {
 		Room room = null;
 
@@ -370,4 +519,10 @@ public class RoomDAOImpl implements RoomDAO {
 
 		return room;
 	}
+
+	
+
+	
+
+	
 }

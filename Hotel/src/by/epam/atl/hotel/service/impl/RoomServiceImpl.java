@@ -1,8 +1,12 @@
 package by.epam.atl.hotel.service.impl;
 
+import java.lang.invoke.MethodHandles;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import by.epam.atl.hotel.bean.Room;
 import by.epam.atl.hotel.bean.TypeRoom;
@@ -18,6 +22,7 @@ import by.epam.atl.hotel.service.exception.ServiceException;
 public class RoomServiceImpl implements RoomService {
 	private final UserAccess checkAccess = ServiceFactory.getInstance().getUserAccessService();
 	private final RoomDAO roomDao = DAOFactory.getInstance().getRoomDAO();
+	private static final Logger LOG = LogManager.getLogger(MethodHandles.lookup().lookupClass()); 
 
 	@Override
 	public List<Room> getListRooms(User currentUser) throws ServiceException {
@@ -145,34 +150,132 @@ public class RoomServiceImpl implements RoomService {
 	}
 
 	@Override
-	public void addRooms(List<Room> rooms) throws ServiceException {
-		if (! checkAccess.isUserAllowedCloseRooms(currentUser) ){
-			throw new ServiceException("User not allowed to see list of accesible rooms.");
+	public void addRooms(User currentUser, List<Room> rooms) throws ServiceException {
+		if (! checkAccess.isUserAllowedAddRooms(currentUser) ){
+			throw new ServiceException("User not allowed to add rooms.");
 		}
 		
+		int processed = 0;
+		int skipped = 0;
+		
+		for (Room room : rooms){
+			if (room == null) {
+				skipped ++;
+				continue;
+			}
+			
+			if (room.getId() != 0 ){
+				skipped ++;
+			} else {
+				try {
+					roomDao.create(room);
+					processed ++;
+				}
+				catch (DAOException e){
+					throw new ServiceException("Error occurred while room was added to database", e);
+				}
+			}
+		}
+		LOG.info("Operation 'add rooms': were added "+processed+" rooms, were skipped "+ skipped+
+				" rooms (because null or exists)");
 	}
 
 	@Override
-	public void deleteRooms(List<Room> rooms) throws ServiceException {
-		// TODO Auto-generated method stub
+	public void deleteRooms(User currentUser, List<Room> rooms) throws ServiceException {
+		if (! checkAccess.isUserAllowedDeleteRooms(currentUser) ){
+			throw new ServiceException("User not allowed to delete rooms.");
+		}
+		
+		int processed = 0;
+		int skipped = 0;
+		
+		for (Room room : rooms){
+			if (room == null) {
+				skipped ++;
+				continue;
+			}
+			
+			if (room.getId() == 0 ){
+				skipped ++;
+			} else {
+				try {
+					roomDao.delete(room);
+					processed ++;
+				}
+				catch (DAOException e){
+					throw new ServiceException("Error occurred while room was deleted to database", e);
+				}
+			}
+		}
+		LOG.info("Operation 'delete rooms': were deleted "+processed+" rooms, were skipped "+ skipped+
+				" rooms (because null or not exists)");
 		
 	}
 
 	@Override
-	public void changeRooms(List<Room> rooms) throws ServiceException {
-		// TODO Auto-generated method stub
+	public void changeRooms(User currentUser, List<Room> rooms) throws ServiceException {
+		if (! checkAccess.isUserAllowedUpdateRooms(currentUser) ){
+			throw new ServiceException("User not allowed to change rooms.");
+		}
+		
+		int processed = 0;
+		int skipped = 0;
+		
+		for (Room room : rooms){
+			if (room == null) {
+				skipped ++;
+				continue;
+			}
+			
+			if (room.getId() == 0 ){
+				skipped ++;
+			} else {
+				try {
+					roomDao.update(room);
+					processed ++;
+				}
+				catch (DAOException e){
+					throw new ServiceException("Error occurred while room was updated into database", e);
+				}
+			}
+		}
+		LOG.info("Operation 'update rooms': were updated "+processed+" rooms, were skipped "+ skipped+
+				" rooms (because null or not exists)");
+		
 		
 	}
 
 	@Override
-	public void closeRooms(List<Room> rooms, Date dateFrom, Date dateTo) throws ServiceException {
-		// TODO Auto-generated method stub
-		
+	public void closeRooms(User user, List<Room> rooms, Date dateFrom, Date dateTo) throws ServiceException {
+		if (! checkAccess.isUserAllowedCloseRooms(user) ){
+			throw new ServiceException("User not allowed to close rooms.");
+		}
+				
+		try{
+			
+			int numberClosedRooms = roomDao.closeRoomsIfNotBookedInPeriod(rooms, dateFrom, dateTo);
+			LOG.info("Where closed " + numberClosedRooms + " from " + rooms.size());
+		}
+		catch (DAOException e){
+			throw new ServiceException(e);
+		}
+
 	}
 
 	@Override
-	public void openRooms(List<Room> rooms) throws ServiceException {
-		// TODO Auto-generated method stub
+	public void openRooms(User user, List<Room> rooms) throws ServiceException {
+		if (! checkAccess.isUserAllowedOpenRooms(user) ){
+			throw new ServiceException("User not allowed to open rooms.");
+		}
+		
+		try{
+			//get free from booking rooms in period
+			int numberOpenedRooms = roomDao.openRoom(rooms);
+			LOG.info("Where opened " + numberOpenedRooms + " from " + rooms.size());
+		}
+		catch (DAOException e){
+			throw new ServiceException(e);
+		}
 		
 	}
 
