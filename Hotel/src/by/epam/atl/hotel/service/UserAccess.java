@@ -9,5 +9,7 @@ public interface UserAccess {
 	boolean isUserAllowedSeeOpenRooms(User user);
 	boolean isUserAllowedDoBooking(User user);
 	boolean isUserAllowedSeeAllBooking(User user);
+	boolean isUserAllowedCloseRooms(User user);
+	boolean isUserAllowedOpenRooms(User user);
 	
 }
