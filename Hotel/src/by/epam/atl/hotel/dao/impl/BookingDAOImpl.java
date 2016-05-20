@@ -10,6 +10,8 @@ import java.util.List;
 
 import by.epam.atl.hotel.bean.Booking;
 import by.epam.atl.hotel.bean.Room;
+import by.epam.atl.hotel.bean.TypeRoom;
+import by.epam.atl.hotel.bean.TypeUser;
 import by.epam.atl.hotel.bean.User;
 import by.epam.atl.hotel.dao.BookingDAO;
 import by.epam.atl.hotel.dao.ConnectionPoolManager;
@@ -19,18 +21,46 @@ import by.epam.atl.hotel.dao.exception.DAOException;
 public class BookingDAOImpl implements BookingDAO {
 
 	private static final String SQL_FIND_BY_ID =
-			"SELECT *  FROM booking WHERE id = ?";
-	private static final String SQL_LIST_ORDERS_BY_ID = "SELECT * FROM booking ORDER BY order_id";
+			"SELECT booking.*, users.name, users.login, users.password, users.email, users.ban, "
+			+ "rooms.number, rooms.capacity, rooms.type, rooms.smoke, rooms.available "
+			+ "FROM booking, users, rooms WHERE booking.id = ? AND booking.room_id = rooms.id "
+			+ "AND booking.user_id = users.id";
+	private static final String SQL_LIST_ORDERS_BY_ID = 
+			"SELECT booking.*, users.name, users.login, users.password, users.email, users.ban, "
+			+ "rooms.number, rooms.capacity, rooms.type, rooms.smoke, rooms.available "
+			+ "FROM booking, users, rooms "
+			+ "WHERE booking.room_id = rooms.id AND booking.user_id = users.id "
+			+ "ORDER BY order_id";
 	private static final String SQL_FIND_BY_TO_DATE =
-			"SELECT * FROM booking WHERE date_from = ? AND date_to = ? ORDER BY order_id";
+			"SELECT booking.*, users.name, users.login, users.password, users.email, users.ban, "
+			+ "rooms.number, rooms.capacity, rooms.type, rooms.smoke, rooms.available "
+			+ "FROM booking, users, rooms "
+			+ "WHERE date_from = ? AND date_to = ? AND booking.room_id = rooms.id AND booking.user_id = users.id "
+			+ "ORDER BY order_id";
 	private static final String SQL_FIND_BY_START_DATE =
-			"SELECT * FROM booking WHERE date_from = ? ORDER BY order_id";
+			"SELECT booking.*, users.name, users.login, users.password, users.email, users.ban, "
+			+ "rooms.number, rooms.capacity, rooms.type, rooms.smoke, rooms.available "
+			+ "FROM booking, users, rooms "
+			+ "WHERE date_from = ? AND booking.room_id = rooms.id AND booking.user_id = users.id "
+			+ "ORDER BY order_id";
 	private static final String SQL_FIND_BY_USER =
-			"SELECT * FROM booking WHERE user_id = ? ORDER BY order_id";
+			"SELECT booking.*, users.name, users.login, users.password, users.email, users.ban, "
+			+ "rooms.number, rooms.capacity, rooms.type, rooms.smoke, rooms.available "
+			+ " FROM booking, users, rooms "
+			+ " WHERE user_id = ? AND booking.room_id = rooms.id AND booking.user_id = users.id "
+			+ " ORDER BY order_id";
 	private static final String SQL_FIND_BY_ROOM =
-			"SELECT * FROM booking WHERE room_id = ? ORDER BY order_id";
+			"SELECT booking.*, users.name, users.login, users.password, users.email, users.ban, "
+			+ "rooms.number, rooms.capacity, rooms.type, rooms.smoke, rooms.available "
+			+ " FROM booking, users, rooms "
+			+ " WHERE room_id = ? AND booking.room_id = rooms.id AND booking.user_id = users.id "
+			+ " ORDER BY order_id";
 	private static final String SQL_FIND_BY_CUSTOMER =
-			"SELECT * FROM booking WHERE customer_name = ? ORDER BY order_id";
+			"SELECT booking.*, users.name, users.login, users.password, users.email, users.ban, "
+			+ "rooms.number, rooms.capacity, rooms.type, rooms.smoke, rooms.available "
+			+ " FROM booking, users, rooms "
+			+ " WHERE customer_name = ? AND booking.room_id = rooms.id AND booking.user_id = users.id "
+			+ " ORDER BY order_id";
 	private static final String SQL_INSERT =
 			"INSERT INTO booking (room_id, user_id, customer_name, date_from, date_to) VALUES (?, ?, ?, ?, ?)";
 	private static final String SQL_DELETE = "DELETE FROM booking WHERE id = ?";
@@ -160,7 +190,7 @@ public class BookingDAOImpl implements BookingDAO {
 	}
 
 	@Override
-	public void updateOrder(by.epam.atl.hotel.bean.Booking order) throws DAOException {
+	public void updateOrder(Booking order) throws DAOException {
 		if (order.getOrderID() == 0) {
 			throw new IllegalArgumentException("Order is not exists in database.");
 		}
@@ -232,9 +262,9 @@ public class BookingDAOImpl implements BookingDAO {
 		Connection connection = poolManager.getConnectionFromPool();
 
 		try ( 
-				PreparedStatement statement = connection.prepareStatement(sql);
-				ResultSet resultSet = statement.executeQuery();
-				)
+			PreparedStatement statement = connection.prepareStatement(sql);
+			ResultSet resultSet = statement.executeQuery();
+			)
 		{
 			while ( resultSet.next() ) {
 				orders.add( map(resultSet) );
@@ -282,44 +312,41 @@ public class BookingDAOImpl implements BookingDAO {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
 	private static Booking map(ResultSet resultSet) throws SQLException {
 		Booking order = new Booking();
+		User user = new User();
+		Room room = new Room();
 
 		order.setOrderID(resultSet.getInt("order_id"));
 		
-		Room room = null;
-		RoomDAOImpl roomDAO = new RoomDAOImpl();
-		try{
-			room = roomDAO.findByID(resultSet.getInt("room_id"));
-		}
-		catch (DAOException e){
-			throw new RuntimeException("Can't find room with id " + resultSet.getInt("room_id") + ". DataBase corrupted.", e);
-		}
+		//create room
+		room.setNumber(resultSet.getInt("number"));
+		room.setId(resultSet.getInt("room_id"));
+		room.setCapacity(resultSet.getInt("capacity"));
+		TypeRoom typeRoom = TypeRoom.valueOf(resultSet.getString("type"));
+		room.setType(typeRoom);
+		room.setSmoke(resultSet.getBoolean("smoke"));
+		room.setAvailable(resultSet.getBoolean("available"));
 		
+		//set room into order
 		order.setRoom(room);
 		
-		UserDAOImpl userDAO = new UserDAOImpl();
-		User user = null;
-		try{
-			user = userDAO.find(resultSet.getInt("user_id"));
-		}
-		catch (DAOException e){
-			throw new RuntimeException("Can't find user with id " + resultSet.getInt("user_id") + ". DataBase corrupted.", e);
-		}
-
+		//create user
+		user.setUserID(resultSet.getInt("user_id"));
+		user.setUserName(resultSet.getString("name"));
+		user.setUserLogin(resultSet.getString("login"));
+		user.setUserPassword(resultSet.getString("password"));
+		user.setEmail(resultSet.getString("email"));
+		user.setIsBanned(resultSet.getBoolean("ban"));
+		TypeUser typeUser = TypeUser.valueOf(resultSet.getString("access"));
+		user.setType(typeUser);
+		
+		//set user into order
 		order.setUser(user);
 		
 		order.setDateFrom(resultSet.getDate("date_from"));
 		order.setDateTo(resultSet.getDate("date_to"));
 		order.setCustomerName(resultSet.getString("customer_name"));
-
 
 		return order;
 	}
