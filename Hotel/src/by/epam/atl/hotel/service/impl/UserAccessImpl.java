@@ -105,6 +105,47 @@ public class UserAccessImpl implements UserAccess {
 		return false;
 	}
 	
+	@Override
+	public boolean isUserAllowedAddUsers(User user) {
+		
+		if (canCheckUserAccess(user)) {
+			return onlyAdministratorAllowed(user);
+		}
+		return false;
+	}
+
+	@Override
+	public boolean isUserAllowedDeleteUsers(User user) {
+		if (canCheckUserAccess(user)) {
+			return onlyAdministratorAllowed(user);
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean isUserAllowedUpdateUsers(User user) {
+		if (canCheckUserAccess(user)) {
+			return onlyAdministratorAllowed(user);
+		}
+		return false;
+	}
+
+	@Override
+	public boolean isUserAllowedBanUsers(User user) {
+		if (canCheckUserAccess(user)) {
+			return onlyAdministratorAllowed(user);
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean isUserAllowedCancelBooking(User user) {
+		if (canCheckUserAccess(user)) {
+			return onlyAdministratorAllowed(user);
+		}
+		return false;
+	}
+
 	//private methods
 	/*
 	 * get permission only administrator
@@ -186,4 +227,5 @@ public class UserAccessImpl implements UserAccess {
 		}
 		return true;
 	}
+
 }

@@ -150,36 +150,69 @@ public class RoomServiceImpl implements RoomService {
 	}
 
 	@Override
-	public void addRooms(User currentUser, List<Room> rooms) throws ServiceException {
+	public boolean addRoom(User currentUser, int number, int capacity, boolean smoke, boolean available, TypeRoom type) 
+			throws ServiceException {
+		
 		if (! checkAccess.isUserAllowedAddRooms(currentUser) ){
 			throw new ServiceException("User not allowed to add rooms.");
 		}
 		
-		int processed = 0;
-		int skipped = 0;
+		if (number <= 0 ){
+			throw new ServiceException("Room number can't be less or equal 0.");
+		}
 		
-		for (Room room : rooms){
-			if (room == null) {
-				skipped ++;
-				continue;
-			}
-			
-			if (room.getId() != 0 ){
-				skipped ++;
-			} else {
-				try {
-					roomDao.create(room);
-					processed ++;
-				}
-				catch (DAOException e){
-					throw new ServiceException("Error occurred while room was added to database", e);
-				}
+		if (capacity <= 0) {
+			throw new ServiceException("Room capacity can't be less or equal 0.");
+		}
+		
+		Room room = new Room();
+		room.setAvailable(available);
+		room.setCapacity(capacity);
+		room.setNumber(number);
+		room.setSmoke(smoke);
+		room.setType(type);
+		
+		try {
+			roomDao.create(room);
+			if (room.getId() != 0){
+				return true;
+			}else {
+				return false;
 			}
 		}
-		LOG.info("Operation 'add rooms': were added "+processed+" rooms, were skipped "+ skipped+
-				" rooms (because null or exists)");
+		catch (DAOException e){
+			throw new ServiceException("Error occurred while room was added to database", e);
+		}
+		
 	}
-
+	
+	@Override
+	public boolean deleteRoom(User currentUser, Room room) throws ServiceException {
+		if (! checkAccess.isUserAllowedDeleteRooms(currentUser) ){
+			throw new ServiceException("User not allowed to delete rooms.");
+		}
+		
+		if (room == null) {
+			throw new ServiceException("Error occurred while room was deleted to database");
+		}
+			
+		if (room.getId() == 0 ){
+			throw new ServiceException("Room does not exist in database");
+		} else {
+			try {
+				roomDao.delete(room);
+				if (room.getId() == 0){
+					return true;
+				}else {
+					return false;
+				}
+				
+			}catch (DAOException e){
+				throw new ServiceException("Error occurred while room was deleted to database", e);
+			}
+		}
+	}
+	
 	@Override
 	public void deleteRooms(User currentUser, List<Room> rooms) throws ServiceException {
 		if (! checkAccess.isUserAllowedDeleteRooms(currentUser) ){

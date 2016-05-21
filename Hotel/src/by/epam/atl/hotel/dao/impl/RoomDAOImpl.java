@@ -57,6 +57,11 @@ public class RoomDAOImpl implements RoomDAO {
 			"SELECT * FROM rooms WHERE id NOT IN (SELECT room_id FROM hotel.booking "+ 
 			" WHERE booking.date_from >= ? AND booking.date_to <= ?)";
 	
+	private static final String SQL_CHECK_ROOM_NOT_BOOKED_IN_PERIOD =
+			"SELECT * FROM rooms WHERE id = ? AND available = 1 AND id NOT IN "
+			+ " (SELECT room_id FROM hotel.booking "+ 
+			" WHERE booking.date_from >= ? AND booking.date_to <= ?)";
+	
 	private static final String SQL_CLOSE_ROOM_IF_NOT_BOOKED = ""
 			+ "UPDATE rooms SET rooms.available = 0 WHERE (rooms.id = ? "
 			+ "AND rooms.id NOT IN " 
@@ -130,6 +135,49 @@ public class RoomDAOImpl implements RoomDAO {
 		return findList(SQL_LIST_AVAILABLE_ROOMS_BY_CAPACITY_AND_SMOKE, true, capacity, canSmoke);
 	}
 
+
+	@Override
+	public boolean isRoomAvailableInPeriod(Room room, Date dateFrom, Date dateTo) throws DAOException {
+		if (room.getId() == 0){
+			throw new DAOException("Room does not exist in database");
+		}
+		
+		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+		 
+		String sqlDateFrom = df.format(dateFrom);
+		String sqlDateTo = df.format(dateTo);
+		
+		Object[] values = {
+				room.getId(),
+				sqlDateFrom,
+				sqlDateTo
+		};
+
+		ConnectionPoolManager poolManager = ConnectionPoolManager.getInstance();
+		//take free connection from pool
+		Connection connection = poolManager.getConnectionFromPool();
+
+		try ( 
+				PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_CHECK_ROOM_NOT_BOOKED_IN_PERIOD, true, values); 
+				ResultSet resultSet = statement.executeQuery()
+			)
+		{
+			if (resultSet.next()) {
+				return true;
+			}
+			
+			return false;
+		} 
+		catch (SQLException e) {
+			throw new DAOException(e);
+		}
+		finally{
+			//free connection
+			poolManager.returnConnectionToPool(connection);
+		}
+		
+	}
+	
 	@Override
 	public void create(Room room) throws IllegalArgumentException, DAOException {
 		if (room.getId() != 0) {
@@ -400,7 +448,6 @@ public class RoomDAOImpl implements RoomDAO {
 		return closed;
 	}
 	
-	
 	private boolean closeRoom(Connection connection, Room room, String from, String to) throws DAOException{
 		if (room.isAvailable()){
 			Object[] values = {
@@ -408,7 +455,6 @@ public class RoomDAOImpl implements RoomDAO {
 					from,
 					to
 			};
-
 
 			try (PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_CLOSE_ROOM_IF_NOT_BOOKED, true, values))
 			{
@@ -519,10 +565,5 @@ public class RoomDAOImpl implements RoomDAO {
 
 		return room;
 	}
-
-	
-
-	
-
 	
 }

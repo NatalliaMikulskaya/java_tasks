@@ -9,6 +9,7 @@ public interface UserDAO {
 	
 	public User find(int id) throws DAOException;
 	public User find(String login, String password) throws DAOException;
+	public User find(String login) throws DAOException;
 	
 	public List<User> list() throws DAOException;
 	public void create(User user) throws IllegalArgumentException, DAOException;
@@ -21,5 +22,6 @@ public interface UserDAO {
 	public void changePassword(User user) throws DAOException;
 	
 	public void banUser(User user) throws DAOException;
+	public void unbanUser(User user) throws DAOException;
 	public void setUserAccess(User user) throws DAOException;
 }

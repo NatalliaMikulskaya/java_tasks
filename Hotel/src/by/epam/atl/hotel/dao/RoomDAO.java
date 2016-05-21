@@ -23,7 +23,7 @@ public interface RoomDAO {
 	public List<Room> findAllAvailableRooms(int capacity, boolean canSmoke ) throws DAOException;
 	
 	public List<Room> findAllNotBookedRoomsInPeriod(Date dateFrom, Date dateTo ) throws DAOException;
-	
+	public boolean isRoomAvailableInPeriod(Room room, Date dateFrom, Date dateTo ) throws DAOException;
 	
 	public void create(Room room) throws IllegalArgumentException, DAOException;
 	public void update(Room room) throws IllegalArgumentException, DAOException;

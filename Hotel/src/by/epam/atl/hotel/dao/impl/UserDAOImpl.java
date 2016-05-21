@@ -19,13 +19,16 @@ public class UserDAOImpl implements UserDAO{
 
 	// Constants ----------------------------------------------------------------------------------
 	private static final String SQL_FIND_BY_ID = "SELECT *  FROM users WHERE id = ?";
-	private static final String SQL_FIND_BY_LOGIN_AND_PASSWORD = "SELECT * FROM users WHERE login = ? AND password = (?)";
+	private static final String SQL_FIND_BY_LOGIN_AND_PASSWORD = "SELECT * FROM users WHERE login = ? AND password = ?";
+	private static final String SQL_FIND_BY_LOGIN = "SELECT * FROM users WHERE login = ?";
 	private static final String SQL_LIST_ORDER_BY_ID = "SELECT * FROM users ORDER BY id";
 	private static final String SQL_INSERT =
 			"INSERT INTO users (name, login, password, email, access, ban) VALUES (?, ?, ?, ?, ?, ?)";
 	private static final String SQL_UPDATE =
 			"UPDATE users SET email = ?, name = ?, login = ?, password = ?, access = ?, ban = ? WHERE id = ?";
-	private static final String SQL_DELETE = "DELETE FROM users WHERE id = ?";
+	private static final String SQL_DELETE = 
+			"DELETE FROM users WHERE id = ?"
+			+ " AND id NOT IN (SELECT user_id FROM booking)";
 	private static final String SQL_EXIST_EMAIL = "SELECT id FROM users WHERE email = ?";
 	private static final String SQL_EXIST_LOGIN = "SELECT id FROM users WHERE login = ?";
 	private static final String SQL_CHANGE_PASSWORD = "UPDATE users SET password = ? WHERE id = ?";
@@ -43,6 +46,11 @@ public class UserDAOImpl implements UserDAO{
 	@Override
 	public User find(String login, String password) throws DAOException {
 		return find(SQL_FIND_BY_LOGIN_AND_PASSWORD, login, password);
+	}
+	
+	@Override
+	public User find(String login) throws DAOException {
+		return find(SQL_FIND_BY_LOGIN, login);
 	}
 
 	private User find(String sql, Object... values) throws DAOException {
@@ -301,7 +309,7 @@ public class UserDAOImpl implements UserDAO{
 	@Override
 	public void banUser(User user) throws DAOException {
 		Object[] values = { 
-				user.isBanned(),
+				true,
 				user.getUserID()
 		};
 
@@ -315,7 +323,7 @@ public class UserDAOImpl implements UserDAO{
 			if (affectedRows == 0) {
 				throw new DAOException("Ban/unban user failed, no rows affected.");
 			} else {
-				user.setUserID(0);
+				user.setIsBanned(true);
 			}
 		} 
 		catch (SQLException e) {
@@ -326,6 +334,36 @@ public class UserDAOImpl implements UserDAO{
 			poolManager.returnConnectionToPool(connection);
 		}
 
+	}
+	
+	@Override
+	public void unbanUser(User user) throws DAOException {
+		Object[] values = { 
+				false,
+				user.getUserID()
+		};
+
+		ConnectionPoolManager poolManager = ConnectionPoolManager.getInstance();
+		//take free connection from pool
+		Connection connection = poolManager.getConnectionFromPool();
+
+		try (PreparedStatement statement = DAOUtil.prepareStatement(connection, SQL_BAN_UNBAN_USER, false, values))
+		{
+			int affectedRows = statement.executeUpdate();
+			if (affectedRows == 0) {
+				throw new DAOException("Ban/unban user failed, no rows affected.");
+			} else {
+				user.setIsBanned(false);
+			}
+		} 
+		catch (SQLException e) {
+			throw new DAOException(e);
+		}
+		finally{
+			//free connection
+			poolManager.returnConnectionToPool(connection);
+		}
+		
 	}
 
 	@Override
@@ -345,8 +383,6 @@ public class UserDAOImpl implements UserDAO{
 			int affectedRows = statement.executeUpdate();
 			if (affectedRows == 0) {
 				throw new DAOException("Set user access failed, no rows affected.");
-			} else {
-				user.setUserID(0);
 			}
 		} 
 		catch (SQLException e) {
@@ -373,4 +409,6 @@ public class UserDAOImpl implements UserDAO{
 
 		return user;
 	}
+
+
 }
